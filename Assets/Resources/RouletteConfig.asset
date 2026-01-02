@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af15585b957e4f078aeb7af220ca9a6, type: 3}
+  m_Name: RouletteConfig
+  m_EditorClassIdentifier: 
+  Parts:
+  - Weight: 42
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 100
+  - Weight: 26
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 200
+  - Weight: 14
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 500
+  - Weight: 8
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 1000
+  - Weight: 5
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 1500
+  - Weight: 3
+    Reward:
+      Resource: money
+      Icon: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+      Count: 2000
+  UseInApps: 1
+  InApp1AddSpins: 5
+  InApp2AddSpins: 20
+  AddFreeSpins: 1
+  FreeSpinTimer: 14

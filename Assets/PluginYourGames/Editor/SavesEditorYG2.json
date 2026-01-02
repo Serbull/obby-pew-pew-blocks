@@ -1,0 +1,37 @@
+{
+    "sound": 1,
+    "music": 0,
+    "cameraSensitivity": 0.30000001192092898,
+    "coins": 89900,
+    "level": 0,
+    "luckySpin": 23,
+    "Pets": [
+        {
+            "Id": "cute_dragon1",
+            "IsEquipped": true,
+            "IsGold": false
+        },
+        {
+            "Id": "chicken",
+            "IsEquipped": true,
+            "IsGold": false
+        },
+        {
+            "Id": "cat",
+            "IsEquipped": true,
+            "IsGold": false
+        }
+    ],
+    "Roulette": {
+        "SpinCount": 0
+    },
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 346
+}
