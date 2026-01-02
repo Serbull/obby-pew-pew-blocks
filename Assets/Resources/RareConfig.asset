@@ -23,5 +23,7 @@ MonoBehaviour:
     Color: {r: 0.77254903, g: 0.23921569, b: 1, a: 1}
   - Id: legendary
     Color: {r: 1, g: 0.49019608, b: 0.09019608, a: 1}
+  - Id: mystical
+    Color: {r: 1, g: 0.007843138, b: 0, a: 1}
   - Id: secret
     Color: {r: 1, g: 0, b: 0.7882353, a: 1}

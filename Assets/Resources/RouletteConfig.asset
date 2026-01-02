@@ -47,4 +47,4 @@ MonoBehaviour:
   InApp1AddSpins: 5
   InApp2AddSpins: 20
   AddFreeSpins: 1
-  FreeSpinTimer: 14
+  FreeSpinTimer: 900

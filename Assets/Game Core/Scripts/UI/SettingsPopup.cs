@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Serbull.GameAssets;
 
 public class SettingsPopup : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class SettingsPopup : MonoBehaviour
 
     private void Start()
     {
-        _musicToggle.isOn = SaveManager.Data.music == 1;
-        _soundToggle.isOn = SaveManager.Data.sound == 1;
+        _musicToggle.isOn = SaveManager.Data.MusicVolume > 0;
+        _soundToggle.isOn = SaveManager.Data.SoundVolume > 0;
         _cameraSlider.value = SaveManager.Data.cameraSensitivity;
 
         _closeButton.onClick.AddListener(Close);
@@ -27,12 +28,14 @@ public class SettingsPopup : MonoBehaviour
 
     private void MusicSetActive(bool value)
     {
-        SaveManager.Data.music = value ? 1 : 0;
+        SaveManager.Data.MusicVolume = value ? 1 : 0;
+        Services.Audio?.SetMusicVolume(SaveManager.Data.MusicVolume);
     }
 
     private void SoundSetActive(bool value)
     {
-        SaveManager.Data.sound = value ? 1 : 0;
+        SaveManager.Data.SoundVolume = value ? 1 : 0;
+        Services.Audio?.SetSoundVolume(SaveManager.Data.SoundVolume);
     }
 
     private void CameraSetValue(float value)

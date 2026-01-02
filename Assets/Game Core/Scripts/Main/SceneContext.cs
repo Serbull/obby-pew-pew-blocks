@@ -12,5 +12,11 @@ public class SceneContext : MonoBehaviour
     {
         _sgaInstaller.Init(_gameManager, SaveManager.Data.Roulette, YG.YG2.lang);
         _petInstaller.Init(_gameManager, SaveManager.Data.Pets, YG.YG2.lang);
+
+        if (Services.Audio != null)
+        {
+            Services.Audio.SetSoundVolume(SaveManager.Data.SoundVolume);
+            Services.Audio.SetMusicVolume(SaveManager.Data.MusicVolume);
+        }
     }
 }

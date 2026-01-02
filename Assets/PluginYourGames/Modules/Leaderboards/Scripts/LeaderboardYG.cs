@@ -95,7 +95,7 @@ namespace YG
 
             while (true)
             {
-                yield return new WaitForSeconds(20);
+                yield return new WaitForSeconds(30);
                 UpdateLB();
             }
         }

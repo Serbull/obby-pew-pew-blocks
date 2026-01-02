@@ -28,7 +28,185 @@ MonoBehaviour:
     Ru: "\u0417\u0430\u0431\u0440\u0430\u0442\u044C"
   - Id: spin
     En: Spin ({0})
-    Ru: "\u0412\u0440\u0430\u0449\u0430\u0442\u044C ({0})"
+    Ru: "\u043A\u0440\u0443\u0442\u0438\u0442\u044C ({0})"
   - Id: free_spin_timer
     En: +1 Spin in {0}
     Ru: "+1 \u0421\u043F\u0438\u043D \u0447\u0435\u0440\u0435\u0437 {0}"
+  - Id: auto_collect
+    En: Auto Collect
+    Ru: "\u0410\u0432\u0442\u043E\u0441\u0431\u043E\u0440"
+  - Id: auto_race
+    En: Auto Flight
+    Ru: "\u0410\u0432\u0442\u043E\u043F\u043E\u043B\u0435\u0442"
+  - Id: pets
+    En: Pets
+    Ru: "\u041F\u0438\u0442\u043E\u043C\u0446\u044B"
+  - Id: trail
+    En: Trail
+    Ru: "\u0421\u043B\u0435\u0434"
+  - Id: cars
+    En: Airplanes
+    Ru: "\u0421\u0430\u043C\u043E\u043B\u0435\u0442\u044B"
+  - Id: revive
+    En: Revive
+    Ru: "\u043F\u0435\u0440\u0435\u0440\u043E\u0436\u0434\u0435\u043D\u0438\u0435"
+  - Id: settings
+    En: Settings
+    Ru: "\u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+  - Id: hide_cursor
+    En: show/hide cursor
+    Ru: "\u043F\u043E\u043A\u0430\u0437\u0430\u0442\u044C/\u0441\u043A\u0440\u044B\u0442\u044C
+      \u043A\u0443\u0440\u0441\u043E\u0440"
+  - Id: tutorial_header
+    En: Tutorial
+    Ru: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
+  - Id: tutorial_collect_energy
+    En: Collect {0} energy
+    Ru: "\u0421\u043E\u0431\u0435\u0440\u0438 {0} \u044D\u043D\u0435\u0440\u0433\u0438\u0438"
+  - Id: tutorial_collect_cup
+    En: Complete races and collect {0} cups
+    Ru: "\u0412\u044B\u043F\u043E\u043B\u043D\u0438 \u0437\u0430\u0435\u0437\u0434\u044B
+      \u0438 \u043D\u0430\u043A\u043E\u043F\u0438 {0} \u043A\u0443\u0431\u043A\u043E\u0432"
+  - Id: tutorial_buy_egg
+    En: Buy an egg and get your first pet
+    Ru: "\u041A\u0443\u043F\u0438 \u044F\u0439\u0446\u043E \u0438 \u043F\u043E\u043B\u0443\u0447\u0438
+      \u0441\u0432\u043E\u0435\u0433\u043E \u043F\u0435\u0440\u0432\u043E\u0433\u043E
+      \u043F\u0438\u0442\u043E\u043C\u0446\u0430"
+  - Id: tutorial_equip_pet
+    En: "Go to the \u2018PETS\u2019 menu, select your pet, and tap \u2018EQUIP\u2019!"
+    Ru: "\u0417\u0430\u0439\u0434\u0438 \u0432 \u043C\u0435\u043D\u044E '\u041F\u0418\u0422\u041E\u041C\u0426\u042B',
+      \u0432\u044B\u0431\u0435\u0440\u0438 \u0441\u0432\u043E\u0435\u0433\u043E \u043F\u0438\u0442\u043E\u043C\u0446\u0430
+      \u0438 \u043D\u0430\u0436\u043C\u0438 '\u041D\u0410\u0414\u0415\u0422\u042C'"
+  - Id: tutorial_finish
+    En: Keep progressing and buying new cars and upgrades! Good luck!
+    Ru: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0430\u0439 \u0440\u0430\u0437\u0432\u0438\u0432\u0430\u0442\u044C\u0441\u044F
+      \u0438 \u043F\u043E\u043A\u0443\u043F\u0430\u0442\u044C \u043D\u043E\u0432\u044B\u0435
+      \u043C\u0430\u0448\u0438\u043D\u044B \u0438 \u0443\u043B\u0443\u0447\u0448\u0435\u043D\u0438\u044F!
+      \u0423\u0434\u0430\u0447\u0438!"
+  - Id: music
+    En: Music
+    Ru: "\u041C\u0443\u0437\u044B\u043A\u0430"
+  - Id: sounds
+    En: Sounds
+    Ru: "\u0417\u0432\u0443\u043A\u0438"
+  - Id: camera_speed
+    En: Camera Speed
+    Ru: "\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u041A\u0430\u043C\u0435\u0440\u044B"
+  - Id: need_more_cups
+    En: Need More Cups
+    Ru: "\u041D\u0443\u0436\u043D\u043E \u0431\u043E\u043B\u044C\u0448\u0435 \u043A\u0443\u0431\u043A\u043E\u0432"
+  - Id: inventory_full
+    En: Inventory Is Full
+    Ru: "\u0418\u041D\u0412\u0415\u041D\u0422\u0410\u0420\u042C \u041F\u0415\u0420\u0415\u041F\u041E\u041B\u041D\u0415\u041D"
+  - Id: equipped
+    En: Equipped
+    Ru: "\u042D\u041A\u0418\u041F\u0418\u0420\u041E\u0412\u0410\u041D\u041D\u041E"
+  - Id: merge
+    En: Merge
+    Ru: "\u0421\u041B\u0418\u042F\u041D\u0418\u0415"
+  - Id: equip
+    En: Equip
+    Ru: "\u041D\u0430\u0434\u0435\u0442\u044C"
+  - Id: equip_best
+    En: Equip Best
+    Ru: "\u041D\u0410\u0414\u0415\u0422\u042C \u041B\u0423\u0427\u0428\u0418\u0425"
+  - Id: equip_car
+    En: Equip
+    Ru: "\u042D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C"
+  - Id: color_trail
+    En: Color Trail
+    Ru: "\u0426\u0432\u0435\u0442\u043D\u043E\u0439 \u0441\u043B\u0435\u0434"
+  - Id: select
+    En: Select
+    Ru: "\u0412\u044B\u0431\u0440\u0430\u0442\u044C"
+  - Id: exit_is_reset
+    En: EXITING THE GAME RESETS PROGRESS
+    Ru: "\u0412\u042B\u0425\u041E\u0414 \u0418\u0417 \u0418\u0413\u0420\u042B \u0421\u0411\u0420\u0410\u0421\u042B\u0412\u0410\u0415\u0422
+      \u041F\u0420\u041E\u0413\u0420\u0415\u0421\u0421"
+  - Id: spin_plus
+    En: +{0} spins
+    Ru: "+{0} \u0441\u043F\u0438\u043D\u043E\u0432"
+  - Id: vip_header
+    En: <color=#fff000><b>VIP</b></color> Status
+    Ru: "<color=#fff000><b>VIP</b></color> \u0441\u0442\u0430\u0442\u0443\u0441"
+  - Id: vip_1
+    En: '- All collected energy is multiplied <b>2 times</b>'
+    Ru: "- \u0432\u0441\u044F \u0441\u043E\u0431\u0440\u0430\u043D\u043D\u0430\u044F
+      \u044D\u043D\u0435\u0440\u0433\u0438\u044F \u0443\u043C\u043D\u043E\u0436\u0430\u0435\u0442\u0441\u044F
+      <b>\u0432 2 \u0440\u0430\u0437\u0430</b>"
+  - Id: vip_2
+    En: '- Time-based rewards are given<b> 2 times</b> faster'
+    Ru: "- \u043D\u0430\u0433\u0440\u0430\u0434\u044B \u0437\u0430 \u0432\u0440\u0435\u043C\u044F
+      \u0434\u0430\u044E\u0442\u0441\u044F <b>\u0432 2 \u0440\u0430\u0437\u0430</b>
+      \u0431\u044B\u0441\u0442\u0440\u0435\u0435"
+  - Id: vip_3
+    En: '- The crown on the player and in the Top will be visible to all players'
+    Ru: "- \u043A\u043E\u0440\u043E\u043D\u0430 \u043D\u0430 \u0438\u0433\u0440\u043E\u043A\u0435
+      \u0438 \u0432 \u0422\u043E\u043F\u0435, \u0431\u0443\u0434\u0435\u0442 \u0432\u0438\u0434\u043D\u0430
+      \u0432\u0441\u0435\u043C \u0438\u0433\u0440\u043E\u043A\u0430\u043C"
+  - Id: show_crown
+    En: Show the Crown on the player
+    Ru: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u041A\u043E\u0440\u043E\u043D\u0443
+      \u043D\u0430\u0434 \u0438\u0433\u0440\u043E\u043A\u043E\u043C"
+  - Id: space_key
+    En: SPACE
+    Ru: "\u041F\u0420\u041E\u0411\u0415\u041B"
+  - Id: tap_on_screen
+    En: '"TAP" on screen'
+    Ru: "\"\u0422\u0410\u041F\" \u043F\u043E \u044D\u043A\u0440\u0430\u043D\u0443  "
+  - Id: exit_auto_collect
+    En: EXIT from Auto Collect Mode
+    Ru: "\u0432\u044B\u0439\u0442\u0438 \u0438\u0437 \u0440\u0435\u0436\u0438\u043C\u0430
+      \u0430\u0432\u0442\u043E\u0441\u0431\u043E\u0440\u0430"
+  - Id: exit_auto_race
+    En: EXIT from Auto Flight Mode
+    Ru: "\u0412\u044B\u0439\u0442\u0438 \u0438\u0437 \u0440\u0435\u0436\u0438\u043C\u0430
+      \u0410\u0432\u0442\u043E\u043F\u043E\u043B\u0435\u0442\u0430"
+  - Id: cursor_unlocked
+    En: CURSOR ACTIVE
+    Ru: "\u041A\u0423\u0420\u0421\u041E\u0420 \u0410\u041A\u0422\u0418\u0412\u0415\u041D"
+  - Id: uneqip
+    En: Unequip
+    Ru: "\u0421\u043D\u044F\u0442\u044C"
+  - Id: common
+    En: Common
+    Ru: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439"
+  - Id: uncommon
+    En: Uncommon
+    Ru: "\u041D\u0435\u043E\u0431\u044B\u0447\u043D\u044B\u0439"
+  - Id: rare
+    En: Rare
+    Ru: "\u0420\u0435\u0434\u043A\u0438\u0439"
+  - Id: epic
+    En: Epic
+    Ru: "\u042D\u043F\u0438\u0447\u043D\u044B\u0439"
+  - Id: legendary
+    En: Legendary
+    Ru: "\u041B\u0435\u0433\u0435\u043D\u0434\u0430\u0440\u043D\u044B\u0439"
+  - Id: mystical
+    En: Mystical
+    Ru: "\u041C\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439"
+  - Id: secret
+    En: Secret
+    Ru: "\u0421\u0435\u043A\u0440\u0435\u0442\u043D\u044B\u0439"
+  - Id: require
+    En: Need
+    Ru: "\u0422\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044F"
+  - Id: loading
+    En: Loading....
+    Ru: "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430..."
+  - Id: short_seconds
+    En: s
+    Ru: "\u0441"
+  - Id: short_meters
+    En: m
+    Ru: "\u043C"
+  - Id: secret_pet
+    En: Secret Pet
+    Ru: "\u0421\u0435\u043A\u0440\u0435\u0442\u043D\u044B\u0439 \u041F\u0438\u0442\u043E\u043C\u0435\u0446"
+  - Id: unmergable
+    En: Unmergable
+    Ru: "\u043D\u0435 \u0441\u043B\u0438\u0432\u0430\u0435\u0442\u0441\u044F"
+  - Id: ad_break
+    En: Ad break...
+    Ru: "\u0420\u0435\u043A\u043B\u0430\u043C\u043D\u0430\u044F \u043F\u0430\u0443\u0437\u0430..."

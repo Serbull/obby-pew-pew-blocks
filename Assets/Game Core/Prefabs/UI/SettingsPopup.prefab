@@ -795,7 +795,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2645158814732561402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494a72f2c1e54ea8beab5e096931ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: 20ae1aa5b2c02446d9f2e8f636179223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: sounds
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4407426834149163298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494a72f2c1e54ea8beab5e096931ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: 20ae1aa5b2c02446d9f2e8f636179223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: camera_speed
@@ -1526,7 +1526,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5984842357202536586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494a72f2c1e54ea8beab5e096931ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: 20ae1aa5b2c02446d9f2e8f636179223, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _id: music

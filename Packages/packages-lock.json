@@ -5,14 +5,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "0f0e9ef07dce727b6ab1e93c0fbe120d245dffd9"
+      "hash": "69220655092c5913e9211b4bb786bd3a3b5e6c8f"
     },
     "com.serbull.gameassets.pets": {
       "version": "https://github.com/Serbull/game-assets-pets.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "8548f2f428149704c6c4e0c2da6a4d7d3bf3d6ca"
+      "hash": "e1a688471b32af56914eda17d5e133c749576f91"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

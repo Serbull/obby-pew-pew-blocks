@@ -15,12 +15,12 @@ MonoBehaviour:
   nameFull: YandexGamesPlatform
   projectSettings:
     showFirstAdv: 1
-    interAdvInterval: 60
+    interAdvInterval: 180
     postponeCallByFail: 0
-    useYandexMetrica: 1
+    useYandexMetrica: 0
     metricaCounterID: 0
     skipInterAdvAfterReward: 0
-    saveLocal: 0
+    saveLocal: 1
     saveCloud: 1
     selectWebGLTemplate: 1
     runInBackground: 0

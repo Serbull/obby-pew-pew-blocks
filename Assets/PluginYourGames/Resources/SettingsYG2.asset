@@ -422,14 +422,14 @@ MonoBehaviour:
     gameMonetizeID: lr5u64zee68h9nghuu29z8dxce7iecfo
     ownHost: 0
   platformToggles:
-    showFirstAdv: 0
-    interAdvInterval: 0
+    showFirstAdv: 1
+    interAdvInterval: 1
     postponeCallByFail: 0
-    useYandexMetrica: 0
+    useYandexMetrica: 1
     metricaCounterID: 0
     skipInterAdvAfterReward: 0
     saveLocal: 0
-    saveCloud: 0
+    saveCloud: 1
     selectWebGLTemplate: 1
     runInBackground: 1
     enableExceptions: 1
