@@ -33,7 +33,7 @@ public class PlayerController : Singleton<PlayerController>
             movementAxis.x = input.x;
             movementAxis.y = input.z;
 
-            var sensitivity = SaveManager.Data.cameraSensitivity * mouseSensitivity;
+            var sensitivity = SaveManager.Data.CameraSensitivity * mouseSensitivity;
             _camera.Rotate(playerInput.LookInput().x * sensitivity, playerInput.LookInput().y * sensitivity);
 
             var zoom = ((playerInput.ZoomIn() ? 1 : 0) - (playerInput.ZoomOut() ? 1 : 0)) * Time.unscaledDeltaTime * 100f;
@@ -49,7 +49,7 @@ public class PlayerController : Singleton<PlayerController>
 
             if (Input.GetMouseButton(1))
             {
-                var sensitivity = SaveManager.Data.cameraSensitivity * mouseSensitivity;
+                var sensitivity = SaveManager.Data.CameraSensitivity * mouseSensitivity;
                 _camera.Rotate(Input.GetAxis("Mouse X") * sensitivity, Input.GetAxis("Mouse Y") * sensitivity);
             }
 
@@ -90,7 +90,7 @@ public class PlayerController : Singleton<PlayerController>
             // If we are moving and not aiming then calculate rotation for the next frame...
             if (CharacterCore.moveAxis != Vector3.zero)
             {
-                CharacterCore.rotationAux = Quaternion.LookRotation((CharacterCore.transform.position + CharacterCore.moveAxis) - CharacterCore.transform.position);
+                CharacterCore.rotationAux = Quaternion.LookRotation(CharacterCore.transform.position + CharacterCore.moveAxis - CharacterCore.transform.position);
             }
         }
     }

@@ -7,6 +7,8 @@ public class CharacterCore : MonoBehaviour
     public sealed class PlayerSettings
     {
         public float baseGravity = -9.81f;
+        public float groundSnapForce = 20f;
+        public float maxGroundedUpVelocity = 0.5f;
         public float speed = 2.3f;
         public float jumpForce = 7;
     }
@@ -27,12 +29,13 @@ public class CharacterCore : MonoBehaviour
     public Vector3 moveAxis;
 
     private PhysicsMaterial pM;
+    private bool _isGrounded;
+    private bool _isJumped;
 
     [HideInInspector]
     public Quaternion rotationAux;
 
-    [HideInInspector]
-    public bool grounded;
+    public bool IsPlayer;
 
     public void Start()
     {
@@ -59,8 +62,14 @@ public class CharacterCore : MonoBehaviour
 
     public void Jump()
     {
-        if (grounded)
+        if (_isGrounded)
         {
+            if (!_isJumped)
+            {
+                _isJumped = true;
+                _animator.SetTrigger("Jump");
+            }
+
             rb.linearVelocity = transform.up * playerSettings.jumpForce / 1.1f;
         }
     }
@@ -73,14 +82,23 @@ public class CharacterCore : MonoBehaviour
             rb.linearVelocity = new Vector3(moveSpeed.x, rb.linearVelocity.y, moveSpeed.z);
         }
 
-        _animator.SetFloat("Move", moveAxis == Vector3.zero ? 0 : 1);
+        if (moveAxis == Vector3.zero)
+        {
+            _animator.SetFloat("Move", 0);
+            _animator.SetFloat("RunSpeed", 1);
+        }
+        else
+        {
+            _animator.SetFloat("Move", 1);
+            _animator.SetFloat("RunSpeed", playerSettings.speed / 4f);
+        }
     }
 
     private void GroundCheck()
     {
         if (Physics.SphereCast(transform.position + transform.up * 2, .15f, -transform.up, out _, 2.5f, groundLayers, QueryTriggerInteraction.Ignore))
         {
-            grounded = true;
+            _isGrounded = true;
             _animator.SetBool("Grounded", true);
             if (moveAxis == Vector3.zero)
             {
@@ -95,7 +113,7 @@ public class CharacterCore : MonoBehaviour
         }
         else
         {
-            grounded = false;
+            _isGrounded = false;
             _animator.SetBool("Grounded", false);
             pM.staticFriction = 0;
             pM.dynamicFriction = 0;
@@ -106,6 +124,22 @@ public class CharacterCore : MonoBehaviour
     {
         var velocity = rb.linearVelocity;
         velocity.y += playerSettings.baseGravity * Time.fixedDeltaTime;
+
+        if (_isGrounded)
+        {
+            if (_isJumped)
+            {
+                if (velocity.y <= 0)
+                    _isJumped = false;
+            }
+            else
+            {
+                if (velocity.y > playerSettings.maxGroundedUpVelocity)
+                    velocity.y = playerSettings.maxGroundedUpVelocity;
+                velocity.y -= playerSettings.groundSnapForce * Time.fixedDeltaTime;
+            }
+        }
+
         rb.linearVelocity = velocity;
     }
 

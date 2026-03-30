@@ -1,7 +1,4 @@
 {
-    "SoundVolume": 1.0,
-    "MusicVolume": 1.0,
-    "cameraSensitivity": 0.30000001192092898,
     "coins": 0,
     "level": 0,
     "luckySpin": 1,
@@ -9,6 +6,11 @@
     "Roulette": {
         "SpinCount": 0
     },
+    "SoundVolume": 1.0,
+    "MusicVolume": 1.0,
+    "CameraSensitivity": 0.30000001192092898,
+    "SkinId": 0,
+    "IsFirstSkinSelected": true,
     "intExample": 5,
     "strExample": "Hello!",
     "boolExample": [
@@ -17,5 +19,5 @@
         false,
         false
     ],
-    "idSave": 3
+    "idSave": 134
 }

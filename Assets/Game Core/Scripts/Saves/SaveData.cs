@@ -6,10 +6,6 @@ namespace YG
 {
     public partial class SavesYG
     {
-        public float SoundVolume = 1f;
-        public float MusicVolume = 1f;
-        public float cameraSensitivity = 0.3f;
-
         public long coins;
 
         public int level;

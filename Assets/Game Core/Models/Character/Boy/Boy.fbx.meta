@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3f21c2d039521485881573c216187586
+guid: 9ff2a229a2df142968816ab35279e30f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -13,7 +13,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: tripo_mat_663982ca.001
-    second: {fileID: 2100000, guid: 73114309119fb4825a9714eb8835cd1a, type: 2}
+    second: {fileID: 2100000, guid: 4be501f2c8af7465cbe787212de47325, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,7 +44,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 2
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -80,7 +80,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
+    tangentImportMode: 2
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1

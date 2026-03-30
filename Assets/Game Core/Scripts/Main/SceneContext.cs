@@ -10,7 +10,8 @@ public class SceneContext : MonoBehaviour
 
     private void Awake()
     {
-        _sgaInstaller.Init(_gameManager, SaveManager.Data.Roulette, YG.YG2.lang);
+        var isMobile = YG.YG2.envir.device != YG.YG2.Device.Desktop;
+        _sgaInstaller.Init(_gameManager, SaveManager.Data.Roulette, isMobile, YG.YG2.lang);
         _petInstaller.Init(_gameManager, SaveManager.Data.Pets, YG.YG2.lang);
 
         if (Services.Audio != null)

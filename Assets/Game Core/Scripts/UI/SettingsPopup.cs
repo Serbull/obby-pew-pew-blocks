@@ -13,7 +13,7 @@ public class SettingsPopup : MonoBehaviour
     {
         _musicToggle.isOn = SaveManager.Data.MusicVolume > 0;
         _soundToggle.isOn = SaveManager.Data.SoundVolume > 0;
-        _cameraSlider.value = SaveManager.Data.cameraSensitivity;
+        _cameraSlider.value = SaveManager.Data.CameraSensitivity;
 
         _closeButton.onClick.AddListener(Close);
         _musicToggle.onValueChanged.AddListener(MusicSetActive);
@@ -40,6 +40,6 @@ public class SettingsPopup : MonoBehaviour
 
     private void CameraSetValue(float value)
     {
-        SaveManager.Data.cameraSensitivity = value;
+        SaveManager.Data.CameraSensitivity = value;
     }
 }
