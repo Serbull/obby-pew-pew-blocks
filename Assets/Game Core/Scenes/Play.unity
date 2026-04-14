@@ -211,7 +211,7 @@ MonoBehaviour:
   CharacterCore: {fileID: 842948592}
   playerInput: {fileID: 912345461}
   _camera: {fileID: 243228950}
-  mouseSensitivity: 15
+  mouseSensitivity: 30000
   state: 0
   jumpKey: 32
 --- !u!114 &243228950

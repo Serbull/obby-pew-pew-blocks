@@ -7,21 +7,23 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(CanvasGroup))]
 public class FP_Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-	public RectTransform stick;						//stick image;
-	public float returnRate = 15.0F;				//default position returning speed;
-	public float dragRadius = 65.0f;				//drag radius;
+	public RectTransform stick;
+	public RectTransform joystick;              //stick image;
+	public float returnRate = 15.0F;                //default position returning speed;
+	public float dragRadius = 65.0f;                //drag radius;
 	public AlphaControll colorAlpha;
-	
+
 	public event Action<FP_Joystick, Vector2> OnStartJoystickMovement;
 	public event Action<FP_Joystick, Vector2> OnJoystickMovement;
 	public event Action<FP_Joystick> OnEndJoystickMovement;
-	
+
 	private bool _returnHandle, pressed, isEnabled = true;
 	private RectTransform _canvas;
 	private Vector3 globalStickPos;
 	private Vector2 stickOffset;
 	private CanvasGroup canvasGroup;
-	
+	private Vector2 joystickPosition;
+
 	Vector2 Coordinates
 	{
 		get
@@ -31,30 +33,32 @@ public class FP_Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 			return stick.anchoredPosition.normalized;
 		}
 	}
-	
+
 	void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
 	{
 		pressed = true;
 		_returnHandle = false;
+		joystick.anchoredPosition = eventData.position;
 		stickOffset = GetJoystickOffset(eventData);
 		stick.anchoredPosition = stickOffset;
-        OnStartJoystickMovement?.Invoke(this, Coordinates);
-    }
-	
+		OnStartJoystickMovement?.Invoke(this, Coordinates);
+	}
+
 	void IDragHandler.OnDrag(PointerEventData eventData)
 	{
 		stickOffset = GetJoystickOffset(eventData);
 		stick.anchoredPosition = stickOffset;
-        OnJoystickMovement?.Invoke(this, Coordinates);
-    }
+		OnJoystickMovement?.Invoke(this, Coordinates);
+	}
 
 	void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
 	{
 		pressed = false;
 		_returnHandle = true;
+		joystick.anchoredPosition = joystickPosition;
 		OnEndJoystickMovement?.Invoke(this);
 	}
-	
+
 	private Vector2 GetJoystickOffset(PointerEventData eventData)
 	{
 		if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_canvas, eventData.position, eventData.pressEventCamera, out globalStickPos))
@@ -67,62 +71,52 @@ public class FP_Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 		}
 		return handleOffset;
 	}
-	
+
 	private void Start()
 	{
-		canvasGroup = GetComponent ("CanvasGroup") as CanvasGroup;
+		canvasGroup = GetComponent("CanvasGroup") as CanvasGroup;
 		_returnHandle = true;
 		var touchZone = GetComponent("RectTransform") as RectTransform;
 		touchZone.pivot = Vector2.one * 0.5F;
-		stick.transform.SetParent(transform);
+		joystickPosition = joystick.anchoredPosition;
+		stick.transform.SetParent(joystick);
 		_canvas = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-		//var curTransform = transform;
-		//do
-		//{
-		//	if (curTransform.GetComponent<Canvas>() != null)
-		//	{
-		//		_canvas = curTransform.GetComponent("RectTransform") as RectTransform;;
-		//		break;
-		//	}
-		//	curTransform = transform.GetComponentInParent<Canvas>().transform;
-		//}
-		//while (curTransform != null);
 	}
-	
+
 	private void FixedUpdate()
 	{
 		if (_returnHandle)
 			if (stick.anchoredPosition.magnitude > Mathf.Epsilon)
-				stick.anchoredPosition -= new Vector2(stick.anchoredPosition.x * returnRate, 
-				                                      stick.anchoredPosition.y * returnRate) * Time.deltaTime;
-		else
-			_returnHandle = false;
+				stick.anchoredPosition -= new Vector2(stick.anchoredPosition.x * returnRate,
+													  stick.anchoredPosition.y * returnRate) * Time.deltaTime;
+			else
+				_returnHandle = false;
 
-		switch(isEnabled)
+		switch (isEnabled)
 		{
-		case true:
-			canvasGroup.alpha = pressed ? colorAlpha.pressedAlpha : colorAlpha.idleAlpha;
-			canvasGroup.interactable = canvasGroup.blocksRaycasts = true;
-			break;
-		case false:
-			canvasGroup.alpha = 0;
-			canvasGroup.interactable = canvasGroup.blocksRaycasts = false;
-			break;
+			case true:
+				canvasGroup.alpha = pressed ? colorAlpha.pressedAlpha : colorAlpha.idleAlpha;
+				canvasGroup.interactable = canvasGroup.blocksRaycasts = true;
+				break;
+			case false:
+				canvasGroup.alpha = 0;
+				canvasGroup.interactable = canvasGroup.blocksRaycasts = false;
+				break;
 		}
 	}
 
 
 	public Vector3 MoveInput()
 	{
-		return new Vector3 (Coordinates.x, 0, Coordinates.y);
+		return new Vector3(Coordinates.x, 0, Coordinates.y);
 	}
 
 	public void Rotate(Transform transformToRotate, float speed)
 	{
-		if(Coordinates != Vector2.zero)
-			transformToRotate.rotation = Quaternion.Slerp (transformToRotate.rotation,
-			                                              Quaternion.LookRotation (new Vector3 (Coordinates.x, 0, Coordinates.y)),
-			                                              speed * Time.deltaTime);
+		if (Coordinates != Vector2.zero)
+			transformToRotate.rotation = Quaternion.Slerp(transformToRotate.rotation,
+														  Quaternion.LookRotation(new Vector3(Coordinates.x, 0, Coordinates.y)),
+														  speed * Time.deltaTime);
 	}
 
 	public bool IsPressed()
@@ -135,11 +129,11 @@ public class FP_Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 		isEnabled = enable;
 	}
 
-    private void OnDisable()
-    {
+	private void OnDisable()
+	{
 		stick.anchoredPosition = Vector2.zero;
 		((IPointerUpHandler)this).OnPointerUp(null);
-    }
+	}
 }
 
 

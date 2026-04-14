@@ -4,7 +4,7 @@ namespace YG
     {
         public float SoundVolume = 1f;
         public float MusicVolume = 1f;
-        public float CameraSensitivity = 0.3f;
+        public float CameraSensitivity = 0.5f;
 
         public int SkinId;
         public bool IsFirstSkinSelected = false;

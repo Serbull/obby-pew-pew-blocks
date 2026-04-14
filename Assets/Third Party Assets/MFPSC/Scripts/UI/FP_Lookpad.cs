@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
 
 [RequireComponent(typeof(EventTrigger))]
 [RequireComponent(typeof(CanvasGroup))]
-public class FP_Lookpad : MonoBehaviour {
+public class FP_Lookpad : MonoBehaviour
+{
 
     private Vector2 touchInput, prevDelta, dragInput;
     private bool isPressed;
@@ -22,7 +21,7 @@ public class FP_Lookpad : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        touchInput = (dragInput - prevDelta) / Time.unscaledDeltaTime / Screen.width;
+        touchInput = (dragInput - prevDelta) / Screen.width;
         prevDelta = dragInput;
     }
 

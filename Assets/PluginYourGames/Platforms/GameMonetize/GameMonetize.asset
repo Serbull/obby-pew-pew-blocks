@@ -22,13 +22,14 @@ MonoBehaviour:
     skipInterAdvAfterReward: 0
     saveLocal: 0
     saveCloud: 1
+    autoPauseGame: 1
     selectWebGLTemplate: 1
     runInBackground: 0
     enableExceptions: 2
     compressionFormat: 2
     decompressionFallback: 0
     autoGraphicsAPI: 1
-    minimalCodeCompression: 1
+    managedStrippingLevel: 4
     dataCaching: 1
     colorSpace: 0
     archivingBuild: 1

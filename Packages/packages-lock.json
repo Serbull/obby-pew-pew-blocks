@@ -12,7 +12,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "270f813cdb85dbc32f9d4ebb0edad01e5cb33fbb"
+      "hash": "af90d9fcd97267ae589af819112a01d58b4adb85"
     },
     "com.serbull.gameassets.pets": {
       "version": "https://github.com/Serbull/game-assets-pets.git",

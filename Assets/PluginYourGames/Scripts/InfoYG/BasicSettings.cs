@@ -43,6 +43,10 @@ namespace YG
 #endif
             public bool archivingBuild = true;
 #if UNITY_EDITOR
+            [Tooltip(Langs.t_autoDefineSymbols)]
+#endif
+            public bool autoDefineSymbols = true;
+#if UNITY_EDITOR
             [Tooltip(Langs.t_syncInitSDK)]
 #endif
             public bool syncInitSDK;
@@ -55,9 +59,13 @@ namespace YG
 #endif
             public int loadSceneIndex;
 #if UNITY_EDITOR
-            [NestedYG(nameof(loadSceneIfSDKLate), nameof(syncInitSDK)), Min(0)]
+            [NestedYG(nameof(syncInitSDK)), Min(0), Tooltip(Langs.t_initDelaySimulation)]
 #endif
-            public bool simulationLoadScene;
+            public bool initDelaySimulation;
+
+
+            [HideInInspector]
+            public int buildNumber;
         }
     }
 }

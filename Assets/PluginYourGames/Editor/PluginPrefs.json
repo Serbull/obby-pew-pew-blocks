@@ -1,10 +1,5 @@
 {
-    "stringPrefs": [
-        {
-            "key": "PluginYG_URLCloudInfo",
-            "value": "https://max-games.ru/public/pluginYG2/data.json"
-        }
-    ],
+    "stringPrefs": [],
     "intPrefs": [
         {
             "key": "FirstStartup_YG2",

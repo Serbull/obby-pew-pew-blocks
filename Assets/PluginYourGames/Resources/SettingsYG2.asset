@@ -343,18 +343,27 @@ MonoBehaviour:
       priceCurrencyCode: YAN
       currencyImageURL: https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png
       consumed: 0
-    - id: pet_1
-      title: Pet 1
-      description: Product - Pet 1
+    - id: vip_car
+      title: IAP
+      description: Product - IAP 2
       imageURI: demo image
       price: 5 YAN
       priceValue: 5
       priceCurrencyCode: YAN
       currencyImageURL: https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png
       consumed: 1
-    - id: pet_2
-      title: Pet 2
-      description: Product - Pet 2
+    - id: pet_dragon
+      title: IAP
+      description: Product - IAP 3
+      imageURI: demo image
+      price: 10 YAN
+      priceValue: 10
+      priceCurrencyCode: YAN
+      currencyImageURL: https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png
+      consumed: 0
+    - id: vip
+      title: IAP
+      description: Product - IAP 4
       imageURI: demo image
       price: 10 YAN
       priceValue: 10
@@ -362,7 +371,6 @@ MonoBehaviour:
       currencyImageURL: https://yastatic.net/s3/games-static/static-data/images/payments/sdk/currency-icon-s@2x.png
       consumed: 0
   RewardedAdv:
-    rewardedAfterClosing: 1
     skipInterAdvAfterReward: 0
     labelAdvSimLabel: 0
   Storage:
@@ -378,9 +386,10 @@ MonoBehaviour:
     logInEditor: 1
     archivingBuild: 1
     syncInitSDK: 0
-    loadSceneIfSDKLate: 0
-    loadSceneIndex: 0
-    simulationLoadScene: 0
+    loadSceneIfSDKLate: 1
+    loadSceneIndex: 1
+    initDelaySimulation: 0
+    buildNumber: 0
   Simulation:
     device: 0
     language: ru
@@ -425,19 +434,21 @@ MonoBehaviour:
     showFirstAdv: 1
     interAdvInterval: 1
     postponeCallByFail: 0
-    useYandexMetrica: 1
+    setLanguageMod: 0
+    useYandexMetrica: 0
     metricaCounterID: 0
     skipInterAdvAfterReward: 0
-    saveLocal: 0
+    saveLocal: 1
     saveCloud: 1
+    autoPauseGame: 0
     selectWebGLTemplate: 1
     runInBackground: 1
     enableExceptions: 1
     compressionFormat: 1
     decompressionFallback: 1
     autoGraphicsAPI: 1
-    minimalCodeCompression: 1
+    managedStrippingLevel: 1
     dataCaching: 0
     colorSpace: 0
-    archivingBuild: 0
-    syncInitSDK: 0
+    archivingBuild: 1
+    syncInitSDK: 1

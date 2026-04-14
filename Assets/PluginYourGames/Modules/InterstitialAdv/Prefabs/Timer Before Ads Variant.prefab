@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6110180359047974265}
   - component: {fileID: 4933843555317714319}
   - component: {fileID: 2672858154731652042}
-  - component: {fileID: 1243483597448666138}
+  - component: {fileID: 4459926021404342273}
   m_Layer: 5
   m_Name: Info
   m_TagString: Untagged
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -137,7 +138,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1243483597448666138
+--- !u!114 &4459926021404342273
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,9 +147,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3289873285313787295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8494a72f2c1e54ea8beab5e096931ff4, type: 3}
+  m_Script: {fileID: 11500000, guid: 20ae1aa5b2c02446d9f2e8f636179223, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Serbull.GameAssets::Serbull.GameAssets.Localization.LocalizationText
   _id: ad_break
 --- !u!1 &3669274630270089494
 GameObject:
@@ -253,6 +254,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -389,6 +391,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

@@ -76,6 +76,8 @@ namespace YG
 
         private LBPlayerDataYG[] players = new LBPlayerDataYG[0];
 
+        private float _lastUpdateTime = float.MinValue;
+
         private void OnEnable()
         {
             YG2.onGetLeaderboard += OnUpdateLB;
@@ -218,7 +220,7 @@ namespace YG
                 players[i].data.name = LBMethods.AnonymousName(lb.players[i].name);
                 players[i].data.rank = rank.ToString();
 
-                if (rank <= quantityTop)
+                if (rank <= 3)
                 {
                     players[i].data.inTop = true;
                 }
@@ -264,6 +266,9 @@ namespace YG
 
         public void UpdateLB()
         {
+            if (Time.time - _lastUpdateTime < 10f)
+                return;
+
             string photoSize = "nonePhoto";
 
             switch (playerPhoto)
@@ -280,6 +285,7 @@ namespace YG
             }
 
             YG2.GetLeaderboard(nameLB, quantityTop, quantityAround, photoSize);
+            _lastUpdateTime = Time.time;
         }
 
         public void SetLeaderboard(int score) => YG2.SetLeaderboard(nameLB, score);
