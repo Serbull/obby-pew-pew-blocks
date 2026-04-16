@@ -1,0 +1,3 @@
+﻿Build path: /Users/serbull/Desktop/builds-yandex/obby-digger-2
+Build number: 87
+PluginYG version: 2.007

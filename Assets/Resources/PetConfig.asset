@@ -1,0 +1,446 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a677a7f78c4b248878560700834bb527, type: 3}
+  m_Name: PetConfig
+  m_EditorClassIdentifier: 
+  InventoryCapacity: 50
+  Rares:
+  - Id: common
+    Color: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+  - Id: uncommon
+    Color: {r: 0.23137255, g: 1, b: 0.44313726, a: 1}
+  - Id: rare
+    Color: {r: 0.21176471, g: 0.69803923, b: 1, a: 1}
+  - Id: epic
+    Color: {r: 0.77254903, g: 0.23921569, b: 1, a: 1}
+  - Id: legendary
+    Color: {r: 1, g: 0.49019608, b: 0.09019608, a: 1}
+  - Id: secret
+    Color: {r: 1, g: 0, b: 0.7882353, a: 1}
+  Pets:
+  - Id: chick
+    Rare: common
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 342d1d2c0c1954d99afdb07793461acd, type: 3}
+    Prefab: {fileID: 8885327295969518618, guid: add2c233a658841119f74657a59c153a, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: bird
+    Rare: uncommon
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: ade23b9a7dd8a43f0825ecd11b11c8f0, type: 3}
+    Prefab: {fileID: 4396264088611719322, guid: bc2fe7c0374d947dba828b298d292a01, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: bunny
+    Rare: rare
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: acbb470f8982743dc8630a317b957bd8, type: 3}
+    Prefab: {fileID: 4073706201343944842, guid: ec00e34524ae0491a8e27c1da369e050, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: cat
+    Rare: epic
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: a5bc2cb9c9c7b4eb09a88293cb6145bb, type: 3}
+    Prefab: {fileID: 7361875963071127964, guid: d79cc26ad3f57423294672554130db6b, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: dog
+    Rare: legendary
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 073f585f9320a4ba98234b7cec6524fe, type: 3}
+    Prefab: {fileID: 2709774093959840978, guid: 301df18a98b2a4f96bf08478d42f90f9, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: chicken
+    Rare: common
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 3ff95ba369e3d471485c8bb197feaffe, type: 3}
+    Prefab: {fileID: 2667784402382324752, guid: 0d8dbd612bad54ee298009dadc0c3720, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: duck
+    Rare: uncommon
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: e48518bac48024585871103176442b94, type: 3}
+    Prefab: {fileID: 222819843744760894, guid: b196e5454ff734f99b9abcd28ad0ad38, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: cow
+    Rare: rare
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: b26f73d1be4474d22931668db0039e11, type: 3}
+    Prefab: {fileID: 3964189790450385877, guid: 0cb3e2c1afe9a41b38fef37c66edfa43, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: horse
+    Rare: epic
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 69c93a7d395c54dafb4066c1f9ed60fa, type: 3}
+    Prefab: {fileID: 5215397378125811052, guid: ff4e1dc38000549398e3981901cc23e6, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: bear
+    Rare: legendary
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: bb3b064507f3f442d9cdf76ab7350008, type: 3}
+    Prefab: {fileID: 2667970465280866127, guid: 3d67c180c098a4c429f3a7e150c76469, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: lizard
+    Rare: common
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 193be8e4ab00c49a99805ea0c2691507, type: 3}
+    Prefab: {fileID: 2157421729122151871, guid: 01dce81bb1b2e42d8b69e4819b2ee7e5, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: goat
+    Rare: uncommon
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 9419f8f7f7bd34c1389acba38d5ab28b, type: 3}
+    Prefab: {fileID: 3339271256994816282, guid: f72a3a13a7336457d9fde4e130efe6ee, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: owl
+    Rare: rare
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: f2f92fb280f40403aa17f0ef0c5c39fd, type: 3}
+    Prefab: {fileID: 1172004912084586251, guid: d6fe95147b7b04d5ab684423608fd1f6, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: deer
+    Rare: epic
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 1ddde3857dc65499caaa4a5cd2474bec, type: 3}
+    Prefab: {fileID: 6355505883683325847, guid: 0c661bef1ca554ef89db59f4cbfcca05, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: lion
+    Rare: legendary
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 437fdbe1c9d92462a90c6fdc96e0de08, type: 3}
+    Prefab: {fileID: 807426246399427981, guid: 04e0ccf350be24427b89ffe39a9bf1f7, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: pig
+    Rare: common
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 8dd3bbd62e69141efb6e969c65d55579, type: 3}
+    Prefab: {fileID: 1419375650144831797, guid: 53315c1794faf43e697e2743aaca7603, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: sheep
+    Rare: uncommon
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: f09ab9cface484cf2a0e3b4b90391abb, type: 3}
+    Prefab: {fileID: 3833595726313352688, guid: 338e456d67efa44efa02ec3722ad8d9b, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: zebra
+    Rare: rare
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 34fd1d920fef24ac7870979dfb12d964, type: 3}
+    Prefab: {fileID: 547730300657282392, guid: a742a32e1ae204815910b631a37d931d, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: fox
+    Rare: legendary
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 1b4c56bafcf9c4169908e48eebdc3a0b, type: 3}
+    Prefab: {fileID: 7913356353361117192, guid: 5246e3bb89e254cfda5abe8d161b6916, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: turtle
+    Rare: common
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 8011247fd09264d199a524b436f17225, type: 3}
+    Prefab: {fileID: 5768688702327226663, guid: afdb5cfdeeb4a4c9088e4a216a43ed74, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: panda
+    Rare: uncommon
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: bc5308b8cff9143158d1216b17290319, type: 3}
+    Prefab: {fileID: 515874957803375872, guid: 7093a11a8517e4311a8ebc495647c10d, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: wolf
+    Rare: rare
+    _bonus: 1
+    Icon: {fileID: 21300000, guid: 3f0269c195e7347eb9e2d7ec19c9c0a6, type: 3}
+    Prefab: {fileID: 7221616303328546218, guid: 50637c67c6957453db8ec5435719d2ff, type: 3}
+    Mergable: 1
+    Undeletable: 0
+    IsInApp: 0
+  - Id: cute_dragon1
+    Rare: secret
+    _bonus: 100
+    Icon: {fileID: 21300000, guid: 182d5cba8ac7d46049fb9c5e30aa3953, type: 3}
+    Prefab: {fileID: -4936948098859208941, guid: e95a2cbab27d89b4ca878cd797547085, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon2
+    Rare: secret
+    _bonus: 200
+    Icon: {fileID: 21300000, guid: 9caeaa44779b94d2fa7f95162438ef65, type: 3}
+    Prefab: {fileID: 5579140236097690133, guid: 58605408408a1ce429c511e70c104594, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon3
+    Rare: secret
+    _bonus: 300
+    Icon: {fileID: 21300000, guid: 8fd6686bc83b54c0ea1b6bff09f7b533, type: 3}
+    Prefab: {fileID: 8562386580373375862, guid: 52a2ced48c7d2624789b22a6e1c2838d, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon4
+    Rare: secret
+    _bonus: 400
+    Icon: {fileID: 21300000, guid: 87fac03b653ad4b03b194f6f93f28765, type: 3}
+    Prefab: {fileID: 1409464330320778235, guid: 2d46f232117713741935ae9069080ddb, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon5
+    Rare: secret
+    _bonus: 500
+    Icon: {fileID: 21300000, guid: 21b699c8f70fa4d24ac57eb9da12082a, type: 3}
+    Prefab: {fileID: -1230773202628200906, guid: 7c4a89a68c470244492abcfaf5b3e0c7, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon6
+    Rare: secret
+    _bonus: 600
+    Icon: {fileID: 21300000, guid: 9137e12740158412f9b5019dd70806c8, type: 3}
+    Prefab: {fileID: -6217410160839573232, guid: c8c4628e5797f499e956f635b3e7081a, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  - Id: cute_dragon7
+    Rare: secret
+    _bonus: 700
+    Icon: {fileID: 21300000, guid: 2e01afb56cca94d908254130254abfd7, type: 3}
+    Prefab: {fileID: -9004878998705130786, guid: 9362a0f78d5c743d9976d3b9dac1a681, type: 3}
+    Mergable: 0
+    Undeletable: 1
+    IsInApp: 1
+  Eggs:
+  - Id: egg_1
+    Price: 100
+    Pets:
+    - PetId: chick
+      Weight: 50
+    - PetId: bird
+      Weight: 30
+    - PetId: bunny
+      Weight: 12
+    - PetId: cat
+      Weight: 6
+    - PetId: dog
+      Weight: 2
+  - Id: egg_2
+    Price: 10000
+    Pets:
+    - PetId: chicken
+      Weight: 60
+    - PetId: duck
+      Weight: 30
+    - PetId: cow
+      Weight: 10
+  - Id: egg_3
+    Price: 100000
+    Pets:
+    - PetId: chicken
+      Weight: 60
+    - PetId: duck
+      Weight: 30
+    - PetId: cow
+      Weight: 10
+  Localizations:
+  - Id: pets
+    English: Pets
+    Russian: "\u041F\u0438\u0442\u043E\u043C\u0446\u044B"
+  - Id: equip
+    English: Equip
+    Russian: "\u042D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C"
+  - Id: unequip
+    English: Unequip
+    Russian: "\u0421\u043D\u044F\u0442\u044C"
+  - Id: equip_best
+    English: Equip best
+    Russian: "\u042D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u0442\u044C
+      \u043B\u0443\u0447\u0448\u0438\u0445"
+  - Id: equip_max
+    English: the maximum number of pets is equipped
+    Russian: "\u044D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u0430\u043D\u043E
+      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E
+      \u043F\u0438\u0442\u043E\u043C\u0446\u0435\u0432"
+  - Id: merge
+    English: Merge <b>{0}/5
+    Russian: "\u0421\u043B\u0438\u044F\u043D\u0438\u0435 <b>{0}/5"
+  - Id: merge_success
+    English: the pet was successfully created
+    Russian: "\u043F\u0438\u0442\u043E\u043C\u0435\u0446 \u0443\u0434\u0430\u0447\u043D\u043E
+      \u0441\u043E\u0437\u0434\u0430\u043D"
+  - Id: merge_fail
+    English: failed to create a pet
+    Russian: "\u043D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0441\u043E\u0437\u0434\u0430\u0442\u044C
+      \u043F\u0438\u0442\u043E\u043C\u0446\u0430"
+  - Id: chance
+    English: Chance <color=yellow><b>{0}%
+    Russian: "\u0428\u0430\u043D\u0441 <color=yellow><b>{0}%"
+  - Id: inventory_full
+    English: The inventory is full
+    Russian: "\u0418\u043D\u0432\u0435\u043D\u0442\u0430\u0440\u044C \u043F\u043E\u043B\u043E\u043D"
+  - Id: not_enough_money
+    English: Not enough funds
+    Russian: "\u041D\u0435 \u0445\u0432\u0430\u0442\u0430\u0435\u0442 c\u0440\u0435\u0434\u0441\u0442\u0432"
+  - Id: common
+    English: Common
+    Russian: "\u041E\u0431\u044B\u0447\u043D\u044B\u0439"
+  - Id: uncommon
+    English: Uncommon
+    Russian: "\u041D\u0435\u043E\u0431\u044B\u0447\u043D\u044B\u0439"
+  - Id: rare
+    English: Rare
+    Russian: "\u0420\u0435\u0434\u043A\u0438\u0439"
+  - Id: epic
+    English: Epic
+    Russian: "\u042D\u043F\u0438\u0447\u0435\u0441\u043A\u0438\u0439"
+  - Id: legendary
+    English: Legendary
+    Russian: "\u041B\u0435\u0433\u0435\u043D\u0434\u0430\u0440\u043D\u044B\u0439"
+  - Id: secret
+    English: Secret
+    Russian: "\u0421\u0435\u043A\u0440\u0435\u0442\u043D\u044B\u0439"
+  - Id: gold
+    English: Gold
+    Russian: "\u0417\u043E\u043B\u043E\u0442\u043E\u0439"
+  - Id: premium
+    English: Premium
+    Russian: "\u041F\u0440\u0435\u043C\u0438\u0443\u043C"
+  - Id: bear
+    English: Bear
+    Russian: "\u041C\u0435\u0434\u0432\u0435\u0434\u044C"
+  - Id: bird
+    English: Bird
+    Russian: "\u041F\u0442\u0435\u043D\u0435\u0446"
+  - Id: bunny
+    English: Bunny
+    Russian: "\u041A\u0440\u043E\u043B\u0438\u043A"
+  - Id: cat
+    English: Cat
+    Russian: "\u041A\u043E\u0442"
+  - Id: chick
+    English: Chick
+    Russian: "\u0426\u044B\u043F\u043B\u0435\u043D\u043E\u043A"
+  - Id: chicken
+    English: Chicken
+    Russian: "\u041A\u0443\u0440\u0438\u0446\u0430"
+  - Id: cow
+    English: Cow
+    Russian: "\u041A\u043E\u0440\u043E\u0432\u0430"
+  - Id: deer
+    English: Deer
+    Russian: "\u041E\u043B\u0435\u043D\u044C"
+  - Id: dog
+    English: Dog
+    Russian: "\u0421\u043E\u0431\u0430\u043A\u0430"
+  - Id: duck
+    English: Duck
+    Russian: "\u0423\u0442\u043A\u0430"
+  - Id: fox
+    English: Fox
+    Russian: "\u041B\u0438\u0441\u0430"
+  - Id: goat
+    English: Goat
+    Russian: "\u041A\u043E\u0437\u0435\u043B"
+  - Id: horse
+    English: Horse
+    Russian: "\u041B\u043E\u0448\u0430\u0434\u044C"
+  - Id: lion
+    English: Lion
+    Russian: "\u041B\u0435\u0432"
+  - Id: lizard
+    English: Lizard
+    Russian: "\u042F\u0449\u0435\u0440\u0438\u0446\u0430"
+  - Id: owl
+    English: Owl
+    Russian: "\u0421\u043E\u0432\u0430"
+  - Id: panda
+    English: Panda
+    Russian: "\u041F\u0430\u043D\u0434\u0430"
+  - Id: pig
+    English: Pig
+    Russian: "\u0421\u0432\u0438\u043D\u044C\u044F"
+  - Id: sheep
+    English: Sheep
+    Russian: "\u041E\u0432\u0446\u0430"
+  - Id: turtle
+    English: Turtle
+    Russian: "\u0427\u0435\u0440\u0435\u043F\u0430\u0445\u0430"
+  - Id: wolf
+    English: Wolf
+    Russian: "\u0412\u043E\u043B\u043A"
+  - Id: zebra
+    English: Zebra
+    Russian: "\u0417\u0435\u0431\u0440\u0430"
+  - Id: cute_dragon1
+    English: Nightram
+    Russian: "\u041D\u0430\u0439\u0442\u0440\u0430\u043C"
+  - Id: cute_dragon2
+    English: Inferny
+    Russian: "\u0418\u043D\u0444\u0435\u0440\u043D\u0438"
+  - Id: cute_dragon3
+    English: Icytail
+    Russian: "\u0410\u0439\u0441\u0438\u0442\u0435\u0439\u043B"
+  - Id: cute_dragon4
+    English: Sunleaf
+    Russian: "\u0421\u0430\u043D\u043B\u0438\u0444"
+  - Id: cute_dragon5
+    English: Mystclaw
+    Russian: "\u041C\u0438\u0441\u0442\u0438\u043A\u043B\u0430\u043F"
+  - Id: cute_dragon6
+    English: Voltwing
+    Russian: "\u0412\u043E\u043B\u044C\u0442\u043A\u0440\u044B\u043B"
+  - Id: cute_dragon7
+    English: Frosty
+    Russian: "\u0424\u0440\u043E\u0441\u0442\u0438"
+  Visual:
+    BonusSprite: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
+    EggPriceSprite: {fileID: 21300000, guid: e59251683cb71492ca2b6d7a48bf8ddf, type: 3}
