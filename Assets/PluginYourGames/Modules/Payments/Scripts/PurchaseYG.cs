@@ -44,16 +44,7 @@ namespace YG
         public TextMP textMP;
 #endif
 
-        private void Start()
-        {
-            showCurrencyCode = currencyImageLoad == null || YG2.envir.device == YG2.Device.Mobile;
-            UpdateEntries();
-        }
-
-        public void UpdateEntries()
-        {
-            UpdateEntries(YG2.PurchaseByID(id));
-        }
+        private void Start() => UpdateEntries(YG2.PurchaseByID(id));
 
         public void UpdateEntries(Purchase data)
         {

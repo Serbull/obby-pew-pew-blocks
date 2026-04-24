@@ -30,15 +30,8 @@ namespace YG
         {
             if (rawImage)
                 rawImage.enabled = false;
-
             if (spriteImage)
-            {
                 spriteImage.enabled = false;
-                if (YG2.envir.device == YG2.Device.Mobile)
-                {
-                    spriteImage.gameObject.SetActive(false);
-                }
-            }
 
             if (startLoad)
                 Load();
@@ -48,23 +41,15 @@ namespace YG
 
         public void Load(string url)
         {
-            if (YG2.envir.device == YG2.Device.Mobile)
-                return;
-
-            if (string.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url) || url == "null")
                 return;
 
             Texture2D existingTexture = ExistingTexture(url);
             if (existingTexture)
-            {
                 SetTexture(existingTexture);
-            }
             else
-            {
                 StartCoroutine(LoadTexture(url));
-            }
         }
-
         public void Load() => Load(urlImage);
 
         private Texture2D ExistingTexture(string url)
@@ -103,34 +88,36 @@ namespace YG
             if (loadAnimObj)
                 loadAnimObj.SetActive(true);
 
-            using UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url);
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                webRequest.result == UnityWebRequest.Result.DataProcessingError)
+            using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url))
             {
-                if (log)
-                    Debug.LogError("ImageLoadYG Error: " + webRequest.error);
-            }
-            else
-            {
-                DownloadHandlerTexture handlerTexture = webRequest.downloadHandler as DownloadHandlerTexture;
+                yield return webRequest.SendWebRequest();
 
-                if (handlerTexture.isDone)
+                if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                    webRequest.result == UnityWebRequest.Result.DataProcessingError)
                 {
-                    Texture2D existingTexture = ExistingTexture(url);
-                    if (existingTexture)
+                    if (log)
+                        Debug.LogError("ImageLoadYG Error: " + webRequest.error);
+                }
+                else
+                {
+                    DownloadHandlerTexture handlerTexture = webRequest.downloadHandler as DownloadHandlerTexture;
+
+                    if (handlerTexture.isDone)
                     {
-                        SetTexture(existingTexture);
-                    }
-                    else
-                    {
-                        SetTexture(handlerTexture.texture);
-                        saveTextures.Add(new LoadTextures
+                        Texture2D existingTexture = ExistingTexture(url);
+                        if (existingTexture)
                         {
-                            link = url,
-                            texture = handlerTexture.texture
-                        });
+                            SetTexture(existingTexture);
+                        }
+                        else
+                        {
+                            SetTexture(handlerTexture.texture);
+                            saveTextures.Add(new LoadTextures
+                            {
+                                link = url,
+                                texture = handlerTexture.texture
+                            });
+                        }
                     }
                 }
             }

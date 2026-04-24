@@ -43,7 +43,6 @@ PlayerSettings:
   - logo: {fileID: 21300000, guid: 81744967f545d4264a8a14f346e74013, type: 3}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
-  m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
   defaultScreenHeight: 1080
   defaultScreenWidthWeb: 960
@@ -116,6 +115,7 @@ PlayerSettings:
   xboxEnableGuest: 0
   xboxEnablePIXSampling: 0
   metalFramebufferOnly: 0
+  metalUseMetalDisplayLink: 0
   xboxOneResolution: 0
   xboxOneSResolution: 0
   xboxOneXResolution: 3
@@ -149,12 +149,10 @@ PlayerSettings:
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
-  m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 1
   xboxOneEnable7thCore: 1
   vrSettings:
     enable360StereoCapture: 0
-  isWsaHolographicRemotingEnabled: 0
   enableFrameTimingStats: 0
   enableOpenGLProfilerGPURecorders: 1
   allowHDRDisplaySupport: 0
@@ -865,18 +863,18 @@ PlayerSettings:
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
-    Android: GAME_CHEATS;PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    LinuxHeadlessSimulation: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    Nintendo Switch: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    PS4: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    PS5: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    Standalone: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
+    Android: GAME_CHEATS;PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    LinuxHeadlessSimulation: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    Nintendo Switch: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    PS4: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    PS5: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    Standalone: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
     VisionOS: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg
-    WebGL: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    Windows Store Apps: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    XboxOne: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    iPhone: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
-    tvOS: PLUGIN_YG_2;Authorization_yg;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;InterstitialAdv_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;Payments_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;YandexGamesPlatform_yg;ServerTime_yg;StickyAdv_yg
+    WebGL: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    Windows Store Apps: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    XboxOne: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    iPhone: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
+    tvOS: PLUGIN_YG_2;EnvirData_yg;Flags_yg;Fullscreen_yg;GameLabel_yg;Leaderboards_yg;Localization_yg;Metrica_yg;OpenURL_yg;PlayerStats_yg;Review_yg;RewardedAdv_yg;Storage_yg;TMP_YG2;NJSON_YG2;ServerTime_yg;StickyAdv_yg;Authorization_yg;InterstitialAdv_yg;Payments_yg
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -991,6 +989,7 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
+  enableDirectStorage: 0
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
