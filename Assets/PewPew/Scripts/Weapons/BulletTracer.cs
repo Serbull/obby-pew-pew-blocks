@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BulletTracer : MonoBehaviour
 {
-	public float speed = 120f;
+	public float speed = 10f;
 	public int damage = 1;
 	public float lifeTime = 3f;
 
@@ -17,17 +17,16 @@ public class BulletTracer : MonoBehaviour
 
 	void Update()
 	{
-		// 🔥 ВОТ ЭТОГО НЕ ХВАТАЛО
 		transform.position += direction * speed * Time.deltaTime;
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
+		if (other.isTrigger) return;
+
 		IDamageable dmg = other.GetComponent<IDamageable>();
 		if (dmg != null)
-		{
 			dmg.TakeDamage(damage);
-		}
 
 		Destroy(gameObject);
 	}

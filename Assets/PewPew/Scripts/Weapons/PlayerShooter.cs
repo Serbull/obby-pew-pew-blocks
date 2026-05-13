@@ -23,15 +23,13 @@ public class PlayerShooter : MonoBehaviour
             return;
         }
 
-        // Проверяем, в руке ли пушка
         bool isEquipped = (weapon.transform.parent == weaponEquip.handPoint);
 
         if (isEquipped)
         {
-            // Говорим аниматору поднять руки
-			anim.SetBool("IsAiming", true);
+            anim.SetBool("IsAiming", true);
 
-            if (Input.GetMouseButton(0) || Input.touchCount > 0)
+            if ((Input.GetMouseButton(0) || Input.touchCount > 0) && anim.GetFloat("Move") < 1)
             {
                 weapon.Shoot();
             }

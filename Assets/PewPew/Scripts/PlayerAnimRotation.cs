@@ -4,12 +4,14 @@ public class PlayerAimRotation : MonoBehaviour
 {
 	public Camera playerCamera;
 	public Animator animator;
+	public CharacterCore characterCore;
+
 	public float rotateSpeed = 15f;
 
-	void LateUpdate()
+	void Update()
 	{
-		if (animator == null) return;
-		if (!animator.GetBool("IsAiming")) return;
+		if (animator == null || characterCore == null) return;
+		if (!animator.GetBool("IsAiming") || animator.GetFloat("Move") > 0) return;
 
 		RotatePlayer();
 	}
@@ -17,24 +19,30 @@ public class PlayerAimRotation : MonoBehaviour
 	void RotatePlayer()
 	{
 		Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-		Plane plane = new Plane(Vector3.up, transform.position);
+		RaycastHit hit;
 
-		if (plane.Raycast(ray, out float dist))
+		Vector3 targetPoint;
+
+		if (Physics.Raycast(ray, out hit, 500f))
 		{
-			Vector3 hit = ray.GetPoint(dist);
-
-			Vector3 dir = hit - transform.position;
-			dir.y = 0f;
-
-			if (dir.sqrMagnitude < 0.001f) return;
-
-			Quaternion rot = Quaternion.LookRotation(dir);
-
-			transform.rotation = Quaternion.Slerp(
-				transform.rotation,
-				rot,
-				rotateSpeed * Time.deltaTime
-			);
+			targetPoint = hit.point;
 		}
+		else
+		{
+			targetPoint = ray.origin + ray.direction * 50f;
+		}
+
+		Vector3 dir = targetPoint - transform.position;
+		dir.y = 0f;
+
+		if (dir.sqrMagnitude < 0.001f) return;
+
+		Quaternion targetRot = Quaternion.LookRotation(dir);
+
+		characterCore.rotationAux = Quaternion.Slerp(
+			characterCore.rotationAux,
+			targetRot,
+			rotateSpeed * Time.deltaTime
+		);
 	}
 }

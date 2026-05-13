@@ -1,18 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class BlockHealth : MonoBehaviour, IDamageable
 {
     public int health = 3;
-    public float destroyDelay = 1.5f;
-    public float wakeRadius = 15f;
-
-    private Rigidbody rb;
+    [HideInInspector] public Transform towerRoot;
     private bool destroyed = false;
+    private Rigidbody rb;
 
-    void Awake()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
+        // На старте жестко выключаем физику, чтобы башня не поплыла
         rb.isKinematic = true;
         rb.useGravity = false;
     }
@@ -20,39 +18,46 @@ public class BlockHealth : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         if (destroyed) return;
-
         health -= damage;
-
-        if (health <= 0)
-            BreakBlock();
+        if (health <= 0) BreakBlock();
     }
 
     void BreakBlock()
     {
+        if (destroyed) return;
         destroyed = true;
 
-        ActivatePhysics();
-
-        Collider[] hits = Physics.OverlapSphere(transform.position, wakeRadius);
-
-        foreach (Collider hit in hits)
+        // Будим всех соседей по башне
+        if (towerRoot != null)
         {
-            BlockHealth other = hit.GetComponent<BlockHealth>();
-            if (other != null && !other.destroyed)
+            BlockHealth[] allBlocks = towerRoot.GetComponentsInChildren<BlockHealth>();
+            foreach (var b in allBlocks)
             {
-                other.ActivatePhysics();
+                b.ActivatePhysics();
             }
         }
 
-        Destroy(gameObject, destroyDelay);
+        // Выключаем коллизии сразу, чтобы не мешать падению остальных
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Renderer>().enabled = false;
+        Destroy(gameObject, 0.1f);
     }
 
     public void ActivatePhysics()
     {
-        if (!rb.isKinematic) return;
+        if (destroyed || rb == null) return;
 
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.AddForce(Random.insideUnitSphere * 2f, ForceMode.Impulse);
+        if (rb.isKinematic)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+
+            // Уменьшаем вероятность "взрыва": 
+            // CollisionDetectionMode.Continuous помогает лучше считать столкновения
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+
+            // Если башня все равно взрывается, убери AddForce совсем или сделай его 0.01f
+            rb.AddForce(Random.insideUnitSphere * 0.01f, ForceMode.Impulse);
+        }
     }
 }
