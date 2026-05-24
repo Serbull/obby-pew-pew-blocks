@@ -16,7 +16,7 @@
     "MusicVolume": 1.0,
     "CameraSensitivity": 0.5,
     "SkinId": 0,
-    "IsFirstSkinSelected": false,
+    "IsFirstSkinSelected": true,
     "intExample": 5,
     "strExample": "Hello!",
     "boolExample": [
@@ -25,5 +25,5 @@
         false,
         false
     ],
-    "idSave": 2038
+    "idSave": 2110
 }
