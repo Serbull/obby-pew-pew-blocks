@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
+  m_Name: Gun_Pistol
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
+  skinName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
+  price: 0
+  skinIcon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
+  isPurchased: 1
+  isEquipped: 1
