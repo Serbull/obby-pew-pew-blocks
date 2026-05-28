@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Gun_Pistol
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
+  idInHand: default
   price: 0
-  skinIcon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
+  Icon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
+  weaponPrefab: {fileID: 1000010886160876, guid: 5636554d2a4d7fe40b6c31df783afe94, type: 3}
   isPurchased: 1
-  isEquipped: 1
+  isEquipped: 0

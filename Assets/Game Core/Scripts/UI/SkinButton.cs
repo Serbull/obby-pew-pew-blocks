@@ -30,7 +30,7 @@ public class SkinButton : MonoBehaviour
         if (skinData == null) return;
 
         // Ставим иконку
-        if (iconImage != null) iconImage.sprite = skinData.skinIcon;
+        if (iconImage != null) iconImage.sprite = skinData.Icon;
 
         if (isShopButton)
         {

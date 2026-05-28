@@ -1,13 +1,24 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewWeaponSkin", menuName = "Market/WeaponSkin")]
+[CreateAssetMenu(fileName = "NewSkin", menuName = "Weapon Skin")]
 public class WeaponSkin : ScriptableObject
 {
-    public string skinName;
-    public int price;
-    public Sprite skinIcon;
-    public GameObject weaponPrefab; // ВОТ ЭТУ СТРОЧКУ ДОБАВЛЯЕМ! (Сюда закинем 3D-модельку)
+    [Header("UI Display")]
+    public string skinName;             // Название пушки для магазина
 
-    public bool isPurchased;
-    public bool isEquipped;
+    [Header("Identity Link (CRITICAL)")]
+    [Tooltip("Впиши сюда ТОЧНОЕ имя объекта, как он называется внутри WaponPrefab в руке персонажа!")]
+    public string idInHand;             // Строка для поиска (flaregun, DesertEagle, M1911 Handgun)
+
+    [Header("Shop Settings")]
+    public int price;                   // Цена пушки
+    
+    // Сделали "Icon" с большой буквы, чтобы SkinButton на строчке 33 был счастлив!
+    public Sprite Icon;                 
+    
+    public GameObject weaponPrefab;     // Ссылка на префаб
+
+    [Header("Save States")]
+    public bool isPurchased;            
+    public bool isEquipped;             
 }
