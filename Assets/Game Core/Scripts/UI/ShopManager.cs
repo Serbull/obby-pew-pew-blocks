@@ -1,7 +1,5 @@
 using UnityEngine;
-using System;
 
-// Если плагин использует свой namespace, C# его автоматически подхватит ниже
 public class ShopManager : MonoBehaviour
 {
     [Header("Shop Settings")]
@@ -14,53 +12,43 @@ public class ShopManager : MonoBehaviour
     public Transform shopGridContainer;         
     public Transform inventoryGridContainer;    
 
-    // Структура для сохранения всех данных в один клик
-    [System.Serializable]
-    public class GameSaveData
-    {
-        public int coins;
-        public bool[] purchasedArray;
-        public bool[] equippedArray;
-    }
-
     void Awake()
     {
-        // 1. Сначала загружаем данные локально (чтобы игра сразу знала баланс)
+        // 1. Сразу загружаем локальные сохранения компьютера
         LoadGameDataLocal(); 
         UpdateCoinsUI();
     }
 
     void Start()
     {
+        // 2. ЖЕЛЕЗНО создаем кнопки при старте, чтобы магазин не был пустым
         SpawnShopButtons();
-        RefreshWeaponPositions();
-
-        // 2. Сразу после старта запрашиваем у плагина облачные сохранения Яндекса
-        LoadFromYandexCloud();
+        RefreshWeaponPositions(); 
     }
 
-    // === ФУНКЦИЯ ЗАГРУЗКИ ИЗ ОБЛАКА ЯНДЕКСА ===
-    private void LoadFromYandexCloud()
+    // === ОТРИСОВКА КНОПОК ===
+    public void SpawnShopButtons()
     {
-        // Проверяем, инициализирован ли плагин на сцене
-        // Обычно в PluginYourGames данные берутся через встроенный класс или PlayerPrefs, которые плагин автоматически синхронизирует.
-        // Если твой плагин полностью заменяет PlayerPrefs, то Яндекс-сохранения подтянутся сами.
-        // Но на случай, если плагин требует ручного вызова, мы дублируем это:
-        
-        #if !UNITY_EDITOR && UNITY_WEBGL
-        try 
+        // Очищаем старые плашки, чтобы они не дублировались
+        foreach (Transform child in shopGridContainer) { Destroy(child.gameObject); }
+        foreach (Transform child in inventoryGridContainer) { Destroy(child.gameObject); }
+
+        // Создаем новые плашки под каждую пушку
+        for (int i = 0; i < allSkins.Length; i++)
         {
-            // Плагин синхронизирует PlayerPrefs с облаком Яндекса автоматически при старте.
-            // Поэтому просто повторно переинициализируем данные из PlayerPrefs:
-            LoadGameDataLocal();
-            UpdateCoinsUI();
-            RefreshWeaponPositions();
+            WeaponSkin skin = allSkins[i];
+
+            // Если куплено — в инвентарь, если нет — в магазин
+            Transform targetContainer = skin.isPurchased ? inventoryGridContainer : shopGridContainer;
+
+            GameObject newButton = Instantiate(buttonPrefab, targetContainer);
+
+            SkinButton skinButtonScript = newButton.GetComponent<SkinButton>();
+            if (skinButtonScript != null)
+            {
+                skinButtonScript.Setup(skin, this);
+            }
         }
-        catch (Exception e)
-        {
-            Debug.LogError("Ошибка синхронизации плагина Яндекса: " + e.Message);
-        }
-        #endif
     }
 
     public void OnClickSkin(WeaponSkin skin)
@@ -95,8 +83,8 @@ public class ShopManager : MonoBehaviour
 
         RefreshWeaponPositions(); 
         UpdateCoinsUI();
-        SaveGameData(); // Сохраняем прогресс покупки!
-        SpawnShopButtons();
+        SaveGameData(); // Сохраняем в PlayerPrefs (плагин YG2 сам перехватит и отправит в облако Яндекса)
+        SpawnShopButtons(); // Перерисовываем кнопки
     }
 
     public void RefreshWeaponPositions()
@@ -113,18 +101,9 @@ public class ShopManager : MonoBehaviour
         if (mainCoinsText != null) mainCoinsText.text = coins.ToString();
     }
 
-    public void SpawnShopButtons()
-    {
-        // Твой стандартный метод отрисовки кнопок (оставляем без изменений)
-    }
-
-    // === СОХРАНЕНИЕ ДАННЫХ В ОБЛАКО ===
+    // === СОХРАНЕНИЕ (ИДЕАЛЬНО ДЛЯ ПЛАГИНА YG2) ===
     public void SaveGameData()
     {
-        // Шаг 1: Записываем в стандартный PlayerPrefs.
-        // Фишка плагина PluginYourGames в том, что он ПЕРЕХВАТЫВАЕТ стандартный PlayerPrefs 
-        // и автоматически отправляет эти ключи в облако Яндекс Игр!
-        
         PlayerPrefs.SetInt("PlayerCoins", coins);
 
         for (int i = 0; i < allSkins.Length; i++)
@@ -132,12 +111,8 @@ public class ShopManager : MonoBehaviour
             PlayerPrefs.SetInt("Skin_Purchased_" + i, allSkins[i].isPurchased ? 1 : 0);
             PlayerPrefs.SetInt("Skin_Equipped_" + i, allSkins[i].isEquipped ? 1 : 0);
         }
-        
-        // Шаг 2: Принудительно приказываем Unity сохранить файлы на диск/в браузер
         PlayerPrefs.Save();
-
-        // Шаг 3: Вызываем триггер синхронизации плагина (если он настроен на авто-облако)
-        Debug.Log("Данные сохранены локально и переданы в буфер плагина Яндекса.");
+        Debug.Log("Прогресс сохранен в PlayerPrefs и готов к синхронизации с облаком Яндекса!");
     }
 
     private void LoadGameDataLocal()
@@ -145,6 +120,7 @@ public class ShopManager : MonoBehaviour
         coins = PlayerPrefs.GetInt("PlayerCoins", 1000);
         for (int i = 0; i < allSkins.Length; i++)
         {
+            // Первый скин по умолчанию открыт и экипирован, остальные закрыты
             int defaultActive = (i == 0) ? 1 : 0;
             allSkins[i].isPurchased = PlayerPrefs.GetInt("Skin_Purchased_" + i, defaultActive) == 1;
             allSkins[i].isEquipped = PlayerPrefs.GetInt("Skin_Equipped_" + i, defaultActive) == 1;
@@ -155,6 +131,9 @@ public class ShopManager : MonoBehaviour
     public void ResetProgress()
     {
         PlayerPrefs.DeleteAll();
-        Debug.Log("Сохранения стерты!");
+        LoadGameDataLocal();
+        UpdateCoinsUI();
+        if (Application.isPlaying) SpawnShopButtons();
+        Debug.Log("Сохранения полностью стерты и сброшены к дефолту!");
     }
 }

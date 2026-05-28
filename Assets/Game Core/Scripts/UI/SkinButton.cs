@@ -1,68 +1,63 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class SkinButton : MonoBehaviour
 {
-    [Header("Data Links")]
-    public WeaponSkin skinData;     // Данные о пушке
-    public ShopManager shopManager; // Ссылка на менеджер магазина
-
     [Header("UI Elements")]
-    public TextMeshProUGUI nameText;  // Название пушки (снизу ячейки)
-    public Image iconImage;           // Иконка пушки
-    public Button actionButton;       // Сама кнопка
-    public GameObject equippedCheck;  // Объект зеленой галочки в углу ячейки
+    public TMPro.TextMeshProUGUI titleText; 
+    public TMPro.TextMeshProUGUI priceText; 
+    public Image iconImage;                 
+    public Image statusBackground;          
+    public GameObject selectedCheckmark; // Переменная для нашей галочки!
 
-    [HideInInspector]
-    public bool isShopButton;         // Магазин или инвентарь?
+    [Header("Colors")]
+    public Color equippedColor = Color.green;
+    public Color purchasedColor = Color.blue;
+    public Color shopColor = Color.gray;
 
-    void Start()
+    private WeaponSkin currentSkin;
+    private ShopManager shopManager;
+
+    public void Setup(WeaponSkin skin, ShopManager manager)
     {
-        if (actionButton != null)
+        currentSkin = skin;
+        shopManager = manager;
+
+        if (titleText != null) titleText.text = skin.skinName;
+        if (iconImage != null) iconImage.sprite = skin.Icon;
+
+        // Настраиваем отображение текста, цветов и галочки
+        if (skin.isEquipped)
         {
-            actionButton.onClick.AddListener(OnClick);
+            if (priceText != null) priceText.text = "АКТИВНО";
+            if (statusBackground != null) statusBackground.color = equippedColor;
+            
+            // Если этот скин выбран — ВКЛЮЧАЕМ галочку
+            if (selectedCheckmark != null) selectedCheckmark.SetActive(true);
         }
-    }
-
-    public void RenderButton()
-    {
-        if (skinData == null) return;
-
-        // Ставим иконку
-        if (iconImage != null) iconImage.sprite = skinData.Icon;
-
-        if (isShopButton)
+        else if (skin.isPurchased)
         {
-            // В магазине пишем: "Название" и ниже цену (если не куплено)
-            if (nameText != null)
-            {
-                string priceStatus = skinData.isPurchased ? "КУПЛЕНО" : skinData.price.ToString() + " $";
-                nameText.text = $"{skinData.skinName}\n<size=75%>{priceStatus}</size>";
-            }
-            if (equippedCheck != null) equippedCheck.SetActive(false); // В магазине галочка не нужна
+            if (priceText != null) priceText.text = "ВЫБРАТЬ";
+            if (statusBackground != null) statusBackground.color = purchasedColor;
+            
+            // Если куплен, но не выбран — ВЫКЛЮЧАЕМ галочку
+            if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
         }
         else
         {
-            // В инвентаре пишем просто Название пушки
-            if (nameText != null)
-            {
-                nameText.text = skinData.skinName;
-            }
-
-            // Включаем зеленую галочку ТОЛЬКО если пушка сейчас надета!
-            if (equippedCheck != null)
-            {
-                equippedCheck.SetActive(skinData.isEquipped);
-            }
+            if (priceText != null) priceText.text = skin.price.ToString() + " $";
+            if (statusBackground != null) statusBackground.color = shopColor;
+            
+            // В магазине галочка тем более не нужна — ВЫКЛЮЧАЕМ
+            if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
         }
     }
 
-    void OnClick()
+    public void OnClick()
     {
-        if (shopManager != null && skinData != null)
+        if (shopManager != null && currentSkin != null)
         {
-            shopManager.OnClickSkin(skinData);
+            shopManager.OnClickSkin(currentSkin);
         }
     }
 }
