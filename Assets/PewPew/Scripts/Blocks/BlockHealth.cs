@@ -1,63 +1,62 @@
 using UnityEngine;
+using System.Collections;
 
 public class BlockHealth : MonoBehaviour, IDamageable
 {
-    public int health = 3;
-    [HideInInspector] public Transform towerRoot;
-    private bool destroyed = false;
+    [Tooltip("Сила выбивания блока. Подбирай в районе 50 - 500 для тяжелых блоков")]
+    public float pushForce = 300f;
+
+    private bool isInWater = false;
     private Rigidbody rb;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        // На старте жестко выключаем физику, чтобы башня не поплыла
-        rb.isKinematic = true;
-        rb.useGravity = false;
+
+        // ВАЖНО: Физика включена СРАЗУ. Блоки просто стоят друг на друге под силой тяжести.
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        // Помогает избежать проваливания блоков друг в друга при сильных ударах
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
-    public void TakeDamage(int damage)
+    // Принимаем урон, направление и ТОЧКУ попадания пули
+    public void TakeDamage(int damage, Vector3 dir, Vector3 hitPoint)
     {
-        if (destroyed) return;
-        health -= damage;
-        if (health <= 0) BreakBlock();
-    }
+        if (isInWater) return;
 
-    void BreakBlock()
-    {
-        if (destroyed) return;
-        destroyed = true;
-
-        // Будим всех соседей по башне
-        if (towerRoot != null)
+        if (rb != null)
         {
-            BlockHealth[] allBlocks = towerRoot.GetComponentsInChildren<BlockHealth>();
-            foreach (var b in allBlocks)
-            {
-                b.ActivatePhysics();
-            }
+            // Прикладываем силу в конкретную точку попадания.
+            // Это заставит блок не просто лететь вперед, но и реалистично закручиваться, передавая импульс соседям.
+            rb.AddForceAtPosition(dir * pushForce, hitPoint, ForceMode.Impulse);
+        }
+    }
+
+    // Логика воды (Wather)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isInWater && other.GetComponent<WaterDeath>() != null)
+        {
+            isInWater = true;
+            StartCoroutine(DestroyAfterDelay(10f));
+        }
+    }
+
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float timer = 0f;
+        Vector3 originalScale = transform.localScale;
+        while (timer < 1f)
+        {
+            timer += Time.deltaTime * 2f; // Исчезновение за 0.5 секунды
+            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, timer);
+            yield return null;
         }
 
-        // Выключаем коллизии сразу, чтобы не мешать падению остальных
-        GetComponent<Collider>().enabled = false;
-        GetComponent<Renderer>().enabled = false;
-        Destroy(gameObject, 0.1f);
-    }
-
-    public void ActivatePhysics()
-    {
-        if (destroyed || rb == null) return;
-
-        if (rb.isKinematic)
-        {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-
-            // Уменьшаем вероятность "взрыва": 
-            // CollisionDetectionMode.Continuous помогает лучше считать столкновения
-            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-
-            // Если башня все равно взрывается, убери AddForce совсем или сделай его 0.01f
-            rb.AddForce(Random.insideUnitSphere * 0.01f, ForceMode.Impulse);
-        }
+        Destroy(gameObject);
     }
 }

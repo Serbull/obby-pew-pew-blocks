@@ -26,7 +26,13 @@ public class BulletTracer : MonoBehaviour
 
 		IDamageable dmg = other.GetComponent<IDamageable>();
 		if (dmg != null)
-			dmg.TakeDamage(damage);
+		{
+			// Находим точную точку на поверхности коллайдера блока, куда прилетела пуля
+			Vector3 hitPoint = other.ClosestPoint(transform.position);
+
+			// Передаем все данные
+			dmg.TakeDamage(damage, direction, hitPoint);
+		}
 
 		Destroy(gameObject);
 	}

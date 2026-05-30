@@ -46,7 +46,7 @@ public class BlocksSpawner : MonoBehaviour
         GameObject root = new GameObject("Tower_" + index);
         towers.Add(root);
 
-        // Настройки рандома этажей (без изменений)
+        // Настройки рандома этажей
         int tiltedCount = Random.Range(minTiltedFloors, maxTiltedFloors + 1);
         HashSet<int> tiltedFloors = new HashSet<int>();
         int safetyNet = 0;
@@ -86,13 +86,14 @@ public class BlocksSpawner : MonoBehaviour
 
                 // Добавляем физику на всю платформу целиком
                 Rigidbody platformRb = platformRoot.AddComponent<Rigidbody>();
-                platformRb.isKinematic = true;
-                platformRb.useGravity = false;
+                platformRb.isKinematic = false; // Выключаем кинематику, чтобы она тоже падала
+                platformRb.useGravity = true;
+                platformRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-                // Добавляем скрипт ХП (чтобы платформа тоже могла ломаться/активироваться)
-                BlockHealth platformHealth = platformRoot.AddComponent<BlockHealth>();
-                platformHealth.towerRoot = root.transform;
-                platformHealth.health = 10; // Платформа прочнее
+                // Добавляем скрипт деструктора на платформу
+                platformRoot.AddComponent<BlockHealth>();
+
+                // Строка platformHealth.towerRoot = root.transform; УДАЛЕНА
 
                 for (int d = 0; d < 2; d++)
                 {
@@ -105,12 +106,10 @@ public class BlocksSpawner : MonoBehaviour
                         GameObject block = Instantiate(blockPrefab, platformRoot.transform);
                         float localOffset = (-((2 * blockSize.z) + gap) / 2f + (blockSize.z / 2f)) + i * (blockSize.z + gap);
 
-                        // Позиция относительно родителя (platformRoot)
                         block.transform.localPosition = new Vector3(depthOffset, 0, localOffset);
                         block.transform.localRotation = Quaternion.identity;
                         block.transform.localScale = blockSize;
 
-                        // УДАЛЯЕМ лишние компоненты, чтобы они не конфликтовали с родителем
                         if (block.TryGetComponent<Rigidbody>(out var rb)) Destroy(rb);
                         if (block.TryGetComponent<BlockHealth>(out var bh)) Destroy(bh);
 
@@ -133,7 +132,8 @@ public class BlocksSpawner : MonoBehaviour
                     block.transform.localScale = blockSize;
 
                     ApplyColor(block, floorColor);
-                    if (block.TryGetComponent<BlockHealth>(out var bh)) bh.towerRoot = root.transform;
+
+                    // Строка задания towerRoot удалена, так как физика теперь честная
                 }
             }
             currentY += blockSize.y;

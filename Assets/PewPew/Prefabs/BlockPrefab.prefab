@@ -101,7 +101,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7400902482814989678}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 8
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -153,5 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d064796e5a7a34392d341b14251cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockHealth
-  health: 3
-  towerRoot: {fileID: 0}
+  pushForce: 400
