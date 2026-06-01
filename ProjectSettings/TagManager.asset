@@ -16,6 +16,7 @@ TagManager:
   - VipChest
   - Aircraft
   - Block
+  - BlocksSpawner
   layers:
   - Default
   - TransparentFX

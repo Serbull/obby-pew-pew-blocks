@@ -136,7 +136,29 @@ public class CharacterCore : MonoBehaviour
             {
                 if (velocity.y > playerSettings.maxGroundedUpVelocity)
                     velocity.y = playerSettings.maxGroundedUpVelocity;
-                velocity.y -= playerSettings.groundSnapForce * Time.fixedDeltaTime;
+
+                // --- ФИНАЛЬНЫЙ ФИКС ДЛЯ ВЕРХНЕЙ ПЛАТФОРМЫ ---
+                bool standingOnPhysicsBlock = false;
+                if (Physics.Raycast(transform.position + transform.up * 0.1f, -transform.up, out RaycastHit hit, 0.5f, groundLayers))
+                {
+                    // Ищем Rigidbody на самом объекте ИЛИ на его родителях (это спасет от FinalPlatform)
+                    if (hit.collider.GetComponentInParent<Rigidbody>() != null || hit.collider.name.Contains("Platform"))
+                    {
+                        standingOnPhysicsBlock = true;
+                    }
+                }
+
+                // Прижимаем игрока только к стабильной статичной земле
+                if (!standingOnPhysicsBlock)
+                {
+                    velocity.y -= playerSettings.groundSnapForce * Time.fixedDeltaTime;
+                }
+                else
+                {
+                    // Мягкое удержание на движущихся объектах
+                    if (velocity.y < 0) velocity.y = Mathf.Max(velocity.y, -2f);
+                }
+                // ----------------------------------
             }
         }
 

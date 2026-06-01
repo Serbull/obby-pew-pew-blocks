@@ -43,99 +43,66 @@ public class BlocksSpawner : MonoBehaviour
 
     void SpawnJengaTower(Vector3 basePos, int index)
     {
+        // Создаем корневой объект для башни
         GameObject root = new GameObject("Tower_" + index);
         towers.Add(root);
 
-        // Настройки рандома этажей
-        int tiltedCount = Random.Range(minTiltedFloors, maxTiltedFloors + 1);
-        HashSet<int> tiltedFloors = new HashSet<int>();
-        int safetyNet = 0;
-        while (tiltedFloors.Count < tiltedCount && safetyNet < 100)
-        {
-            int randY = Random.Range(1, towerHeight - 1);
-            tiltedFloors.Add(randY);
-            safetyNet++;
-        }
-
+        // Начинаем спавн с самого низа арены
         float currentY = arenaZone.bounds.min.y + (blockSize.y / 2f);
 
+        // Идем снизу вверх по этажам
         for (int y = 0; y < towerHeight; y++)
         {
             bool isLastFloor = (y == towerHeight - 1);
+            // Каждый четный этаж повернут на 90 градусов (классическая Дженга)
             bool isRotated = (y % 2 != 0);
+
+            // Генерируем случайный цвет для всего этажа
             Color floorColor = Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.6f, 1f);
 
+            // Считаем общую ширину ряда, чтобы центрировать блоки
             float rowWidth = (blocksPerRow * blockSize.z) + ((blocksPerRow - 1) * gap);
             float startOffset = -rowWidth / 2f + (blockSize.z / 2f);
 
-            float floorAngle = isRotated ? 90f : 0f;
-            if (tiltedFloors.Contains(y))
+            // Базовый поворот этажа (строго 0 или 90 градусов, никаких кривых углов!)
+            Quaternion floorRotation = isRotated ? Quaternion.Euler(0, 90f, 0) : Quaternion.identity;
+
+            for (int i = 0; i < blocksPerRow; i++)
             {
-                float angle = Random.Range(minTiltAngle, maxTiltAngle);
-                if (allowNegativeTilt && Random.value > 0.5f) angle *= -1f;
-                floorAngle = angle;
-            }
+                // Спавним блок
+                GameObject block = Instantiate(blockPrefab, root.transform);
 
-            if (isLastFloor)
-            {
-                // --- ЛОГИКА СПАЯННОЙ ПЛАТФОРМЫ ---
-                GameObject platformRoot = new GameObject("FinalPlatform");
-                platformRoot.transform.SetParent(root.transform);
-                platformRoot.transform.position = basePos + new Vector3(0, currentY - basePos.y + 0.05f, 0);
-                platformRoot.transform.rotation = Quaternion.Euler(0, floorAngle, 0);
+                // Расчет позиции блока в ряду
+                float localOffset = startOffset + i * (blockSize.z + gap);
+                Vector3 positionOffset = new Vector3(0, 0, localOffset);
 
-                // Добавляем физику на всю платформу целиком
-                Rigidbody platformRb = platformRoot.AddComponent<Rigidbody>();
-                platformRb.isKinematic = false; // Выключаем кинематику, чтобы она тоже падала
-                platformRb.useGravity = true;
-                platformRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                // --- ЭФФЕКТ СДВИГА ИЗ ОРИГИНАЛА ---
+                // Случайно смещаем блок ВПЕРЕД или НАЗАД вдоль его длинной части (ось X)
+                // Значение 0.15f означает разброс до 15 сантиметров. Башня не упадет, но будет выглядеть хаотично.
+                float randomShift = Random.Range(-0.15f, 0.15f);
+                Vector3 shiftOffset = new Vector3(randomShift, 0, 0);
 
-                // Добавляем скрипт деструктора на платформу
-                platformRoot.AddComponent<BlockHealth>();
+                // Финальная позиция с учетом шахматного поворота башни
+                Vector3 finalPos = basePos + new Vector3(0, currentY - basePos.y, 0) + (floorRotation * (positionOffset + shiftOffset));
 
-                // Строка platformHealth.towerRoot = root.transform; УДАЛЕНА
+                block.transform.position = finalPos;
+                block.transform.rotation = floorRotation;
+                block.transform.localScale = blockSize;
 
-                for (int d = 0; d < 2; d++)
+                // Если это самый верхний этаж, маркируем блоки для GameManager
+                if (isLastFloor)
                 {
-                    float totalDepth = (2 * blockSize.z) + gap;
-                    float startDepthOffset = -totalDepth / 2f + (blockSize.z / 2f);
-                    float depthOffset = startDepthOffset + d * (blockSize.z + gap);
-
-                    for (int i = 0; i < 2; i++)
-                    {
-                        GameObject block = Instantiate(blockPrefab, platformRoot.transform);
-                        float localOffset = (-((2 * blockSize.z) + gap) / 2f + (blockSize.z / 2f)) + i * (blockSize.z + gap);
-
-                        block.transform.localPosition = new Vector3(depthOffset, 0, localOffset);
-                        block.transform.localRotation = Quaternion.identity;
-                        block.transform.localScale = blockSize;
-
-                        if (block.TryGetComponent<Rigidbody>(out var rb)) Destroy(rb);
-                        if (block.TryGetComponent<BlockHealth>(out var bh)) Destroy(bh);
-
-                        ApplyColor(block, floorColor);
-                    }
+                    block.name = "FinalBlock_" + index;
                 }
-            }
-            else
-            {
-                // --- ОБЫЧНЫЙ СПАВН ЭТАЖЕЙ ---
-                for (int i = 0; i < blocksPerRow; i++)
+                else
                 {
-                    GameObject block = Instantiate(blockPrefab, root.transform);
-                    float localOffset = startOffset + i * (blockSize.z + gap);
-                    Vector3 positionOffset = new Vector3(0, 0, localOffset);
-                    Quaternion rotation = Quaternion.Euler(0, floorAngle, 0);
-
-                    block.transform.position = basePos + new Vector3(0, currentY - basePos.y, 0) + (rotation * positionOffset);
-                    block.transform.rotation = rotation;
-                    block.transform.localScale = blockSize;
-
-                    ApplyColor(block, floorColor);
-
-                    // Строка задания towerRoot удалена, так как физика теперь честная
+                    block.name = $"Block_{y}_{i}";
                 }
+
+                ApplyColor(block, floorColor);
             }
+
+            // Поднимаемся на высоту одного блока для следующего этажа
             currentY += blockSize.y;
         }
     }
@@ -157,5 +124,5 @@ public class BlocksSpawner : MonoBehaviour
         towers.Clear();
     }
 
-    void Start() => SpawnTowers();
+    // void Start() => SpawnTowers();
 }
