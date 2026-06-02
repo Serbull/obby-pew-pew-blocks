@@ -45,12 +45,12 @@ public class PlayerWeaponEquip : MonoBehaviour
     }
 
     // временно для теста
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-            EquipWeapon();
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.F))
+    //         EquipWeapon();
 
-		if (Input.GetKeyDown(KeyCode.G)) // добавим возврат на спину для теста
-            AttachToBack();
-    }
+    // 	if (Input.GetKeyDown(KeyCode.G)) // добавим возврат на спину для теста
+    //         AttachToBack();
+    // }
 }

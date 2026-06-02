@@ -9,7 +9,7 @@ public class WeaponController : MonoBehaviour
     {
         // Автоматически находим скрипт магазина на сцене
         shopManager = FindFirstObjectByType<ShopManager>();
-        
+
         // Сразу при старте обновляем пушку в руке
         UpdateWeaponVisibility();
     }
@@ -37,7 +37,7 @@ public class WeaponController : MonoBehaviour
             if (shopManager.allSkins[i] == null || shopManager.allSkins[i].weaponPrefab == null) continue;
 
             // Берем точное имя префаба пушки из настроек магазина
-           string targetWeaponName = shopManager.allSkins[i].weaponPrefab.name;
+            string targetWeaponName = shopManager.allSkins[i].weaponPrefab.name;
 
             // Ищем объект с таким именем прямо внутри себя (в детях WaponPrefab)
             Transform weaponChild = transform.Find(targetWeaponName);

@@ -53,6 +53,17 @@ public class GameController : MonoBehaviour
 			}
 		}
 
+		PlayerWeaponEquip weaponEquip = FindFirstObjectByType<PlayerWeaponEquip>();
+
+		if (weaponEquip != null)
+		{
+			weaponEquip.EquipWeapon();
+		}
+		else
+		{
+			Debug.LogError("На объекте Player не найден скрипт PlayerWeaponEquip!");
+		}
+
 		// 3. Прячем кнопку Play, чтобы можно было спокойно играть
 		if (playButtonUI != null)
 		{
