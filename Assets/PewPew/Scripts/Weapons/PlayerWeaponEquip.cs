@@ -25,7 +25,7 @@ public class PlayerWeaponEquip : MonoBehaviour
         AttachToBack();
     }
 
-    void AttachToBack()
+    public void AttachToBack()
     {
         weaponInstance.transform.SetParent(backPoint);
         weaponInstance.transform.localPosition = Vector3.zero;

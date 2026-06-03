@@ -118,7 +118,7 @@ public class BlocksSpawner : MonoBehaviour
         rend.SetPropertyBlock(mpb);
     }
 
-    void Clear()
+    public void Clear()
     {
         foreach (var t in towers) if (t) Destroy(t);
         towers.Clear();

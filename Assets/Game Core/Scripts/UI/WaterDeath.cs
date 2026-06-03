@@ -19,7 +19,7 @@ public class WaterDeath : MonoBehaviour
     IEnumerator RespawnTimer(GameObject player)
     {
         Debug.Log("Игрок упал в воду! Возрождение через " + deathDelay + " секунды...");
-        
+
         // Ждем 3 секунды, пока игрок чутка проваливается
         yield return new WaitForSeconds(deathDelay);
 
@@ -34,7 +34,29 @@ public class WaterDeath : MonoBehaviour
 
             // Включаем обратно
             if (cc != null) cc.enabled = true;
-            
+
+            PlayerWeaponEquip weaponEquip = FindFirstObjectByType<PlayerWeaponEquip>();
+
+            if (weaponEquip != null)
+            {
+                weaponEquip.AttachToBack();
+            }
+            else
+            {
+                Debug.LogError("На объекте Player не найден скрипт PlayerWeaponEquip!");
+            }
+
+            BlocksSpawner blocksSpawner = FindFirstObjectByType<BlocksSpawner>();
+
+            if (blocksSpawner != null)
+            {
+                blocksSpawner.Clear();
+            }
+            else
+            {
+                Debug.LogError("На объекте ArenaZone не найден скрипт BlocksSpawner!");
+            }
+
             Debug.Log("Игрок успешно возрожден!");
         }
         else

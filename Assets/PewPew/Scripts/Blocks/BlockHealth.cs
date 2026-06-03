@@ -34,29 +34,29 @@ public class BlockHealth : MonoBehaviour, IDamageable
         }
     }
 
-    // Логика воды (Wather)
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isInWater && other.GetComponent<WaterDeath>() != null)
-        {
-            isInWater = true;
-            StartCoroutine(DestroyAfterDelay(10f));
-        }
-    }
+    // // Логика воды (Wather)
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (!isInWater && other.GetComponent<WaterDeath>() != null)
+    //     {
+    //         isInWater = true;
+    //         StartCoroutine(DestroyAfterDelay(10f));
+    //     }
+    // }
 
-    private IEnumerator DestroyAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
+    // private IEnumerator DestroyAfterDelay(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
 
-        float timer = 0f;
-        Vector3 originalScale = transform.localScale;
-        while (timer < 1f)
-        {
-            timer += Time.deltaTime * 2f; // Исчезновение за 0.5 секунды
-            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, timer);
-            yield return null;
-        }
+    //     float timer = 0f;
+    //     Vector3 originalScale = transform.localScale;
+    //     while (timer < 1f)
+    //     {
+    //         timer += Time.deltaTime * 2f; // Исчезновение за 0.5 секунды
+    //         transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, timer);
+    //         yield return null;
+    //     }
 
-        Destroy(gameObject);
-    }
+    //     Destroy(gameObject);
+    // }
 }
