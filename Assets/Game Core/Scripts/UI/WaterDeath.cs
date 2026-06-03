@@ -4,7 +4,6 @@ using System.Collections;
 public class WaterDeath : MonoBehaviour
 {
     [Header("Respawn Settings")]
-    public Transform spawnPoint;  // Наша пустая точка SpawnPoint со сцены
     public float deathDelay = 3f; // Задержка в 3 секунды
 
     private void OnTriggerEnter(Collider other)
@@ -12,56 +11,37 @@ public class WaterDeath : MonoBehaviour
         // Проверяем, что в триггер упал именно игрок
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(RespawnTimer(other.gameObject));
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"))
+            {
+                StartCoroutine(PlayerRespawnTimer());
+            }
+            return;
+        }
+
+        if (other.CompareTag("Bot"))
+        {
+            StartCoroutine(BotDeathTimer(other.gameObject));
         }
     }
 
-    IEnumerator RespawnTimer(GameObject player)
+    IEnumerator PlayerRespawnTimer()
     {
-        Debug.Log("Игрок упал в воду! Возрождение через " + deathDelay + " секунды...");
-
-        // Ждем 3 секунды, пока игрок чутка проваливается
+        Debug.Log("Игрок упал в воду! Конец игры через " + deathDelay + " сек...");
         yield return new WaitForSeconds(deathDelay);
 
-        if (spawnPoint != null)
+        GameController controller = FindFirstObjectByType<GameController>();
+        if (controller != null) controller.StopGame();
+    }
+
+    IEnumerator BotDeathTimer(GameObject bot)
+    {
+        Debug.Log($"{bot.name} упал в воду! Исчезнет через " + deathDelay + " сек...");
+        yield return new WaitForSeconds(deathDelay);
+
+        GameController controller = FindFirstObjectByType<GameController>();
+        if (controller != null)
         {
-            // На время перемещения отключаем CharacterController игрока, если он есть
-            CharacterController cc = player.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
-
-            // Телепортируем на спавн
-            player.transform.position = spawnPoint.position;
-
-            // Включаем обратно
-            if (cc != null) cc.enabled = true;
-
-            PlayerWeaponEquip weaponEquip = FindFirstObjectByType<PlayerWeaponEquip>();
-
-            if (weaponEquip != null)
-            {
-                weaponEquip.AttachToBack();
-            }
-            else
-            {
-                Debug.LogError("На объекте Player не найден скрипт PlayerWeaponEquip!");
-            }
-
-            BlocksSpawner blocksSpawner = FindFirstObjectByType<BlocksSpawner>();
-
-            if (blocksSpawner != null)
-            {
-                blocksSpawner.Clear();
-            }
-            else
-            {
-                Debug.LogError("На объекте ArenaZone не найден скрипт BlocksSpawner!");
-            }
-
-            Debug.Log("Игрок успешно возрожден!");
-        }
-        else
-        {
-            Debug.LogError("Ошибка: Забыл перетащить SpawnPoint в инспектор воды!");
+            controller.BotDeath(bot);
         }
     }
 }

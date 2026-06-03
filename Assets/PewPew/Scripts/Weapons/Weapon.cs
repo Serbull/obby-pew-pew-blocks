@@ -16,6 +16,9 @@ public class Weapon : MonoBehaviour
         if (Time.time < nextFireTime) return;
         nextFireTime = Time.time + fireRate;
 
+        // Защита: если камеры нет (например, у бота), чтобы код не падал с ошибкой
+        if (playerCamera == null) return;
+
         Ray camRay = playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit camHit;
         Vector3 targetPoint;
@@ -25,16 +28,26 @@ public class Weapon : MonoBehaviour
         else
             targetPoint = camRay.origin + camRay.direction * range;
 
+        SpawnBullet(targetPoint);
+    }
+
+    public void ShootBot(Vector3 targetPoint)
+    {
+        if (Time.time < nextFireTime) return;
+        nextFireTime = Time.time + fireRate;
+
+        SpawnBullet(targetPoint);
+    }
+
+    private void SpawnBullet(Vector3 targetPoint)
+    {
         Vector3 shootDir = (targetPoint - muzzlePoint.position).normalized;
 
-        // 3. Создаем пулю
         GameObject bullet = Instantiate(
             bulletPrefab,
             muzzlePoint.position,
             Quaternion.LookRotation(shootDir)
         );
-
-        bullet.transform.localPosition = bullet.transform.localPosition;
 
         if (bullet.TryGetComponent<BulletTracer>(out var tracer))
         {

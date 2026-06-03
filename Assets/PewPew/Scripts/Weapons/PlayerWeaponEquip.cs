@@ -9,16 +9,21 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     private Weapon weaponInstance;
 
-    IEnumerator Start()
+    // Используем Awake вместо корутины Start, 
+    // чтобы пушка спавнилась МОМЕНТАЛЬНО при создании объекта
+    void Awake()
     {
-        yield return null;
-        yield return new WaitForEndOfFrame();
-
         SpawnWeaponOnBack();
     }
 
     void SpawnWeaponOnBack()
     {
+        if (weaponPrefab == null)
+        {
+            Debug.LogError($"[{gameObject.name}] Не закинут Weapon Prefab в скрипт PlayerWeaponEquip!");
+            return;
+        }
+
         GameObject obj = Instantiate(weaponPrefab);
         weaponInstance = obj.GetComponent<Weapon>();
 
@@ -27,6 +32,8 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     public void AttachToBack()
     {
+        if (weaponInstance == null) return;
+
         weaponInstance.transform.SetParent(backPoint);
         weaponInstance.transform.localPosition = Vector3.zero;
         weaponInstance.transform.localRotation = Quaternion.identity;
@@ -34,6 +41,13 @@ public class PlayerWeaponEquip : MonoBehaviour
 
     public void EquipWeapon()
     {
+        // Добавим проверку на null, чтобы игра больше никогда не падала из-за этого
+        if (weaponInstance == null)
+        {
+            Debug.LogWarning($"[{gameObject.name}] Ошибка: Попытка взять оружие, которого нет!");
+            return;
+        }
+
         weaponInstance.transform.SetParent(handPoint);
         weaponInstance.transform.localPosition = Vector3.zero;
         weaponInstance.transform.localRotation = Quaternion.identity;
@@ -43,14 +57,4 @@ public class PlayerWeaponEquip : MonoBehaviour
     {
         return weaponInstance;
     }
-
-    // временно для теста
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.F))
-    //         EquipWeapon();
-
-    // 	if (Input.GetKeyDown(KeyCode.G)) // добавим возврат на спину для теста
-    //         AttachToBack();
-    // }
 }

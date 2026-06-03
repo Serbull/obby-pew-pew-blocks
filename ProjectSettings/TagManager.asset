@@ -17,6 +17,7 @@ TagManager:
   - Aircraft
   - Block
   - BlocksSpawner
+  - Bot
   layers:
   - Default
   - TransparentFX
