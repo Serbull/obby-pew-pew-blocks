@@ -7,20 +7,16 @@ public class WeaponController : MonoBehaviour
 
     void Start()
     {
-        // Автоматически находим скрипт магазина на сцене
         shopManager = FindFirstObjectByType<ShopManager>();
-
-        // Сразу при старте обновляем пушку в руке
         UpdateWeaponVisibility();
     }
 
-    // Этот метод мы будем вызывать из магазина каждый раз, когда меняем скин
     public void UpdateWeaponVisibility()
     {
         if (shopManager == null) shopManager = FindFirstObjectByType<ShopManager>();
         if (shopManager == null || shopManager.allSkins == null) return;
 
-        // 1. Ищем, какой скин сейчас выбран (equipped) в магазине
+        // 1. Ищем, какой скин сейчас экипирован
         WeaponSkin equippedSkin = null;
         foreach (WeaponSkin s in shopManager.allSkins)
         {
@@ -31,27 +27,47 @@ public class WeaponController : MonoBehaviour
             }
         }
 
-        // 2. Пробегаемся по всем пушкам, которые лежат внутри этого WaponPrefab
+        // Если ничего не экипировано, выключаем вообще всё оружие в руках
+        if (equippedSkin == null)
+        {
+            foreach (Transform child in transform) child.gameObject.SetActive(false);
+            return;
+        }
+
+        // 2. Проходимся по всем скинам из магазина
         for (int i = 0; i < shopManager.allSkins.Length; i++)
         {
-            if (shopManager.allSkins[i] == null || shopManager.allSkins[i].weaponPrefab == null) continue;
+            WeaponSkin currentSkin = shopManager.allSkins[i];
+            if (currentSkin == null || currentSkin.weaponPrefab == null) continue;
 
-            // Берем точное имя префаба пушки из настроек магазина
-            string targetWeaponName = shopManager.allSkins[i].weaponPrefab.name;
-
-            // Ищем объект с таким именем прямо внутри себя (в детях WaponPrefab)
+            string targetWeaponName = currentSkin.weaponPrefab.name;
             Transform weaponChild = transform.Find(targetWeaponName);
 
+            // ЗАЩИТА ОТ ОПЕЧАТОК: Если по имени префаба не нашли, пробуем искать по ID из Scriptable Object
+            if (weaponChild == null && !string.IsNullOrEmpty(currentSkin.idInHand))
+            {
+                weaponChild = transform.Find(currentSkin.idInHand);
+            }
+
+            // Если объект в руке наконец-то найден
             if (weaponChild != null)
             {
-                // Если это выбранная пушка — включаем её, остальные — гасим
-                if (shopManager.allSkins[i] == equippedSkin)
+                if (currentSkin == equippedSkin)
                 {
                     weaponChild.gameObject.SetActive(true);
+                    Debug.Log($"[Оружие] Включили визуализацию для: {weaponChild.name}");
                 }
                 else
                 {
                     weaponChild.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                // Если пушка так и не нашлась — выдаем жесткий варнинг в консоль, чтобы сразу видеть косяк
+                if (currentSkin == equippedSkin)
+                {
+                    Debug.LogError($"[WeaponController] Хьюстон, проблема! Игрок выбрал {currentSkin.skinName}, но в объекте {gameObject.name} нет дочернего объекта с именем '{targetWeaponName}' или '{currentSkin.idInHand}'!");
                 }
             }
         }

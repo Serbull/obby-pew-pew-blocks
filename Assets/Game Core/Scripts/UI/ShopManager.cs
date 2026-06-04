@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShopManager : MonoBehaviour
 {
     [Header("Shop Settings")]
-    public int coins = 1000;                    
+    public int coins = 1000;                     
     public WeaponSkin[] allSkins;               
     public TMPro.TextMeshProUGUI mainCoinsText; 
 
@@ -14,14 +14,18 @@ public class ShopManager : MonoBehaviour
 
     void Awake()
     {
-        // 1. Сразу загружаем локальные сохранения компьютера
+        // 1. Сразу загружаем сохранения при старте игры
         LoadGameDataLocal(); 
         UpdateCoinsUI();
     }
 
-    void Start()
+    public void Start()
     {
-        // 2. ЖЕЛЕЗНО создаем кнопки при старте, чтобы магазин не был пустым
+        // Принудительно подтягиваем актуальное инфо из памяти при старте сцены
+        LoadGameDataLocal();
+        UpdateCoinsUI();
+
+        // 2. Создаем кнопки в магазине и инвентаре
         SpawnShopButtons();
         RefreshWeaponPositions(); 
     }
@@ -29,17 +33,26 @@ public class ShopManager : MonoBehaviour
     // === ОТРИСОВКА КНОПОК ===
     public void SpawnShopButtons()
     {
-        // Очищаем старые плашки, чтобы они не дублировались
-        foreach (Transform child in shopGridContainer) { Destroy(child.gameObject); }
-        foreach (Transform child in inventoryGridContainer) { Destroy(child.gameObject); }
+        // Очищаем старые плашки перед перерисовкой
+        if (shopGridContainer != null)
+        {
+            foreach (Transform child in shopGridContainer) { Destroy(child.gameObject); }
+        }
+        
+        if (inventoryGridContainer != null)
+        {
+            foreach (Transform child in inventoryGridContainer) { Destroy(child.gameObject); }
+        }
 
         // Создаем новые плашки под каждую пушку
         for (int i = 0; i < allSkins.Length; i++)
         {
             WeaponSkin skin = allSkins[i];
 
-            // Если куплено — в инвентарь, если нет — в магазин
+            // Если куплено — отправляем в инвентарь (GUNS), если нет — в магазин (SHOP)
             Transform targetContainer = skin.isPurchased ? inventoryGridContainer : shopGridContainer;
+
+            if (targetContainer == null) continue;
 
             GameObject newButton = Instantiate(buttonPrefab, targetContainer);
 
@@ -51,40 +64,70 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    // === ЛОГИКА КЛИКА ПО СКИНУ (ПОКУПКА / ЭКИПИРОВКА) ===
     public void OnClickSkin(WeaponSkin skin)
     {
-        if (skin.isPurchased)
+        // 1. Жесткая синхронизация: перед любой операцией берем точный баланс из памяти!
+        LoadGameDataLocal();
+
+        // 2. Находим индекс текущего скина в нашем общем массиве магазина
+        int skinIndex = -1;
+        for (int i = 0; i < allSkins.Length; i++)
         {
-            foreach (WeaponSkin s in allSkins)
+            if (allSkins[i] == skin)
             {
-                if (s == skin) s.isEquipped = true;
-                else if (s.isEquipped) s.isEquipped = false;
+                skinIndex = i;
+                break;
             }
+        }
+
+        // Если скин вдруг не найден в массиве
+        if (skinIndex == -1)
+        {
+            Debug.LogError("Кликнутый скин оружия не найден в массиве allSkins в ShopManager!");
+            return;
+        }
+
+        // Работаем строго через элемент массива по индексу
+        WeaponSkin activeSkin = allSkins[skinIndex];
+
+        if (activeSkin.isPurchased)
+        {
+            // Если скин уже куплен — экипируем его, а со всех остальных снимаем экипировку
+            for (int i = 0; i < allSkins.Length; i++)
+            {
+                allSkins[i].isEquipped = (i == skinIndex);
+            }
+            Debug.Log($"[Магазин] Скин {activeSkin.skinName} успешно экипирован!");
         }
         else
         {
-            if (coins >= skin.price)
+            // Если скин еще не куплен — проверяем цену именно этого оружия
+            if (coins >= activeSkin.price)
             {
-                coins -= skin.price;
-                skin.isPurchased = true;
+                coins -= activeSkin.price;
+                activeSkin.isPurchased = true;
 
-                foreach (WeaponSkin s in allSkins)
+                // Сразу автоматически экипируем только что купленный скин
+                for (int i = 0; i < allSkins.Length; i++)
                 {
-                    if (s == skin) s.isEquipped = true;
-                    else if (s.isEquipped) s.isEquipped = false;
+                    allSkins[i].isEquipped = (i == skinIndex);
                 }
+                
+                Debug.Log($"[Магазин] Успешная покупка! Списано: {activeSkin.price}. Остаток на счету: {coins}");
             }
             else
             {
-                Debug.Log("Не хватает монет!");
-                return;
+                Debug.LogWarning($"[Магазин] Не хватает монет! Баланс: {coins}, Нужно: {activeSkin.price}. Скин: {activeSkin.skinName}");
+                return; 
             }
         }
 
+        // 3. Обновляем всё на сцене и сохраняем прогресс
         RefreshWeaponPositions(); 
-        UpdateCoinsUI();
-        SaveGameData(); // Сохраняем в PlayerPrefs (плагин YG2 сам перехватит и отправит в облако Яндекса)
-        SpawnShopButtons(); // Перерисовываем кнопки
+        SaveGameData();      // Сохраняем измененный баланс и статусы пушек в PlayerPrefs
+        UpdateCoinsUI();     // Обновляем текст баланса на экране
+        SpawnShopButtons();  // Перерисовываем кнопки (переносим купленное в инвентарь)
     }
 
     public void RefreshWeaponPositions()
@@ -101,10 +144,10 @@ public class ShopManager : MonoBehaviour
         if (mainCoinsText != null) mainCoinsText.text = coins.ToString();
     }
 
-    // === СОХРАНЕНИЕ (ИДЕАЛЬНО ДЛЯ ПЛАГИНА YG2) ===
+    // === СОХРАНЕНИЕ ===
     public void SaveGameData()
     {
-        PlayerPrefs.SetInt("PlayerCoins", coins);
+        PlayerPrefs.SetInt("Coins", coins);
 
         for (int i = 0; i < allSkins.Length; i++)
         {
@@ -112,19 +155,32 @@ public class ShopManager : MonoBehaviour
             PlayerPrefs.SetInt("Skin_Equipped_" + i, allSkins[i].isEquipped ? 1 : 0);
         }
         PlayerPrefs.Save();
-        Debug.Log("Прогресс сохранен в PlayerPrefs и готов к синхронизации с облаком Яндекса!");
+        Debug.Log($"[Сохранение] Прогресс записан! Баланс: {coins}.");
     }
 
-    private void LoadGameDataLocal()
+    public void LoadGameDataLocal()
     {
-        coins = PlayerPrefs.GetInt("PlayerCoins", 1000);
+        coins = PlayerPrefs.GetInt("Coins", 0);
+        
         for (int i = 0; i < allSkins.Length; i++)
         {
-            // Первый скин по умолчанию открыт и экипирован, остальные закрыты
+            // Первый скин (индекс 0) по умолчанию куплен и экипирован, остальные закрыты
             int defaultActive = (i == 0) ? 1 : 0;
             allSkins[i].isPurchased = PlayerPrefs.GetInt("Skin_Purchased_" + i, defaultActive) == 1;
             allSkins[i].isEquipped = PlayerPrefs.GetInt("Skin_Equipped_" + i, defaultActive) == 1;
         }
+    }
+
+    // === ТЕСТОВЫЕ КНОПКИ ДЛЯ ИНСПЕКТОРА (БЕЗ ОШИБОК HEADER) ===
+    [ContextMenu("Add 1000 Coins")]
+    public void AddTestCoins()
+    {
+        LoadGameDataLocal();
+        coins += 1000;
+        SaveGameData();
+        UpdateCoinsUI();
+        SpawnShopButtons();
+        Debug.Log("[Админ] Начислено +1000 тестовых монет!");
     }
 
     [ContextMenu("Reset Progress")]
@@ -134,6 +190,6 @@ public class ShopManager : MonoBehaviour
         LoadGameDataLocal();
         UpdateCoinsUI();
         if (Application.isPlaying) SpawnShopButtons();
-        Debug.Log("Сохранения полностью стерты и сброшены к дефолту!");
+        Debug.Log("[Админ] Все сохранения сброшены!");
     }
 }

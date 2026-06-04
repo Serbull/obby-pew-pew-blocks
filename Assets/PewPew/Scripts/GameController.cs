@@ -3,208 +3,281 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-	[Header("Ссылки на объекты")]
-	[Tooltip("Перетащи сюда объект, где висит BlocksSpawner")]
-	public BlocksSpawner spawner;
+    [Header("Ссылки на объекты")]
+    [Tooltip("Перетащи сюда объект, где висит BlocksSpawner")]
+    public BlocksSpawner spawner;
 
-	[Tooltip("Перетащи сюда твоего Игрока (персонажа) со сцены")]
-	public GameObject player;
+    [Tooltip("Перетащи сюда твоего Игрока (персонажа) со сцены")]
+    public GameObject player;
 
-	[Tooltip("Player с WeaponEquip")]
-	public PlayerWeaponEquip weaponEquip;
+    [Tooltip("Player с WeaponEquip")]
+    public PlayerWeaponEquip weaponEquip;
 
-	[Tooltip("Преаб Бота")]
-	public GameObject botPrefab;
+    [Tooltip("Преаб Бота")]
+    public GameObject botPrefab;
 
-	[Tooltip("Перетащи сюда саму кнопку Play, чтобы она исчезала после старта")]
-	public GameObject playButtonUI;
+    [Tooltip("Перетащи сюда саму кнопку Play (объект Play из папки HUD)")]
+    public GameObject playButtonUI;
 
-	[Tooltip("Spawn Point, что бы телепортироваться на спавн")]
-	public Transform spawnPoint;
+    [Tooltip("Spawn Point, что бы телепортироваться на спавн")]
+    public Transform spawnPoint;
 
-	[Header("Настройки телепорта")]
-	[Tooltip("Высота над башней, чтобы никто не застрял ногами в блоках")]
-	public float spawnHeightOffset = 2.0f;
+    [Header("Настройки телепорта")]
+    [Tooltip("Высота над башней, чтобы никто не застрял ногами в блоках")]
+    public float spawnHeightOffset = 2.0f;
 
-	// Список для отслеживания заспавненных ботов
-	private List<GameObject> activeBots = new List<GameObject>();
+    [Header("Экран Конца Игры (UI)")]
+    [Tooltip("Перетащи сюда объект панели ПОБЕДЫ")]
+    public GameObject victoryPanelUI;
 
-	public void StartGame()
-	{
-		if (spawner == null || player == null || botPrefab == null)
-		{
-			Debug.LogError("GameController: Заполни все слоты в инспекторе (включая Bot Prefab)!");
-			return;
-		}
+    [Tooltip("Перетащи сюда объект панели ПРОИГРЫША")]
+    public GameObject defeatPanelUI;
 
-		// Очищаем старых ботов на всякий случай, если они остались
-		StopGame();
+    [Header("Ссылка на Экономику")]
+    [Tooltip("Перетащи сюда UIManager, на котором висит ShopManager")]
+    public ShopManager shopManager;
 
-		// 1. Спавним 4 башни
-		spawner.SpawnTowers();
+    // Список для отслеживания заспавненных ботов
+    private List<GameObject> activeBots = new List<GameObject>();
+    
+    // Флаг, чтобы раунд не завершался несколько раз одновременно
+    private bool isGameActive = false;
 
-		List<int> availableTowers = new List<int> { 0, 1, 2, 3 };
+    public void StartGame()
+    {
+        if (spawner == null || player == null || botPrefab == null || shopManager == null)
+        {
+            Debug.LogError("GameController: Заполни все слоты в инспекторе!");
+            return;
+        }
 
-		// 2. Выбираем случайную башню ДЛЯ ИГРОКА
-		int playerTowerIndex = availableTowers[Random.Range(0, availableTowers.Count)];
-		availableTowers.Remove(playerTowerIndex);
+        // --- ДОБАВЛЯЕМ ЭТУ СТРОЧКУ СЮДА ---
+        // Обновляем UI актуальным балансом из памяти прямо в момент нажатия на Play
+        AddCoinsToShop(0); 
+        // ----------------------------------
 
-		SpawnCharacterOnTower(player, playerTowerIndex);
+        // Мгновенно прячем экраны конца игры при старте нового раунда
+        if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
+        if (defeatPanelUI != null) defeatPanelUI.SetActive(false);
 
-		if (weaponEquip != null) weaponEquip.EquipWeapon();
+        // Очищаем старых ботов и башни перед стартом
+        StopGame();
 
-		// 3. Спавним БОТОВ на оставшиеся 3 башни
-		foreach (int botTowerIndex in availableTowers)
-		{
-			GameObject botInstance = Instantiate(botPrefab);
-			botInstance.name = "Bot_Tower_" + botTowerIndex;
+        isGameActive = true;
 
-			// Добавляем бота в наш список контроля
-			activeBots.Add(botInstance);
+        // 1. Спавним 4 башни
+        spawner.SpawnTowers();
 
-			SpawnCharacterOnTower(botInstance, botTowerIndex);
+        List<int> availableTowers = new List<int> { 0, 1, 2, 3 };
 
-			BotShooter botBrain = botInstance.GetComponent<BotShooter>();
-			if (botBrain != null)
-			{
-				botBrain.InitializeBot(botTowerIndex);
-			}
-		}
+        // 2. Выбираем случайную башню ДЛЯ ИГРОКА
+        int playerTowerIndex = availableTowers[Random.Range(0, availableTowers.Count)];
+        availableTowers.Remove(playerTowerIndex);
 
-		// Прячем кнопку Play
-		if (playButtonUI != null) playButtonUI.SetActive(false);
-	}
+        SpawnCharacterOnTower(player, playerTowerIndex);
 
-	// --- ФУНКЦИЯ ЗАВЕРШЕНИЯ ИГРЫ ---
-	[ContextMenu("Stop Game")] // Можно потестить через три точки в инспекторе
-	public void StopGame()
-	{
-		// 1. Удаляем всех ботов из списка и очищаем сцену
-		foreach (GameObject bot in activeBots)
-		{
-			if (bot != null)
-			{
-				// Если у бота в руках было создано оружие, оно удалится вместе с ним автоматически, 
-				// так как является его дочерним объектом (благодаря SetParent в PlayerWeaponEquip)
-				Destroy(bot);
-			}
-		}
-		activeBots.Clear();
+        if (weaponEquip != null) weaponEquip.EquipWeapon();
 
-		// 2. Возвращаем кнопку Play на экран, чтобы начать заново
-		if (playButtonUI != null)
-		{
-			playButtonUI.SetActive(true);
-		}
+        // 3. Спавним БОТОВ на оставшиеся 3 башни
+        foreach (int botTowerIndex in availableTowers)
+        {
+            GameObject botInstance = Instantiate(botPrefab);
+            botInstance.name = "Bot_Tower_" + botTowerIndex;
 
-		if (spawnPoint != null)
-		{
-			// На время перемещения отключаем CharacterController игрока, если он есть
-			CharacterController cc = player.GetComponent<CharacterController>();
-			if (cc != null) cc.enabled = false;
+            activeBots.Add(botInstance);
 
-			// Телепортируем на спавн
-			player.transform.position = spawnPoint.position;
+            SpawnCharacterOnTower(botInstance, botTowerIndex);
 
-			// Включаем обратно
-			if (cc != null) cc.enabled = true;
+            BotShooter botBrain = botInstance.GetComponent<BotShooter>();
+            if (botBrain != null)
+            {
+                botBrain.InitializeBot(botTowerIndex);
+            }
+        }
 
-			if (weaponEquip != null)
-			{
-				weaponEquip.AttachToBack();
-			}
-			else
-			{
-				Debug.LogError("На объекте Player не найден скрипт PlayerWeaponEquip!");
-			}
+        // Прячем кнопку Play
+        if (playButtonUI != null) playButtonUI.SetActive(false);
+    }
 
-			BlocksSpawner blocksSpawner = FindFirstObjectByType<BlocksSpawner>();
+    // --- ФУНКЦИЯ ОЧИСТКИ УРОВНЯ И ВОЗВРАТА НА СПАВН ---
+    [ContextMenu("Stop Game")] 
+    public void StopGame()
+    {
+        // Удаляем всех ботов со сцены
+        foreach (GameObject bot in activeBots)
+        {
+            if (bot != null) Destroy(bot);
+        }
+        activeBots.Clear();
 
-			if (blocksSpawner != null)
-			{
-				blocksSpawner.Clear();
-			}
-			else
-			{
-				Debug.LogError("На объекте ArenaZone не найден скрипт BlocksSpawner!");
-			}
+        // Возвращаем кнопку Play на экран
+        if (playButtonUI != null) playButtonUI.SetActive(true);
 
-			Debug.Log("Игрок успешно возрожден!");
-		}
-		else
-		{
-			Debug.LogError("Ошибка: Забыл перетащить SpawnPoint в инспектор воды!");
-		}
+        // Телепортируем игрока на спавн
+        if (spawnPoint != null)
+        {
+            CharacterController cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
 
-		Debug.Log("[GameController] Игра остановлена, боты полностью удалены!");
-	}
+            player.transform.position = spawnPoint.position;
 
-	// --- ФУНКЦИЯ СМЕРТИ ОДНОГО БОТА ---
-	public void BotDeath(GameObject bot)
-	{
-		if (bot == null) return;
+            if (cc != null) cc.enabled = true;
 
-		// Если этот бот есть в нашем списке активных, убираем его оттуда
-		if (activeBots.Contains(bot))
-		{
-			activeBots.Remove(bot);
-		}
+            if (weaponEquip != null) weaponEquip.AttachToBack();
 
-		// Удаляем бота со сцены
-		Destroy(bot);
-		Debug.Log($"[GameController] Бот {bot.name} упал в воду и был уничтожен!");
+            // Очищаем башни Jenga
+            BlocksSpawner blocksSpawner = FindFirstObjectByType<BlocksSpawner>();
+            if (blocksSpawner != null) blocksSpawner.Clear();
+        }
 
-		// ТУТ ЛОГИКА НА БУДУЩЕЕ: 
-		// Если хочешь, чтобы игра заканчивалась, когда остался один игрок:
-		// if (activeBots.Count == 0) { Написать "Победа!"; }
-	}
+        Debug.Log("[GameController] Раунд полностью сброшен, сцена зачищена.");
+    }
 
-	private void SpawnCharacterOnTower(GameObject character, int towerIndex)
-	{
-		string targetBlockName = "FinalBlock_" + towerIndex;
-		GameObject targetBlock = GameObject.Find(targetBlockName);
+    // --- ФУНКЦИЯ СМЕРТИ ОДНОГО БОТА ---
+    public void BotDeath(GameObject bot)
+    {
+        if (bot == null || !isGameActive) return;
 
-		Vector3 teleportPosition;
+        if (activeBots.Contains(bot))
+        {
+            activeBots.Remove(bot);
+        }
 
-		if (targetBlock != null)
-		{
-			teleportPosition = targetBlock.transform.position + Vector3.up * spawnHeightOffset;
-		}
-		else
-		{
-			GameObject targetTower = GameObject.Find("Tower_" + towerIndex);
-			float approximateHeight = spawner.towerHeight * spawner.blockSize.y;
-			teleportPosition = targetTower.transform.position + Vector3.up * (approximateHeight + spawnHeightOffset);
-		}
+        Destroy(bot);
+        Debug.Log($"[GameController] Бот {bot.name} уничтожен!");
 
-		if (character == player)
-		{
-			TeleportPlayer(teleportPosition);
-		}
-		else
-		{
-			character.transform.position = teleportPosition;
-		}
-	}
+        // Если живых ботов не осталось — игрок ПОБЕДИЛ!
+        if (activeBots.Count == 0)
+        {
+            WinGame();
+        }
+    }
 
-	private void TeleportPlayer(Vector3 targetPos)
-	{
-		CharacterController cc = player.GetComponent<CharacterController>();
-		if (cc != null) cc.enabled = false;
+    // --- ФУНКЦИЯ ПРОИГРЫША ИГРОКА ---
+    public void PlayerDeath()
+    {
+        if (!isGameActive) return;
+        isGameActive = false; 
 
-		Rigidbody playerRb = player.GetComponent<Rigidbody>();
-		if (playerRb != null)
-		{
-			playerRb.linearVelocity = Vector3.zero;
-			playerRb.angularVelocity = Vector3.zero;
-		}
+        Debug.Log("[GameController] ИГРОК УПАЛ В ВОДУ! Оформляем проигранный раунд...");
 
-		MonoBehaviour characterCore = player.GetComponent("CharacterCore") as MonoBehaviour;
-		if (characterCore != null) characterCore.enabled = false;
+        // Включаем надпись поражения сразу в воде
+        if (defeatPanelUI != null) defeatPanelUI.SetActive(true);
 
-		player.transform.position = targetPos;
+        // Начисляем монеты за проигрыш
+        AddCoinsToShop(20);
 
-		if (cc != null) cc.enabled = true;
-		if (characterCore != null) characterCore.enabled = true;
-	}
+        // Запускаем таймер на 3 секунды
+        StartCoroutine(WaitAndRespawn(3.0f));
+    }
+
+    private void WinGame()
+    {
+        isGameActive = false;
+        Debug.Log("[GameController] ПОБЕДА! Все боты повержены.");
+
+        // Включаем надпись победы
+        if (victoryPanelUI != null) victoryPanelUI.SetActive(true);
+
+        // Насыпаем куш за победу
+        AddCoinsToShop(100);
+
+        // Запускаем таймер на 3 секунды
+        StartCoroutine(WaitAndRespawn(3.0f));
+    }
+
+    // Корутина ожидания: держит надпись 3 секунды, гасит её и сбрасывает раунд
+    private System.Collections.IEnumerator WaitAndRespawn(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Выключаем надписи конца игры перед спавном
+        if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
+        if (defeatPanelUI != null) defeatPanelUI.SetActive(false);
+
+        // Чистим карту и телепортируем игрока домой
+        StopGame(); 
+    }
+
+    // Метод начисления монет и обновления ВСЕГО UI на сцене
+    private void AddCoinsToShop(int amount)
+    {
+        // Читаем баланс из сохранений (если там пусто, то дефолт 0, никаких скрытых 1000)
+        int totalCoins = PlayerPrefs.GetInt("Coins", 0);
+        totalCoins += amount;
+
+        // Перезаписываем в память устройства
+        PlayerPrefs.SetInt("Coins", totalCoins);
+        PlayerPrefs.Save();
+
+        Debug.Log($"[Экономика] Деньги начислены. Новый баланс в памяти: {totalCoins}");
+
+        // Синхронизируем магазин пушек, если он привязан
+        if (shopManager != null)
+        {
+            shopManager.Start(); 
+        }
+
+        // Обновляем вообще все UI счетчики монет на экране
+        TMPro.TextMeshProUGUI[] allTexts = FindObjectsByType<TMPro.TextMeshProUGUI>(FindObjectsSortMode.None);
+        foreach (var txt in allTexts)
+        {
+            if (txt.gameObject.name.Contains("Coin") || txt.transform.parent.name.Contains("Coin") || txt.gameObject.name.Contains("Play"))
+            {
+                if (!txt.gameObject.name.Contains("Play")) 
+                {
+                    txt.text = totalCoins.ToString();
+                }
+            }
+        }
+    }
+
+    private void SpawnCharacterOnTower(GameObject character, int towerIndex)
+    {
+        string targetBlockName = "FinalBlock_" + towerIndex;
+        GameObject targetBlock = GameObject.Find(targetBlockName);
+
+        Vector3 teleportPosition;
+
+        if (targetBlock != null)
+        {
+            teleportPosition = targetBlock.transform.position + Vector3.up * spawnHeightOffset;
+        }
+        else
+        {
+            GameObject targetTower = GameObject.Find("Tower_" + towerIndex);
+            float approximateHeight = spawner.towerHeight * spawner.blockSize.y;
+            teleportPosition = targetTower.transform.position + Vector3.up * (approximateHeight + spawnHeightOffset);
+        }
+
+        if (character == player)
+        {
+            TeleportPlayer(teleportPosition);
+        }
+        else
+        {
+            character.transform.position = teleportPosition;
+        }
+    }
+
+    private void TeleportPlayer(Vector3 targetPos)
+    {
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+        if (playerRb != null)
+        {
+            playerRb.linearVelocity = Vector3.zero;
+            playerRb.angularVelocity = Vector3.zero;
+        }
+
+        MonoBehaviour characterCore = player.GetComponent("CharacterCore") as MonoBehaviour;
+        if (characterCore != null) characterCore.enabled = false;
+
+        player.transform.position = targetPos;
+
+        if (cc != null) cc.enabled = true;
+        if (characterCore != null) characterCore.enabled = true;
+    }
 }
