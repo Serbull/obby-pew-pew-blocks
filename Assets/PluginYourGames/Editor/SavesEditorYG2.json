@@ -14,7 +14,7 @@
     },
     "SoundVolume": 1.0,
     "MusicVolume": 1.0,
-    "CameraSensitivity": 0.5,
+    "CameraSensitivity": 0.7438234686851502,
     "SkinId": 0,
     "IsFirstSkinSelected": true,
     "intExample": 5,
@@ -25,5 +25,5 @@
         false,
         false
     ],
-    "idSave": 3223
+    "idSave": 3260
 }
