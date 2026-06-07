@@ -41,7 +41,7 @@ public class BlocksSpawner : MonoBehaviour
             SpawnJengaTower(bases[i], i);
     }
 
-    void SpawnJengaTower(Vector3 basePos, int index)
+    public void SpawnJengaTower(Vector3 basePos, int index)
     {
         // Создаем корневой объект для башни
         GameObject root = new GameObject("Tower_" + index);
