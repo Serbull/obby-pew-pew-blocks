@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2945801842509379403}
   - component: {fileID: 388938871212788219}
   - component: {fileID: 2091439481959262692}
+  - component: {fileID: -4292471891288109499}
   m_Layer: 0
   m_Name: BlockPrefab
   m_TagString: Untagged
@@ -101,7 +102,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7400902482814989678}
   serializedVersion: 5
-  m_Mass: 8
+  m_Mass: 13
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -154,3 +155,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockHealth
   pushForce: 400
+--- !u!114 &-4292471891288109499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400902482814989678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

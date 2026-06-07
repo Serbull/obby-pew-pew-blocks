@@ -74,29 +74,39 @@ public class BotShooter : MonoBehaviour
 		// Удаляем из списка блоки, которые уже уничтожены пулями
 		enemyBlocks.RemoveAll(item => item == null);
 
+		// ПОДСТРАХОВКА: Если блоки кончились, пробуем обновить список 
+		// (вдруг какая-то башня еще цела, а мы её пропустили)
+		if (enemyBlocks.Count == 0)
+		{
+			UpdateEnemyBlocksList();
+		}
+
 		if (enemyBlocks.Count == 0) return;
 
 		// Выбираем случайный кирпич чужой башни
 		GameObject targetBlock = enemyBlocks[Random.Range(0, enemyBlocks.Count)];
 		if (targetBlock == null) return;
 
-		// Считаем точку с учетом "косоглазия" бота
+		// Считаем точку с учетом косоглазия бота
 		Vector3 targetPoint = targetBlock.transform.position + new Vector3(
 			Random.Range(-inaccuracyRadius, inaccuracyRadius),
 			Random.Range(-inaccuracyRadius, inaccuracyRadius),
 			Random.Range(-inaccuracyRadius, inaccuracyRadius)
 		);
 
-		// Поворачиваем бота лицом к блоку, в который он стреляет
+		// Поворачиваем бота лицом к блоку
 		Vector3 lookDirection = targetBlock.transform.position - transform.position;
-		lookDirection.y = 0; // Чтобы бота не наклоняло вверх/вниз целиком
+		lookDirection.y = 0;
 		if (lookDirection != Vector3.zero)
 		{
 			transform.rotation = Quaternion.LookRotation(lookDirection);
 		}
 
-		// Заставляем пушку бота выстрелить в эту точку!
-		weapon.ShootBot(targetPoint);
+		// Выстрел
+		if (weapon != null)
+		{
+			weapon.ShootBot(targetPoint);
+		}
 	}
 
 	private void UpdateEnemyBlocksList()
