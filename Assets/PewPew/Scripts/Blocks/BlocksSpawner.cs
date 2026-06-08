@@ -13,105 +13,104 @@ public class BlocksSpawner : MonoBehaviour
     public float gap = 0.02f;
 
     [Header("Random Tilt Settings")]
-    [Range(0, 10)]
-    public int minTiltedFloors = 2;
-    [Range(0, 10)]
-    public int maxTiltedFloors = 4;
+    [Range(0, 10)] public int minTiltedFloors = 2;
+    [Range(0, 10)] public int maxTiltedFloors = 4;
     public float minTiltAngle = 30f;
     public float maxTiltAngle = 45f;
-    [Tooltip("Если включено, этаж может повернуться и в минус (влево)")]
     public bool allowNegativeTilt = true;
 
-    private List<GameObject> towers = new List<GameObject>();
+    private List<GameObject> mainTowers = new List<GameObject>();
+    private List<GameObject> duelTowers = new List<GameObject>();
 
-    public void SpawnTowers()
+    public List<GameObject> SpawnTowers(int count = 4, BoxCollider targetZone = null)
     {
-        Clear();
-        Bounds b = arenaZone.bounds;
-        float offset = b.size.x * 0.25f;
+        BoxCollider activeZone = targetZone != null ? targetZone : arenaZone;
+        Bounds b = activeZone.bounds;
+        List<GameObject> createdTowers = new List<GameObject>();
 
-        Vector3[] bases = {
-            b.center + new Vector3(-offset, 0, -offset),
-            b.center + new Vector3( offset, 0, -offset),
-            b.center + new Vector3(-offset, 0,  offset),
-            b.center + new Vector3( offset, 0,  offset)
-        };
+        if (count == 4)
+        {
+            Clear();
+            float offset = b.size.x * 0.25f;
+            Vector3[] bases = {
+                b.center + new Vector3(-offset, 0, -offset),
+                b.center + new Vector3( offset, 0, -offset),
+                b.center + new Vector3(-offset, 0,  offset),
+                b.center + new Vector3( offset, 0,  offset)
+            };
 
-        for (int i = 0; i < 4; i++)
-            SpawnJengaTower(bases[i], i);
+            for (int i = 0; i < 4; i++)
+            {
+                // Для лобби оставляем имя "Tower_"
+                GameObject tower = SpawnJengaTower(bases[i], i, activeZone, mainTowers, "Tower_", "FinalBlock_");
+                createdTowers.Add(tower);
+            }
+        }
+        else if (count == 2)
+        {
+            ClearDuel();
+            float offset = b.size.x * 0.25f;
+            Vector3[] bases = {
+                b.center + new Vector3(-offset, 0, 0),
+                b.center + new Vector3( offset, 0, 0)
+            };
+
+            for (int i = 0; i < 2; i++)
+            {
+                // ИЗМЕНЕНИЕ: Для дуэли даем уникальные префиксы "Duel_Tower_" и "Duel_FinalBlock_"
+                GameObject tower = SpawnJengaTower(bases[i], i, activeZone, duelTowers, "Duel_Tower_", "Duel_FinalBlock_");
+                createdTowers.Add(tower);
+            }
+        }
+
+        return createdTowers;
     }
 
-    public void SpawnJengaTower(Vector3 basePos, int index)
+    // Добавили префиксы имен в параметры метода
+    public GameObject SpawnJengaTower(Vector3 basePos, int index, BoxCollider activeZone, List<GameObject> targetList, string towerPrefix, string blockPrefix)
     {
-        // Создаем корневой объект для башни
-        GameObject root = new GameObject("Tower_" + index);
-        towers.Add(root);
+        GameObject root = new GameObject(towerPrefix + index);
+        targetList.Add(root);
 
-        // Начинаем спавн с самого низа арены
-        float currentY = arenaZone.bounds.min.y + (blockSize.y / 2f);
+        float currentY = activeZone.bounds.min.y + (blockSize.y / 2f);
 
-        // Идем снизу вверх по этажам
         for (int y = 0; y < towerHeight; y++)
         {
             bool isLastFloor = (y == towerHeight - 1);
-            // Каждый четный этаж повернут на 90 градусов (классическая Дженга)
             bool isRotated = (y % 2 != 0);
-
-            // Генерируем случайный цвет для всего этажа
             Color floorColor = Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.6f, 1f);
-
-            // Считаем общую ширину ряда, чтобы центрировать блоки
             float rowWidth = (blocksPerRow * blockSize.z) + ((blocksPerRow - 1) * gap);
             float startOffset = -rowWidth / 2f + (blockSize.z / 2f);
-
-            // Базовый поворот этажа (строго 0 или 90 градусов, никаких кривых углов!)
             Quaternion floorRotation = isRotated ? Quaternion.Euler(0, 90f, 0) : Quaternion.identity;
 
             for (int i = 0; i < blocksPerRow; i++)
             {
-                // Спавним блок
                 GameObject block = Instantiate(blockPrefab, root.transform);
-
-                // Расчет позиции блока в ряду
                 float localOffset = startOffset + i * (blockSize.z + gap);
                 Vector3 positionOffset = new Vector3(0, 0, localOffset);
-
-                // --- ЭФФЕКТ СДВИГА ИЗ ОРИГИНАЛА ---
-                // Случайно смещаем блок ВПЕРЕД или НАЗАД вдоль его длинной части (ось X)
-                // Значение 0.15f означает разброс до 15 сантиметров. Башня не упадет, но будет выглядеть хаотично.
                 float randomShift = Random.Range(-0.15f, 0.15f);
                 Vector3 shiftOffset = new Vector3(randomShift, 0, 0);
 
-                // Финальная позиция с учетом шахматного поворота башни
                 Vector3 finalPos = basePos + new Vector3(0, currentY - basePos.y, 0) + (floorRotation * (positionOffset + shiftOffset));
-
                 block.transform.position = finalPos;
                 block.transform.rotation = floorRotation;
                 block.transform.localScale = blockSize;
 
-                // Если это самый верхний этаж, маркируем блоки для GameManager
-                if (isLastFloor)
-                {
-                    block.name = "FinalBlock_" + index;
-                }
-                else
-                {
-                    block.name = $"Block_{y}_{i}";
-                }
+                // Используем переданный префикс блока
+                if (isLastFloor) block.name = blockPrefix + index;
+                else block.name = $"Block_{y}_{i}";
 
                 ApplyColor(block, floorColor);
             }
-
-            // Поднимаемся на высоту одного блока для следующего этажа
             currentY += blockSize.y;
         }
+        return root;
     }
 
     void ApplyColor(GameObject block, Color color)
     {
         Renderer rend = block.GetComponent<Renderer>();
         if (rend == null) return;
-
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         rend.GetPropertyBlock(mpb);
         mpb.SetColor("_Color", color);
@@ -120,9 +119,13 @@ public class BlocksSpawner : MonoBehaviour
 
     public void Clear()
     {
-        foreach (var t in towers) if (t) Destroy(t);
-        towers.Clear();
+        foreach (var t in mainTowers) if (t) Destroy(t);
+        mainTowers.Clear();
     }
 
-    // void Start() => SpawnTowers();
+    public void ClearDuel()
+    {
+        foreach (var t in duelTowers) if (t) Destroy(t);
+        duelTowers.Clear();
+    }
 }

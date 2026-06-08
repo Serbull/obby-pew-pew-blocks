@@ -34,8 +34,14 @@ public class GameController : MonoBehaviour
     private bool isAFK = false;
     private bool isFirstRound = true;
 
+    // Ссылка на менеджер дуэлей для изоляции режимов
+    private DuelManager duelManager;
+
     void Start()
     {
+        // Находим DuelManager на сцене
+        duelManager = FindFirstObjectByType<DuelManager>();
+
         UnityEngine.UI.Toggle afkToggle = FindFirstObjectByType<UnityEngine.UI.Toggle>();
         if (afkToggle != null)
         {
@@ -108,14 +114,23 @@ public class GameController : MonoBehaviour
 
         List<int> availableTowers = new List<int> { 0, 1, 2, 3 };
 
-        // Телепортируем игрока на случайную вышку
+        // Выбираем башню для игрока
         int playerTowerIndex = availableTowers[Random.Range(0, availableTowers.Count)];
         availableTowers.Remove(playerTowerIndex);
 
-        SpawnCharacterOnTower(player, playerTowerIndex);
-        if (weaponEquip != null) weaponEquip.EquipWeapon();
+        // ИЗМЕНЕНИЕ: Если игрок сейчас на дуэли, мы НЕ телепортируем его в главное лобби!
+        // И мы НЕ спавним бота на эту вышку, она просто остаётся пустой в этом раунде лобби.
+        if (duelManager != null && duelManager.IsPlayerInDuel())
+        {
+            Debug.Log("[GameController] Игрок на дуэли. Пропускаем его спавн в лобби.");
+        }
+        else
+        {
+            SpawnCharacterOnTower(player, playerTowerIndex);
+            if (weaponEquip != null) weaponEquip.EquipWeapon();
+        }
 
-        // Спавним ботов на оставшиеся 3 вышки
+        // Спавним ботов на оставшиеся 3 вышки главного лобби
         foreach (int botTowerIndex in availableTowers)
         {
             SpawnBotOnTower(botTowerIndex);
@@ -152,6 +167,13 @@ public class GameController : MonoBehaviour
     // --- СМЕРТЬ ИГРОКА ---
     public void PlayerDeath()
     {
+        // Проверяем: если игрок упал, находясь в дуэли 1х1 — отдаем завершение дуэль-менеджеру
+        if (duelManager != null && duelManager.IsPlayerInDuel())
+        {
+            duelManager.EndDuel(false, false); // Игрок упал -> проиграл дуэль
+            return; // Основную игру и ее таймеры не трогаем!
+        }
+
         if (currentState != GameState.ActiveGame) return;
 
         isPlayerDead = true;
@@ -174,6 +196,12 @@ public class GameController : MonoBehaviour
     // --- СМЕРТЬ БОТА ---
     public void BotDeath(GameObject bot)
     {
+        // Проверяем: если этот упавший бот принадлежит дуэли — DuelManager сам разберется с матчем
+        if (duelManager != null && duelManager.CheckAndHandleBotDeath(bot))
+        {
+            return; // Завершаем метод, основную игру не трогаем!
+        }
+
         if (!activeBots.Contains(bot)) return;
 
         activeBots.Remove(bot);
@@ -350,21 +378,43 @@ public class GameController : MonoBehaviour
 
     private void SpawnCharacterOnTower(GameObject character, int towerIndex)
     {
-        string targetBlockName = "FinalBlock_" + towerIndex;
-        GameObject targetBlock = GameObject.Find(targetBlockName);
-        Vector3 teleportPosition;
+        Vector3 teleportPosition = Vector3.zero;
+        bool foundBlock = false;
 
-        if (targetBlock != null)
+        // ИЗМЕНЕНИЕ: Ищем башню СТРОГО среди главных башен основного матча, 
+        // чтобы случайно не залезть на дуэльные вышки 1х1
+        string targetTowerName = "Tower_" + towerIndex;
+        GameObject targetTower = GameObject.Find(targetTowerName);
+
+        // Проверяем, что эта башня не принадлежит дуэли (у дуэльных башен корень лежит в spawner.ClearDuel)
+        // Для надежности просто пробежимся по дочерним объектам найденной главной башни
+        if (targetTower != null)
         {
-            teleportPosition = targetBlock.transform.position + Vector3.up * spawnHeightOffset;
+            Transform[] children = targetTower.GetComponentsInChildren<Transform>();
+            foreach (var child in children)
+            {
+                if (child.name == "FinalBlock_" + towerIndex)
+                {
+                    teleportPosition = child.position + Vector3.up * spawnHeightOffset;
+                    foundBlock = true;
+                    break;
+                }
+            }
         }
-        else
+
+        // Если блок по какой-то причине не найден в иерархии, считаем математически над ГЛАВНОЙ башней
+        if (!foundBlock && targetTower != null)
         {
-            GameObject targetTower = GameObject.Find("Tower_" + towerIndex);
             float approximateHeight = spawner.towerHeight * spawner.blockSize.y;
             teleportPosition = targetTower.transform.position + Vector3.up * (approximateHeight + spawnHeightOffset);
         }
+        else if (targetTower == null)
+        {
+            // Совсем крайний случай, если башни еще не успели создаться
+            teleportPosition = spawnPoint.position;
+        }
 
+        // Сам телепорт персонажа (твой оригинальный код без изменений)
         if (character == player)
         {
             CharacterController cc = player.GetComponent<CharacterController>();
