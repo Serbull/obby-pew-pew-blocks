@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems; // ОБЯЗАТЕЛЬНО: для проверки кликов по UI
 
 public class PlayerShooter : MonoBehaviour
 {
@@ -25,13 +26,26 @@ public class PlayerShooter : MonoBehaviour
 
         bool isEquipped = (weapon.transform.parent == weaponEquip.handPoint);
 
+        // 1. Проверяем, находится ли курсор мыши над интерфейсом (кнопки, магазин)
+        bool isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+
         if (isEquipped)
         {
-            anim.SetBool("IsAiming", true);
-
-            if ((Input.GetMouseButton(0) || Input.touchCount > 0) && anim.GetFloat("Move") < 1)
+            // 2. ИСПРАВЛЕНИЕ: Включаем прицеливание ТОЛЬКО если мышка НЕ над интерфейсом
+            if (!isOverUI)
             {
-                weapon.Shoot();
+                anim.SetBool("IsAiming", true);
+
+                // Стреляем, только если зажали ЛКМ и НЕ кликаем по UI кнопкам
+                if ((Input.GetMouseButton(0) || Input.touchCount > 0) && anim.GetFloat("Move") < 1)
+                {
+                    weapon.Shoot();
+                }
+            }
+            else
+            {
+                // Если пушка в руках, но мышка наведена на UI (например, на кнопку "Стоп") — опускаем пушку!
+                anim.SetBool("IsAiming", false);
             }
         }
         else

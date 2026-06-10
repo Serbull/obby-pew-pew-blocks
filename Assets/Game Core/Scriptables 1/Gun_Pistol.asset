@@ -16,6 +16,6 @@ MonoBehaviour:
   idInHand: Pistol
   price: 0
   Icon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
-  weaponPrefab: {fileID: 1767235709845661754, guid: fdc793924b5078947aa57b64247d16fc, type: 3}
+  weaponPrefab: {fileID: 100002, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
   isPurchased: 1
-  isEquipped: 1
+  isEquipped: 0
