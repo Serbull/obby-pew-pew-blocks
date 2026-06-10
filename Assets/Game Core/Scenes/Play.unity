@@ -18345,9 +18345,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7286999367198930110, guid: 40a7a10cc8dc844479e36f494323225d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2080044189}
-    - targetCorrespondingSourceObject: {fileID: 7286999367198930110, guid: 40a7a10cc8dc844479e36f494323225d, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2080044191}
     - targetCorrespondingSourceObject: {fileID: 7286999367198930110, guid: 40a7a10cc8dc844479e36f494323225d, type: 3}
       insertIndex: -1
@@ -38660,18 +38657,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7286999367198930110, guid: 40a7a10cc8dc844479e36f494323225d, type: 3}
   m_PrefabInstance: {fileID: 842948591}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2080044189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080044180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5a59dc76082fe64fb400196f5f4bb0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestDamage
 --- !u!114 &2080044190
 MonoBehaviour:
   m_ObjectHideFlags: 0
