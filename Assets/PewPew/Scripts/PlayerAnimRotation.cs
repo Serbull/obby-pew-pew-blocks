@@ -8,6 +8,10 @@ public class PlayerAimRotation : MonoBehaviour
 
 	public float rotateSpeed = 15f;
 
+	[Header("Настройки фильтрации")]
+	[Tooltip("Выберите слой, на котором находится ваш Player (например, 'Player')")]
+	public LayerMask excludeLayers; // Переменная для маски слоёв
+
 	void Update()
 	{
 		if (animator == null || characterCore == null) return;
@@ -23,7 +27,12 @@ public class PlayerAimRotation : MonoBehaviour
 
 		Vector3 targetPoint;
 
-		if (Physics.Raycast(ray, out hit, 500f))
+		// 1. Создаем маску для слоев, которые нужно НАПРАВЛЕННО ИГНОРИРОВАТЬ
+		// Игнорируем слой Character (на котором висит игрок) и слой UI (на котором висит текстовый Canvas)
+		int ignoreMask = LayerMask.GetMask("Character", "UI");
+
+		// 2. Инвертируем маску (~), чтобы Physics.Raycast сталкивался со ВСЕМ, КРОМЕ этих двух слоев
+		if (Physics.Raycast(ray, out hit, 500f, ~ignoreMask))
 		{
 			targetPoint = hit.point;
 		}

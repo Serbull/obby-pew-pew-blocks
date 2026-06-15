@@ -1,12 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
 public class WaterDeath : MonoBehaviour
 {
-    [Header("Respawn Settings")]
-    [Tooltip("Задержка перед уничтожением бота после падения")]
-    public float deathDelay = 2f; 
-
     private void OnTriggerEnter(Collider other)
     {
         // 1. ЕСЛИ В ВОДУ УПАЛ ИГРОК
@@ -18,7 +13,7 @@ public class WaterDeath : MonoBehaviour
                 if (controller != null)
                 {
                     // Мгновенно передаем сигнал проигрыша в контроллер!
-                    controller.PlayerDeath(); 
+                    controller.PlayerDeath();
                 }
             }
             return;
@@ -27,20 +22,13 @@ public class WaterDeath : MonoBehaviour
         // 2. ЕСЛИ В ВОДУ УПАЛ БОТ (проверяем тег или имя префаба)
         if (other.CompareTag("Bot") || other.name.Contains("Bot"))
         {
-            StartCoroutine(BotDeathTimer(other.gameObject));
-        }
-    }
-
-    // Для ботов оставляем небольшую задержку, чтобы они красиво тонули
-    IEnumerator BotDeathTimer(GameObject bot)
-    {
-        Debug.Log($"[Вода] {bot.name} упал в воду! Уничтожение бота через {deathDelay} сек...");
-        yield return new WaitForSeconds(deathDelay);
-
-        GameController controller = FindFirstObjectByType<GameController>();
-        if (controller != null)
-        {
-            controller.BotDeath(bot);
+            GameController controller = FindFirstObjectByType<GameController>();
+            if (controller != null)
+            {
+                // ИСПРАВЛЕНИЕ: Никаких задержек и корутин, сносим бота сразу!
+                Debug.Log($"[Вода] {other.gameObject.name} упал в воду! Мгновенное уничтожение.");
+                controller.BotDeath(other.gameObject);
+            }
         }
     }
 }

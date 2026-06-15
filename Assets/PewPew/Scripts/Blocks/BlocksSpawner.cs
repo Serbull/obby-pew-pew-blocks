@@ -19,60 +19,109 @@ public class BlocksSpawner : MonoBehaviour
     public float maxTiltAngle = 45f;
     public bool allowNegativeTilt = true;
 
+    [Header("Настройки Динамического Спавна")]
+    public float minDistanceBetweenTowers = 12f; // Минимальное расстояние между башнями, чтобы не слипались
+    public float arenaEdgeOffset = 4f;            // Отступ от краев зоны, чтобы башни не застревали в стенах
+
     private List<GameObject> mainTowers = new List<GameObject>();
     private List<GameObject> duelTowers = new List<GameObject>();
 
+    // count теперь задается динамически из GameController (от 4 до 8)
     public List<GameObject> SpawnTowers(int count = 4, BoxCollider targetZone = null)
     {
         BoxCollider activeZone = targetZone != null ? targetZone : arenaZone;
         Bounds b = activeZone.bounds;
         List<GameObject> createdTowers = new List<GameObject>();
 
-        if (count == 4)
-        {
-            Clear();
-            float offset = b.size.x * 0.25f;
-            Vector3[] bases = {
-                b.center + new Vector3(-offset, 0, -offset),
-                b.center + new Vector3( offset, 0, -offset),
-                b.center + new Vector3(-offset, 0,  offset),
-                b.center + new Vector3( offset, 0,  offset)
-            };
 
-            for (int i = 0; i < 4; i++)
-            {
-                // Для лобби оставляем имя "Tower_"
-                GameObject tower = SpawnJengaTower(bases[i], i, activeZone, mainTowers, "Tower_", "FinalBlock_");
-                createdTowers.Add(tower);
-            }
-        }
-        else if (count == 2)
+        if (count == 2)
         {
+            // Очищаем старые дуэльные башни
             ClearDuel();
+
+            // Вычисляем ИДЕАЛЬНУЮ высоту пола для дуэльной зоны (точно так же, как в основном режиме)
+            float spawnY = b.min.y + (blockSize.y / 2f);
+
             float offset = b.size.x * 0.25f;
+
+            // Собираем базовые точки: берем X и Z от центра с нужным смещением, а Y — строго ПОЛ арены
             Vector3[] bases = {
-                b.center + new Vector3(-offset, 0, 0),
-                b.center + new Vector3( offset, 0, 0)
+                new Vector3(b.center.x - offset, spawnY, b.center.z),
+                new Vector3(b.center.x + offset, spawnY, b.center.z)
             };
 
             for (int i = 0; i < 2; i++)
             {
-                // ИЗМЕНЕНИЕ: Для дуэли даем уникальные префиксы "Duel_Tower_" и "Duel_FinalBlock_"
                 GameObject tower = SpawnJengaTower(bases[i], i, activeZone, duelTowers, "Duel_Tower_", "Duel_FinalBlock_");
                 createdTowers.Add(tower);
+            }
+        }
+        else
+        {
+            // ОСНОВНОЙ РЕЖИМ (Генерация от 4 до 8 башен в случайных местах)
+            Clear();
+
+            List<Vector3> spawnedPositions = new List<Vector3>();
+
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 randomPos = GetRandomValidPosition(b, spawnedPositions);
+                GameObject tower = SpawnJengaTower(randomPos, i, activeZone, mainTowers, "Tower_", "FinalBlock_");
+                createdTowers.Add(tower);
+                spawnedPositions.Add(randomPos);
             }
         }
 
         return createdTowers;
     }
 
-    // Добавили префиксы имен в параметры метода
+    // Вспомогательный метод поиска случайной позиции с проверкой дистанции
+    private Vector3 GetRandomValidPosition(Bounds bounds, List<Vector3> existingPositions)
+    {
+        // Базовая высота спавна (по низу коллайдера арены)
+        float spawnY = bounds.min.y + (blockSize.y / 2f);
+
+        // Ограничиваем зону случайного выбора с учетом отступов от краев
+        float minX = bounds.min.x + arenaEdgeOffset;
+        float maxX = bounds.max.x - arenaEdgeOffset;
+        float minZ = bounds.min.z + arenaEdgeOffset;
+        float maxZ = bounds.max.z - arenaEdgeOffset;
+
+        Vector3 potentialPos = bounds.center;
+        potentialPos.y = spawnY;
+
+        // Делаем до 100 попыток найти свободное место
+        for (int attempt = 0; attempt < 100; attempt++)
+        {
+            float randX = Random.Range(minX, maxX);
+            float randZ = Random.Range(minZ, maxZ);
+            potentialPos = new Vector3(randX, spawnY, randZ);
+
+            bool isTooClose = false;
+            foreach (Vector3 pos in existingPositions)
+            {
+                if (Vector3.Distance(potentialPos, pos) < minDistanceBetweenTowers)
+                {
+                    isTooClose = true;
+                    break;
+                }
+            }
+
+            if (!isTooClose)
+            {
+                return potentialPos; // Нашли отличную точку!
+            }
+        }
+
+        return potentialPos; // Вернем последнюю, если арена забита (крайний случай)
+    }
+
     public GameObject SpawnJengaTower(Vector3 basePos, int index, BoxCollider activeZone, List<GameObject> targetList, string towerPrefix, string blockPrefix)
     {
         GameObject root = new GameObject(towerPrefix + index);
         targetList.Add(root);
 
-        float currentY = activeZone.bounds.min.y + (blockSize.y / 2f);
+        float currentY = basePos.y; // Начинаем прямо с вычисленной высоты базы
 
         for (int y = 0; y < towerHeight; y++)
         {
@@ -96,7 +145,6 @@ public class BlocksSpawner : MonoBehaviour
                 block.transform.rotation = floorRotation;
                 block.transform.localScale = blockSize;
 
-                // Используем переданный префикс блока
                 if (isLastFloor) block.name = blockPrefix + index;
                 else block.name = $"Block_{y}_{i}";
 
@@ -115,6 +163,18 @@ public class BlocksSpawner : MonoBehaviour
         rend.GetPropertyBlock(mpb);
         mpb.SetColor("_Color", color);
         rend.SetPropertyBlock(mpb);
+    }
+
+    public void ClearSingleTower(int towerIndex)
+    {
+        string targetTowerName = "Tower_" + towerIndex;
+        GameObject targetTower = GameObject.Find(targetTowerName);
+
+        if (targetTower != null)
+        {
+            Destroy(targetTower);
+            Debug.Log($"[BlocksSpawner] Башня {targetTowerName} успешно удалена со сцены.");
+        }
     }
 
     public void Clear()

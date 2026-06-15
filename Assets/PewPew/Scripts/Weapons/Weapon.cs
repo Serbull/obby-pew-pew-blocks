@@ -23,10 +23,18 @@ public class Weapon : MonoBehaviour
         RaycastHit camHit;
         Vector3 targetPoint;
 
-        if (Physics.Raycast(camRay, out camHit, range))
+        // ИСПРАВЛЕНИЕ: Создаем маску игнорирования слоев персонажа и UI
+        int ignoreMask = LayerMask.GetMask("Character", "UI");
+
+        // Добавляем ~ignoreMask в Raycast, чтобы луч пролетал сквозь игрока и текст
+        if (Physics.Raycast(camRay, out camHit, range, ~ignoreMask))
+        {
             targetPoint = camHit.point;
+        }
         else
+        {
             targetPoint = camRay.origin + camRay.direction * range;
+        }
 
         SpawnBullet(targetPoint);
     }
@@ -41,6 +49,7 @@ public class Weapon : MonoBehaviour
 
     private void SpawnBullet(Vector3 targetPoint)
     {
+        // Здесь используется твой muzzlePoint, теперь всё скомпилируется без ошибок
         Vector3 shootDir = (targetPoint - muzzlePoint.position).normalized;
 
         GameObject bullet = Instantiate(

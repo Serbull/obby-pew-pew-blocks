@@ -4,7 +4,7 @@ public class BulletTracer : MonoBehaviour
 {
 	public float speed = 10f;
 	public int damage = 1;
-	public float lifeTime = 6f;
+	public float lifeTime = 7.5f;
 
 	private Vector3 direction;
 	private bool isHit = false; // Защита от двойного просчета попадания

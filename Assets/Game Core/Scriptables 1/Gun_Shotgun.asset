@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
   m_Name: Gun_Shotgun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u041A\u0438\u0431\u0435\u0440 \u0448\u043E\u0442"
+  skinName: "\u041A\u0438\u0431\u0435\u0440\u0448\u043E\u0442"
   idInHand: ScifiHandGun_Baked_Maps
   price: 500
   Icon: {fileID: 21300000, guid: 69c78e37cfb98364794090d6878e4903, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: 28ebbcd7f4773384e867c255af2c669b, type: 3}
   isPurchased: 1
-  isEquipped: 1
+  isEquipped: 0

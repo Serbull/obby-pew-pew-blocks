@@ -17,11 +17,9 @@ public class DuelManager : MonoBehaviour
 
 	private GameObject activeDuelBot;
 	private bool isDuelActive = false;
-	private bool isWaitingForRestart = false;
 
 	private GameController gameController;
 	private List<GameObject> myDuelTowers = new List<GameObject>();
-	private Coroutine restartCoroutine;
 
 	void Start()
 	{
@@ -30,20 +28,26 @@ public class DuelManager : MonoBehaviour
 	}
 
 	// Запуск дуэли 1х1
+	// ЗАМЕНИ В DuelManager.cs (убираем все старые костыли со смещениями и физикой)
+
 	public void StartDuel()
 	{
-		if (isDuelActive || isWaitingForRestart) return;
+		if (isDuelActive) return;
 		isDuelActive = true;
 
 		if (gameController != null)
 		{
 			gameController.ToggleAFK(true);
+			// Принудительно чистим старый текст "Вы выбыли" перед началом дуэли
+			gameController.ClearCenterText();
+
 			var toggle = FindFirstObjectByType<UnityEngine.UI.Toggle>();
 			if (toggle != null) toggle.isOn = true;
 		}
 
 		if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(true);
 
+		// Спавн башен на полу
 		myDuelTowers = spawner.SpawnTowers(2, duelArenaZone);
 
 		SpawnCharacterOnDuelTower(player, 0);
@@ -55,56 +59,35 @@ public class DuelManager : MonoBehaviour
 	// Завершение раунда
 	public void EndDuel(bool isPlayerWin, bool clickedStop = false)
 	{
-		if (!isDuelActive && !clickedStop && !isWaitingForRestart) return;
+		if (!isDuelActive && !clickedStop) return;
 
-		// Зачищаем бота
+		isDuelActive = false;
+
 		if (activeDuelBot != null)
 		{
 			Destroy(activeDuelBot);
 			activeDuelBot = null;
 		}
 
-		// Зачищаем башни
 		if (spawner != null)
 		{
 			spawner.ClearDuel();
 		}
 		myDuelTowers.Clear();
 
+		DuelTrigger trigger = FindFirstObjectByType<DuelTrigger>();
+		if (trigger != null)
+		{
+			trigger.SetTextActive(true);
+		}
+		// ------------------------------------------------------------
+
 		if (clickedStop)
 		{
-			// Игрок нажал СТОП: полностью выходим из режима дуэли
-			isDuelActive = false;
-			isWaitingForRestart = false;
-
-			if (restartCoroutine != null)
-			{
-				StopCoroutine(restartCoroutine);
-				restartCoroutine = null;
-			}
-
 			if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(false);
-
 			TeleportPlayerToSpawn();
 		}
 		else
-		{
-			// Естественный финиш раунда: просто ждем 3 секунды до следующего боя без всякого UI
-			isDuelActive = false;
-			isWaitingForRestart = true;
-
-			restartCoroutine = StartCoroutine(WaitAndRestartDuelPhase());
-		}
-	}
-
-	private System.Collections.IEnumerator WaitAndRestartDuelPhase()
-	{
-		yield return new WaitForSeconds(3.0f);
-
-		isWaitingForRestart = false;
-
-		// Если за время задержки игрок не вышел кнопкой "Стоп", запускаем заново
-		if (stopDuelButtonUI != null && stopDuelButtonUI.activeSelf)
 		{
 			StartDuel();
 		}
@@ -127,7 +110,7 @@ public class DuelManager : MonoBehaviour
 
 	public bool IsPlayerInDuel()
 	{
-		return isDuelActive || isWaitingForRestart;
+		return isDuelActive;
 	}
 
 	private void SpawnDuelBot(int towerIndex)

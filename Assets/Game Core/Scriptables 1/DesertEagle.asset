@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
   m_Name: DesertEagle
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u0413\u043B\u043E\u043A=17"
+  skinName: "\u0413\u043B\u043E\u043A 17"
   idInHand: M1911 Handgun
   price: 1200
   Icon: {fileID: 21300000, guid: 03ff022ebcb0a4047a8ab102750e7809, type: 3}
   weaponPrefab: {fileID: 7757947126742549135, guid: 5c59210965ffbcc4093fe99a29edb777, type: 3}
-  isPurchased: 0
+  isPurchased: 1
   isEquipped: 0

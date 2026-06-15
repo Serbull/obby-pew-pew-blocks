@@ -1,43 +1,144 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // Оставляем для мышки
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using YG;
 
 public class CursorController : MonoBehaviour
 {
     public RectTransform crosshair;
     public Animator playerAnimator;
 
+    // Список названий UI-элементов, сквозь которые МОЖНО стрелять/целиться
+    private readonly List<string> ignoredUiNames = new List<string>
+    {
+        "VictoryPanel",
+        "DefeatPanel",
+        "TopPanel",
+        "CenterPanel",
+        "Crosshair"
+    };
+
     void Update()
     {
         if (playerAnimator == null || crosshair == null) return;
 
-        // 1. Проверяем UI только для того, чтобы вовремя вернуть стрелочку мыши
-        bool isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        bool isMobile = !YG2.envir.isDesktop;
+        bool isOverUI = false;
 
-        // 2. Просто считываем IsAiming (PlayerShooter сам им теперь управляет)
-        bool isAiming = playerAnimator.GetBool("IsAiming");
-
-        // 3. Крестик прицела активен, только если мы целимся и НЕ водим по кнопкам
-        crosshair.gameObject.SetActive(isAiming && !isOverUI);
-
-        if (isAiming && !isOverUI)
+        // 1. Проверяем UI в зависимости от платформы
+        if (isMobile)
         {
-            crosshair.position = Input.mousePosition;
+            if (EventSystem.current != null)
+            {
+                for (int i = 0; i < Input.touchCount; i++)
+                {
+                    Touch touch = Input.GetTouch(i);
+                    // Проверяем, попал ли тач на UI
+                    if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                    {
+                        // Если попал, проверяем — это системный UI (кнопки) или игнорируемые панели
+                        if (!CheckIfHitIgnoredUI(touch.fingerId))
+                        {
+                            isOverUI = true;
+                            break;
+                        }
+                    }
+                }
+            }
         }
         else
         {
-            crosshair.position = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+            // Проверка для ПК (мышь)
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                // Если мышка над UI, проверяем, не игнорируемый ли это элемент
+                if (!CheckIfHitIgnoredUI(-1)) // -1 для мышки в EventSystem
+                {
+                    isOverUI = true;
+                }
+            }
         }
 
-        // 4. Включаем/выключаем курсор
-        ApplyCursor(isAiming, isOverUI);
+        // 2. Считываем состояние прицеливания из аниматора
+        bool isAiming = playerAnimator.GetBool("IsAiming");
+
+        // 3. Управляем активностью крестика прицела
+        crosshair.gameObject.SetActive(isAiming && !isOverUI);
+
+        // 4. Позиционируем прицел
+        if (isMobile)
+        {
+            crosshair.position = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+        }
+        else
+        {
+            if (isAiming && !isOverUI)
+            {
+                crosshair.position = Input.mousePosition;
+            }
+            else
+            {
+                crosshair.position = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+            }
+        }
+
+        // 5. Настраиваем системный курсор
+        ApplyCursor(isAiming, isOverUI, isMobile);
     }
 
-    void ApplyCursor(bool isAiming, bool isOverUI)
+    void ApplyCursor(bool isAiming, bool isOverUI, bool isMobile)
     {
-        // Стрелочка мыши появляется, если мы НЕ целимся ИЛИ если мышка заехала на UI
-        Cursor.visible = !isAiming || isOverUI;
+        if (isMobile)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.visible = !isAiming || isOverUI;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
 
-        // Оставляем None, чтобы мышь свободно летала по магазину
-        Cursor.lockState = CursorLockMode.None;
+    // Вспомогательный метод: проверяет, имя какого UI-объекта мы сейчас задели
+    private bool CheckIfHitIgnoredUI(int pointerId)
+    {
+        if (EventSystem.current == null) return false;
+
+        // Создаем контейнер для данных клика/тача
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+
+        // Передаем координаты в зависимости от того, мышка это или палец
+        if (pointerId == -1)
+            eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        else if (Input.touchCount > 0)
+            eventDataCurrentPosition.position = Input.GetTouch(Mathf.Clamp(pointerId, 0, Input.touchCount - 1)).position;
+
+        // Пускаем луч (Raycast) по UI элементам в точке клика
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        if (results.Count > 0)
+        {
+            // Берем самый первый UI объект, в который попал луч
+            GameObject hitObj = results[0].gameObject;
+
+            // Проверяем его имя и имена его родителей вверх по иерархии
+            Transform currentCheck = hitObj.transform;
+            while (currentCheck != null)
+            {
+                foreach (string ignoredName in ignoredUiNames)
+                {
+                    // Если имя содержит искомое слово (регистр важен, пиши как в иерархии!)
+                    if (currentCheck.name.Contains(ignoredName))
+                    {
+                        return true; // Нашли совпадение, этот UI нужно проигнорировать!
+                    }
+                }
+                currentCheck = currentCheck.parent;
+            }
+        }
+
+        return false; // Попали на обычный интерфейс (джойстик, кнопки и т.д.)
     }
 }

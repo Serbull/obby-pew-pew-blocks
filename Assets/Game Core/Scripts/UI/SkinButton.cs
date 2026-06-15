@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Serbull.GameAssets;
 
 public class SkinButton : MonoBehaviour
 {
     [Header("UI Elements")]
-    public TMPro.TextMeshProUGUI titleText; 
-    public TMPro.TextMeshProUGUI priceText; 
-    public Image iconImage;                 
-    public Image statusBackground;          
+    public TMPro.TextMeshProUGUI titleText;
+    public TMPro.TextMeshProUGUI priceText;
+    public Image iconImage;
+    public Image statusBackground;
     public GameObject selectedCheckmark; // Переменная для нашей галочки!
 
     [Header("Colors")]
@@ -23,32 +24,39 @@ public class SkinButton : MonoBehaviour
         currentSkin = skin;
         shopManager = manager;
 
-        if (titleText != null) titleText.text = skin.skinName;
+        // ПЕРЕВОД НАЗВАНИЯ: Используем idInHand пушки как ключ локализации.
+        // Если перевода нет (например, забыл добавить в конфиг), можно подстраховаться и оставить дефолтный skinName.
+        if (titleText != null && skin != null)
+        {
+            string translatedName = Services.Localization.GetText(skin.idInHand);
+            titleText.text = !string.IsNullOrEmpty(translatedName) ? translatedName : skin.skinName;
+        }
+
         if (iconImage != null) iconImage.sprite = skin.Icon;
 
-        // Настраиваем отображение текста, цветов и галочки
+        // Настраиваем отображение текста, цветов и галочки с учетом локализации
         if (skin.isEquipped)
         {
-            if (priceText != null) priceText.text = "АКТИВНО";
+            // ПЕРЕВОД: "АКТИВНО"
+            if (priceText != null) priceText.text = Services.Localization.GetText("ui_skin_active");
             if (statusBackground != null) statusBackground.color = equippedColor;
-            
-            // Если этот скин выбран — ВКЛЮЧАЕМ галочку
+
             if (selectedCheckmark != null) selectedCheckmark.SetActive(true);
         }
         else if (skin.isPurchased)
         {
-            if (priceText != null) priceText.text = "ВЫБРАТЬ";
+            // ПЕРЕВОД: "ВЫБРАТЬ"
+            if (priceText != null) priceText.text = Services.Localization.GetText("ui_skin_select");
             if (statusBackground != null) statusBackground.color = purchasedColor;
-            
-            // Если куплен, но не выбран — ВЫКЛЮЧАЕМ галочку
+
             if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
         }
         else
         {
+            // Здесь просто цена, локализация значка валюты по желанию (оставил как у тебя)
             if (priceText != null) priceText.text = skin.price.ToString() + " $";
             if (statusBackground != null) statusBackground.color = shopColor;
-            
-            // В магазине галочка тем более не нужна — ВЫКЛЮЧАЕМ
+
             if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
         }
     }

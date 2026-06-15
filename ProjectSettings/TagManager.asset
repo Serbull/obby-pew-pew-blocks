@@ -18,6 +18,7 @@ TagManager:
   - Block
   - BlocksSpawner
   - Bot
+  - Bullet
   layers:
   - Default
   - TransparentFX
