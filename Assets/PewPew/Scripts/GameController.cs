@@ -149,7 +149,7 @@ public class GameController : MonoBehaviour
     private void StartLobbyWithBots()
     {
         currentState = GameState.LobbyBotsShooting;
-        stateTimer = isFirstRound ? 10f : 120f;
+        stateTimer = isFirstRound ? 10f : 90f;
         isPlayerDead = false;
 
         if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
@@ -180,7 +180,7 @@ public class GameController : MonoBehaviour
     public void StartActiveGame()
     {
         currentState = GameState.ActiveGame;
-        stateTimer = 120f;
+        stateTimer = 90f;
         isPlayerDead = false;
         if (centerNotifyText != null) centerNotifyText.text = "";
 

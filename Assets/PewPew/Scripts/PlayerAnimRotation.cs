@@ -12,7 +12,12 @@ public class PlayerAimRotation : MonoBehaviour
 	[Tooltip("Выберите слой, на котором находится ваш Player (например, 'Player')")]
 	public LayerMask excludeLayers; // Переменная для маски слоёв
 
-	void Update()
+  private  void Start()
+    {
+        
+    }
+
+    void Update()
 	{
 		if (animator == null || characterCore == null) return;
 		if (!animator.GetBool("IsAiming") || animator.GetFloat("Move") > 0) return;

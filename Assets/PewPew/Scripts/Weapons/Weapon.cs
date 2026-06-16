@@ -11,13 +11,22 @@ public class Weapon : MonoBehaviour
 
     private float nextFireTime;
 
+    void Start()
+    {
+        playerCamera = Camera.main;
+    }
+
     public void Shoot()
     {
         if (Time.time < nextFireTime) return;
         nextFireTime = Time.time + fireRate;
 
         // Защита: если камеры нет (например, у бота), чтобы код не падал с ошибкой
-        if (playerCamera == null) return;
+        if (playerCamera == null)
+        {
+            Debug.LogError("Camera is null");
+            return;
+        }
 
         Ray camRay = playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit camHit;

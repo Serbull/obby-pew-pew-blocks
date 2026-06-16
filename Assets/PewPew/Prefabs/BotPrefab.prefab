@@ -556,7 +556,6 @@ GameObject:
   - component: {fileID: 6724520774862853689}
   - component: {fileID: 5607533815167651175}
   - component: {fileID: 3526983637806352983}
-  - component: {fileID: 5670548908721475252}
   - component: {fileID: 7774829567091098581}
   m_Layer: 6
   m_Name: BotPrefab
@@ -658,7 +657,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   moveAxis: {x: 0, y: 0, z: 0}
   rotationAux: {x: 0, y: 0, z: 0, w: 0}
-  IsPlayer: 1
+  IsPlayer: 0
 --- !u!114 &5607533815167651175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -691,23 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponEquip
   handPoint: {fileID: 5929543472884770422}
   backPoint: {fileID: 2155591861633249138}
-  weaponPrefab: {fileID: 0}
---- !u!114 &5670548908721475252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3547856008308136936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae247edc3fab0fe4db0f278517e6834d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAimRotation
-  playerCamera: {fileID: 0}
-  animator: {fileID: 3001147427701690792}
-  characterCore: {fileID: 6724520774862853689}
-  rotateSpeed: 15
+  weaponPrefab: {fileID: 1976223222686805637, guid: 97554022eb3e44e2fbdef6dd3ba7deee, type: 3}
 --- !u!114 &7774829567091098581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +706,7 @@ MonoBehaviour:
   minShootDelay: 1.5
   maxShootDelay: 4
   inaccuracyRadius: 0.7
+  isDuelBot: 0
 --- !u!1 &3841051797837342091
 GameObject:
   m_ObjectHideFlags: 0
