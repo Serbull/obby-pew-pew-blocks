@@ -13,6 +13,7 @@ public class DuelManager : MonoBehaviour
 	[Header("Настройки дуэльной зоны")]
 	public BoxCollider duelArenaZone;
 	public GameObject stopDuelButtonUI;
+	public GameObject afkButtonUI;
 	public float spawnHeightOffset = 2.0f;
 
 	private GameObject activeDuelBot;
@@ -21,7 +22,7 @@ public class DuelManager : MonoBehaviour
 	private GameController gameController;
 	private List<GameObject> myDuelTowers = new List<GameObject>();
 
-	void Start()
+	private void Start()
 	{
 		gameController = FindFirstObjectByType<GameController>();
 		if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(false);
@@ -46,6 +47,7 @@ public class DuelManager : MonoBehaviour
 		}
 
 		if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(true);
+		if (afkButtonUI != null) afkButtonUI.SetActive(false);
 
 		// Спавн башен на полу
 		myDuelTowers = spawner.SpawnTowers(2, duelArenaZone);
@@ -85,6 +87,7 @@ public class DuelManager : MonoBehaviour
 		if (clickedStop)
 		{
 			if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(false);
+			if (afkButtonUI != null) afkButtonUI.SetActive(true);
 			TeleportPlayerToSpawn();
 		}
 		else

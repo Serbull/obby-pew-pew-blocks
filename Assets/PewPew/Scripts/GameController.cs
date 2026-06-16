@@ -49,9 +49,6 @@ public class GameController : MonoBehaviour
 
         AddCoinsToShop(0);
         StartLobbyWithBots();
-
-        // Сразу обновляем состояние надписи АФК при старте
-        UpdateAFKTextVisibility();
     }
 
     void Update()
@@ -307,8 +304,8 @@ public class GameController : MonoBehaviour
         botInstance.name = "Bot_Tower_" + towerIndex;
         activeBots.Add(botInstance);
         SpawnCharacterOnTower(botInstance, towerIndex);
-        BotShooter botBrain = botInstance.GetComponent<BotShooter>();
-        if (botBrain != null) botBrain.InitializeBot(towerIndex);
+        if (botInstance.TryGetComponent<BotShooter>(out var botBrain))
+            botBrain.InitializeBot(towerIndex);
     }
 
     private void ClearBotsAndTowers()
