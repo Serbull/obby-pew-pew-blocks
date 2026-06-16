@@ -15,7 +15,7 @@ public class AFKToggle : MonoBehaviour
     public Color offColor = new Color(0.8f, 0.25f, 0.25f); // Красный — AFK выкл
 
     [Header("Старт")]
-    public bool startOn = true;
+    public bool startOn = false;
 
     private Button _button;
     private bool _isAFK;

@@ -43,9 +43,8 @@ public class GameController : MonoBehaviour
     {
         duelManager = FindFirstObjectByType<DuelManager>();
 
-        UnityEngine.UI.Toggle afkToggle = FindFirstObjectByType<UnityEngine.UI.Toggle>();
-        if (afkToggle != null) isAFK = afkToggle.isOn;
-        else isAFK = true;
+        // Состояние AFK задаётся кнопкой AFKToggle (она вызывает ToggleAFK в своём Start).
+        // Здесь оставляем дефолт из поля isAFK (false), чтобы игрок по умолчанию заходил в игру.
 
         AddCoinsToShop(0);
         StartLobbyWithBots();
