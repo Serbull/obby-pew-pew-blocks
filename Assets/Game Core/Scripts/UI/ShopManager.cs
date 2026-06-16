@@ -141,27 +141,46 @@ public class ShopManager : MonoBehaviour
     // === СОХРАНЕНИЕ ===
     public void SaveGameData()
     {
-        PlayerPrefs.SetInt("Coins", coins);
+        var data = SaveManager.Data;
+        data.coins = coins;
 
+        EnsureSkinLists(data);
         for (int i = 0; i < allSkins.Length; i++)
         {
-            PlayerPrefs.SetInt("Skin_Purchased_" + i, allSkins[i].isPurchased ? 1 : 0);
-            PlayerPrefs.SetInt("Skin_Equipped_" + i, allSkins[i].isEquipped ? 1 : 0);
+            data.skinsPurchased[i] = allSkins[i].isPurchased;
+            data.skinsEquipped[i] = allSkins[i].isEquipped;
         }
-        PlayerPrefs.Save();
+
+        SaveManager.SaveGameData();
         Debug.Log($"[Сохранение] Прогресс записан! Баланс: {coins}.");
     }
 
     public void LoadGameDataLocal()
     {
-        coins = PlayerPrefs.GetInt("Coins", 0);
+        var data = SaveManager.Data;
+        coins = (int)data.coins;
 
+        bool hasSavedSkins = data.skinsPurchased.Count > 0;
         for (int i = 0; i < allSkins.Length; i++)
         {
-            int defaultActive = (i == 0) ? 1 : 0;
-            allSkins[i].isPurchased = PlayerPrefs.GetInt("Skin_Purchased_" + i, defaultActive) == 1;
-            allSkins[i].isEquipped = PlayerPrefs.GetInt("Skin_Equipped_" + i, defaultActive) == 1;
+            bool defaultActive = (i == 0);
+            if (hasSavedSkins && i < data.skinsPurchased.Count)
+            {
+                allSkins[i].isPurchased = data.skinsPurchased[i];
+                allSkins[i].isEquipped = data.skinsEquipped[i];
+            }
+            else
+            {
+                allSkins[i].isPurchased = defaultActive;
+                allSkins[i].isEquipped = defaultActive;
+            }
         }
+    }
+
+    private void EnsureSkinLists(YG.SavesYG data)
+    {
+        while (data.skinsPurchased.Count < allSkins.Length) data.skinsPurchased.Add(false);
+        while (data.skinsEquipped.Count < allSkins.Length) data.skinsEquipped.Add(false);
     }
 
     [ContextMenu("Add 1000 Coins")]
@@ -176,7 +195,12 @@ public class ShopManager : MonoBehaviour
     [ContextMenu("Reset Progress")]
     public void ResetProgress()
     {
-        PlayerPrefs.DeleteAll();
+        var data = SaveManager.Data;
+        data.coins = 0;
+        data.skinsPurchased.Clear();
+        data.skinsEquipped.Clear();
+        SaveManager.SaveGameData();
+
         LoadGameDataLocal();
         UpdateCoinsUI();
         if (Application.isPlaying) SpawnShopButtons();

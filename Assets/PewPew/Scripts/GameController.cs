@@ -341,9 +341,9 @@ public class GameController : MonoBehaviour
 
     private void AddCoinsToShop(int amount)
     {
-        int totalCoins = PlayerPrefs.GetInt("Coins", 0) + amount;
-        PlayerPrefs.SetInt("Coins", totalCoins);
-        PlayerPrefs.Save();
+        SaveManager.Data.coins += amount;
+        SaveManager.SaveGameData();
+        long totalCoins = SaveManager.Data.coins;
         if (shopManager != null) shopManager.Start();
 
         TMPro.TextMeshProUGUI[] allTexts = FindObjectsByType<TMPro.TextMeshProUGUI>(FindObjectsSortMode.None);

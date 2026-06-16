@@ -13,5 +13,8 @@ namespace YG
 
         public List<PetData> Pets = new();
         public RouletteData Roulette = new();
+
+        public List<bool> skinsPurchased = new();
+        public List<bool> skinsEquipped = new();
     }
 }
