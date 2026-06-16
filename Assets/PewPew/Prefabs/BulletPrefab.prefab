@@ -99,9 +99,6 @@ PrefabInstance:
       addedObject: {fileID: 2603559874770520385}
     - targetCorrespondingSourceObject: {fileID: 100002, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6446930712422823560}
-    - targetCorrespondingSourceObject: {fileID: 100002, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3510480477871961494}
   m_SourcePrefab: {fileID: 100100000, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
 --- !u!4 &3701762871898371664 stripped
@@ -179,24 +176,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6446930712422823560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3701762871898466928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Game.Outline
-  outlineMode: 0
-  outlineColor: {r: 0, g: 0.25377476, b: 1, a: 1}
-  outlineWidth: 5
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!96 &3510480477871961494
 TrailRenderer:
   serializedVersion: 4
@@ -396,8 +375,34 @@ PrefabInstance:
     - {fileID: 7416402729972524874, guid: 55e92f33aa71f8e45983d0dfde03a443, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6243318555366789252, guid: 55e92f33aa71f8e45983d0dfde03a443, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7769075760811469783}
   m_SourcePrefab: {fileID: 100100000, guid: 55e92f33aa71f8e45983d0dfde03a443, type: 3}
+--- !u!1 &709355431396544374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6243318555366789252, guid: 55e92f33aa71f8e45983d0dfde03a443, type: 3}
+  m_PrefabInstance: {fileID: 6880543811800178674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7769075760811469783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709355431396544374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Game.Outline
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0.25377476, b: 1, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &8791775496109825096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2701653038954742714, guid: 55e92f33aa71f8e45983d0dfde03a443, type: 3}

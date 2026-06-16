@@ -15301,10 +15301,11 @@ MonoBehaviour:
   arenaZone: {fileID: 608307240}
   towerHeight: 17
   blocksPerRow: 3
-  blockSize: {x: 3.6, y: 1.5, z: 1.4}
-  gap: 0.05
-  minTiltedFloors: 2
-  maxTiltedFloors: 4
+  blockSize: {x: 4.5, y: 1.5, z: 1.5}
+  gap: 0.02
+  tiltChancePercent: 20
+  minGroupFloors: 1
+  maxGroupFloors: 2
   minTiltAngle: 30
   maxTiltAngle: 45
   allowNegativeTilt: 1
