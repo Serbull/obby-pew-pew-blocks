@@ -38,16 +38,12 @@ public class DuelManager : MonoBehaviour
 
 		if (gameController != null)
 		{
-			gameController.ToggleAFK(true);
 			// Принудительно чистим старый текст "Вы выбыли" перед началом дуэли
 			gameController.ClearCenterText();
-
-			var toggle = FindFirstObjectByType<UnityEngine.UI.Toggle>();
-			if (toggle != null) toggle.isOn = true;
 		}
 
 		if (stopDuelButtonUI != null) stopDuelButtonUI.SetActive(true);
-		if (afkButtonUI != null) afkButtonUI.SetActive(false);
+		// АФК-кнопку не прячем — она остаётся доступной во время дуэли
 
 		// Спавн башен на полу
 		myDuelTowers = spawner.SpawnTowers(2, duelArenaZone);

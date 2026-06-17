@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     public TextMeshProUGUI topTimerText;
     public TextMeshProUGUI centerNotifyText;
     public TextMeshProUGUI afkNotifyText; // НОВАЯ ПЕРЕМЕННАЯ: Сюда перетащи новый отдельный текст из Canvas
+    public GameObject afkButton; // Кнопка АФК — дизейблится, пока игрок в активной игре
 
     [Header("Настройки телепорта")]
     public float spawnHeightOffset = 2.0f;
@@ -187,15 +188,17 @@ public class GameController : MonoBehaviour
         int playerTowerIndex = availableTowers[Random.Range(0, availableTowers.Count)];
         availableTowers.Remove(playerTowerIndex);
 
+        // Если начался новый раунд, а игрок всё ещё в дуэли — завершаем дуэль и заводим игрока в игру
         if (duelManager != null && duelManager.IsPlayerInDuel())
         {
-            SpawnBotOnTower(playerTowerIndex);
+            duelManager.EndDuel(false, true);
         }
-        else
-        {
-            SpawnCharacterOnTower(player, playerTowerIndex);
-            if (weaponEquip != null) weaponEquip.EquipWeapon();
-        }
+
+        // Игрок зашёл в игру — дизейблим кнопку АФК
+        if (afkButton != null) afkButton.SetActive(false);
+
+        SpawnCharacterOnTower(player, playerTowerIndex);
+        if (weaponEquip != null) weaponEquip.EquipWeapon();
 
         foreach (int botTowerIndex in availableTowers) { SpawnBotOnTower(botTowerIndex); }
     }
@@ -275,7 +278,6 @@ public class GameController : MonoBehaviour
         StartCoroutine(WaitAndRespawn(3.0f));
         SaveManager.Data.wins++;
         Leaderboards.Send("wins", SaveManager.Data.wins);
-        YG2.InterstitialAdvShow();
     }
 
     private void EvaluateGameResult()
@@ -289,7 +291,6 @@ public class GameController : MonoBehaviour
             AddCoinsToShop(20);
         }
         StartCoroutine(WaitAndRespawn(3.0f));
-        YG2.InterstitialAdvShow();
     }
 
     private System.Collections.IEnumerator HidePanelAfterDelay(GameObject panel, float delay)
@@ -306,16 +307,16 @@ public class GameController : MonoBehaviour
         StartCountdownPhase();
     }
 
-    [ContextMenu("Stop Game")]
-    public void StopGame()
-    {
-        isFirstRound = true;
-        ClearBotsAndTowers();
-        TeleportPlayerToSpawn();
-        if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
-        if (defeatPanelUI != null) defeatPanelUI.SetActive(false);
-        StartLobbyWithBots();
-    }
+    // [ContextMenu("Stop Game")]
+    // public void StopGame()
+    // {
+    //     isFirstRound = true;
+    //     ClearBotsAndTowers();
+    //     TeleportPlayerToSpawn();
+    //     if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
+    //     if (defeatPanelUI != null) defeatPanelUI.SetActive(false);
+    //     StartLobbyWithBots();
+    // }
 
     private void SpawnBotOnTower(int towerIndex)
     {
@@ -337,7 +338,7 @@ public class GameController : MonoBehaviour
 
     private void ClearAllBullets()
     {
-        GameObject[] allObjects = GameObject.FindObjectsByType<GameObject>(FindObjectsSortMode.None);
+        GameObject[] allObjects = FindObjectsByType<GameObject>(FindObjectsSortMode.None);
         int deletedCount = 0;
         foreach (GameObject go in allObjects)
         {
@@ -353,6 +354,9 @@ public class GameController : MonoBehaviour
         player.transform.position = spawnPoint.position;
         if (cc != null) cc.enabled = true;
         if (weaponEquip != null) weaponEquip.AttachToBack();
+
+        if (afkButton != null) afkButton.SetActive(true);
+        YG2.InterstitialAdvShow();
     }
 
     private void AddCoinsToShop(int amount)
