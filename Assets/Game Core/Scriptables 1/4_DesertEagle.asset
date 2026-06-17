@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u0413\u043B\u043E\u043A 17"
   idInHand: M1911 Handgun
-  bulletSpeed: 10
-  forceMultiplier: 10
+  bulletSpeed: 12
+  forceMultiplier: 125
   rareId: rare
   price: 1200
   Icon: {fileID: 21300000, guid: 03ff022ebcb0a4047a8ab102750e7809, type: 3}

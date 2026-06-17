@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u0420\u0430\u043A\u0435\u0442\u043D\u0438\u0446\u0430"
   idInHand: flaregun
-  bulletSpeed: 10
-  forceMultiplier: 10
+  bulletSpeed: 11
+  forceMultiplier: 100
   rareId: common
   price: 350
   Icon: {fileID: 21300000, guid: d9ef0b2c3891b6048ad4433eba8abf7f, type: 3}

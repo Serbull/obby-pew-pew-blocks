@@ -251,15 +251,25 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        if (currentState == GameState.ActiveGame) { if (activeBots.Count == 0 && !isPlayerDead) WinGame(); }
-        else if (currentState == GameState.PlayerDeadButBotsFight) { if (activeBots.Count <= 1) EvaluateGameResult(); }
+        if (currentState == GameState.ActiveGame)
+        {
+            if (activeBots.Count == 0 && !isPlayerDead) WinGame();
+        }
+        else if (currentState == GameState.PlayerDeadButBotsFight)
+        {
+            if (activeBots.Count <= 1) EvaluateGameResult();
+        }
     }
 
     private void WinGame()
     {
         currentState = GameState.GameOver;
         stateTimer = 0;
-        if (victoryPanelUI != null) { victoryPanelUI.SetActive(true); StartCoroutine(HidePanelAfterDelay(victoryPanelUI, 3.0f)); }
+        if (victoryPanelUI != null)
+        {
+            victoryPanelUI.SetActive(true);
+            StartCoroutine(HidePanelAfterDelay(victoryPanelUI, 3.0f));
+        }
         AddCoinsToShop(100);
         StartCoroutine(WaitAndRespawn(3.0f));
     }
@@ -268,7 +278,12 @@ public class GameController : MonoBehaviour
     {
         currentState = GameState.GameOver;
         stateTimer = 0;
-        if (!isPlayerDead && activeBots.Count > 0) { if (defeatPanelUI != null) defeatPanelUI.SetActive(true); AddCoinsToShop(20); }
+        if (!isPlayerDead && activeBots.Count > 0)
+        {
+            if (defeatPanelUI != null)
+                defeatPanelUI.SetActive(true);
+            AddCoinsToShop(20);
+        }
         StartCoroutine(WaitAndRespawn(3.0f));
     }
 

@@ -447,4 +447,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d064796e5a7a34392d341b14251cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockHealth
-  pushForce: 3000
+  pushForce: 300

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: Neon
   idInHand: Neon
-  bulletSpeed: 10
-  forceMultiplier: 10
+  bulletSpeed: 12
+  forceMultiplier: 160
   rareId: epic
-  price: 2000
+  price: 1400
   Icon: {fileID: 21300000, guid: 47209cf97765a744ab5a3311c2eef1bd, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: d52a163a463274344a3203401b439ef8, type: 3}
   isPurchased: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   skinName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
   idInHand: Pistol
   bulletSpeed: 10
-  forceMultiplier: 10
+  forceMultiplier: 100
   rareId: common
   price: 0
   Icon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}

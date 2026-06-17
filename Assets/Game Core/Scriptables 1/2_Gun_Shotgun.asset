@@ -15,7 +15,7 @@ MonoBehaviour:
   skinName: "\u041A\u0438\u0431\u0435\u0440\u0448\u043E\u0442"
   idInHand: ScifiHandGun_Baked_Maps
   bulletSpeed: 10
-  forceMultiplier: 10
+  forceMultiplier: 120
   rareId: uncommon
   price: 500
   Icon: {fileID: 21300000, guid: 69c78e37cfb98364794090d6878e4903, type: 3}

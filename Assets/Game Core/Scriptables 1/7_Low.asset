@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u041E\u0431\u043B\u043E\u043A\u043E"
   idInHand: Low
-  bulletSpeed: 10
-  forceMultiplier: 10
+  bulletSpeed: 15
+  forceMultiplier: 140
   rareId: epic
   price: 1550
   Icon: {fileID: 21300000, guid: d229c6f7f7f66b14da4de8891888e102, type: 3}
