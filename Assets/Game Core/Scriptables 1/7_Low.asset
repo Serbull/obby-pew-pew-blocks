@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
-  m_Name: Exquisite
+  m_Name: 7_Low
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u041A\u043E\u0432\u0431\u043E\u0439"
-  idInHand: Exquisite
-  price: 1200
-  Icon: {fileID: 21300000, guid: 458531364eab4444680c411c1152e755, type: 3}
-  weaponPrefab: {fileID: 919132149155446097, guid: b977ef729b6ec394b999cb9c31bd40c2, type: 3}
+  skinName: "\u041E\u0431\u043B\u043E\u043A\u043E"
+  idInHand: Low
+  bulletSpeed: 10
+  forceMultiplier: 10
+  rareId: epic
+  price: 1550
+  Icon: {fileID: 21300000, guid: d229c6f7f7f66b14da4de8891888e102, type: 3}
+  weaponPrefab: {fileID: 919132149155446097, guid: 8f1ab1d2681e92d498a1605b0307ac4f, type: 3}
   isPurchased: 0
   isEquipped: 0

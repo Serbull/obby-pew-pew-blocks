@@ -32,6 +32,17 @@ public class BotShooter : MonoBehaviour
 		if (weaponEquip != null)
 		{
 			weaponEquip.EquipWeapon();
+
+			// Выдаём боту случайную пушку (визуал + параметры скорости/силы пули)
+			Weapon botWeapon = weaponEquip.GetWeapon();
+			if (botWeapon != null)
+			{
+				WeaponController botWeaponController = botWeapon.GetComponent<WeaponController>();
+				if (botWeaponController != null)
+				{
+					botWeaponController.EquipRandomSkin();
+				}
+			}
 		}
 
 		nextShootTime = Time.time + Random.Range(minShootDelay, maxShootDelay);

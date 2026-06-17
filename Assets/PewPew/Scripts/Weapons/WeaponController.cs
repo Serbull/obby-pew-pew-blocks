@@ -8,6 +8,9 @@ public class WeaponController : MonoBehaviour
     // ДОБАВИЛИ: Проверка, принадлежит ли этот контроллер боту
     private bool isBot = false;
 
+    // Текущий экипированный скин (у бота остаётся null — используются дефолтные параметры пули)
+    public WeaponSkin EquippedSkin { get; private set; }
+
     void Start()
     {
         // Проверяем, есть ли у этого персонажа (или его родителя) тег Бота или скрипт управления ботом
@@ -31,13 +34,7 @@ public class WeaponController : MonoBehaviour
         if (shopManager == null) shopManager = FindFirstObjectByType<ShopManager>();
         if (shopManager == null || shopManager.allSkins == null) return;
 
-        // 1. Сначала выключаем ВСЁ оружие в руках у ИГРОКА
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(false);
-        }
-
-        // 2. Ищем экипированный в магазине скин
+        // Ищем экипированный в магазине скин
         WeaponSkin equippedSkin = null;
         foreach (WeaponSkin s in shopManager.allSkins)
         {
@@ -48,26 +45,62 @@ public class WeaponController : MonoBehaviour
             }
         }
 
-        if (equippedSkin == null) return;
+        ApplySkin(equippedSkin);
+    }
 
-        // 3. Ищем нужную пушку по имени префаба или по idInHand
-        string targetWeaponName = equippedSkin.weaponPrefab != null ? equippedSkin.weaponPrefab.name : "";
-        Transform weaponChild = transform.Find(targetWeaponName);
+    // Выдаёт боту случайную пушку из всех доступных скинов магазина.
+    // Вызывается из BotShooter при инициализации бота.
+    public void EquipRandomSkin()
+    {
+        if (shopManager == null) shopManager = FindFirstObjectByType<ShopManager>();
+        if (shopManager == null || shopManager.allSkins == null || shopManager.allSkins.Length == 0) return;
 
-        if (weaponChild == null && !string.IsNullOrEmpty(equippedSkin.idInHand))
+        // Собираем только валидные скины, чтобы не выпал null
+        var validSkins = new System.Collections.Generic.List<WeaponSkin>();
+        foreach (WeaponSkin s in shopManager.allSkins)
         {
-            weaponChild = transform.Find(equippedSkin.idInHand);
+            if (s != null) validSkins.Add(s);
         }
 
-        // 4. Включаем её игроку
+        if (validSkins.Count == 0) return;
+
+        WeaponSkin randomSkin = validSkins[Random.Range(0, validSkins.Count)];
+        ApplySkin(randomSkin);
+        Debug.Log($"[WeaponController] Боту выдана случайная пушка: {randomSkin.skinName}");
+    }
+
+    // Общая логика: прячет всё оружие и включает визуал нужного скина, запоминая его параметры пули.
+    private void ApplySkin(WeaponSkin skin)
+    {
+        // 1. Сначала выключаем ВСЁ оружие в руках
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        // Запоминаем скин, чтобы Weapon мог взять его параметры (скорость/сила пули)
+        EquippedSkin = skin;
+
+        if (skin == null) return;
+
+        // 2. Ищем нужную пушку по имени префаба или по idInHand
+        string targetWeaponName = skin.weaponPrefab != null ? skin.weaponPrefab.name : "";
+        Transform weaponChild = transform.Find(targetWeaponName);
+
+        if (weaponChild == null && !string.IsNullOrEmpty(skin.idInHand))
+        {
+            weaponChild = transform.Find(skin.idInHand);
+        }
+
+        // 3. Включаем её
         if (weaponChild != null)
         {
             weaponChild.gameObject.SetActive(true);
-            Debug.Log($"[WeaponController] Игроку включена пушка: {weaponChild.name}");
+            Debug.Log($"[WeaponController] Включена пушка: {weaponChild.name}");
         }
         else
         {
-            Debug.LogError($"[WeaponController] Не найден дочерний объект оружия '{targetWeaponName}' или '{equippedSkin.idInHand}' внутри Игрока!");
+            Debug.LogError($"[WeaponController] Не найден дочерний объект оружия '{targetWeaponName}' или '{skin.idInHand}'!");
         }
     }
 }

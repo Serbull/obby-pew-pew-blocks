@@ -21,16 +21,16 @@ public class BlockHealth : MonoBehaviour, IDamageable
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
-    // Принимаем урон, направление и ТОЧКУ попадания пули
-    public void TakeDamage(int damage, Vector3 dir, Vector3 hitPoint)
+    // Принимаем урон, направление, ТОЧКУ попадания пули и множитель силы от пушки
+    public void TakeDamage(int damage, Vector3 dir, Vector3 hitPoint, float forceMultiplier = 1f)
     {
         if (isInWater) return;
 
         if (rb != null)
         {
-            // Прикладываем силу в конкретную точку попадания.
+            // Прикладываем силу в конкретную точку попадания, умноженную на силу конкретной пушки.
             // Это заставит блок не просто лететь вперед, но и реалистично закручиваться, передавая импульс соседям.
-            rb.AddForceAtPosition(dir * pushForce, hitPoint, ForceMode.Impulse);
+            rb.AddForceAtPosition(dir * pushForce * forceMultiplier, hitPoint, ForceMode.Impulse);
         }
     }
 

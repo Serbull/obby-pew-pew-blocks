@@ -10,10 +10,12 @@ public class Weapon : MonoBehaviour
     public float range = 200f;
 
     private float nextFireTime;
+    private WeaponController weaponController;
 
     void Start()
     {
         playerCamera = Camera.main;
+        weaponController = GetComponent<WeaponController>();
     }
 
     public void Shoot()
@@ -69,7 +71,16 @@ public class Weapon : MonoBehaviour
 
         if (bullet.TryGetComponent<BulletTracer>(out var tracer))
         {
-            tracer.Init(shootDir);
+            // Берём параметры из экипированного скина (у бота скин == null, тогда остаются дефолтные значения пули)
+            WeaponSkin skin = weaponController != null ? weaponController.EquippedSkin : null;
+            if (skin != null)
+            {
+                tracer.Init(shootDir, skin.bulletSpeed, skin.forceMultiplier);
+            }
+            else
+            {
+                tracer.Init(shootDir);
+            }
         }
     }
 }

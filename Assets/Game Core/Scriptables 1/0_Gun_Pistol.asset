@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
-  m_Name: Gun_Shotgun
+  m_Name: 0_Gun_Pistol
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u041A\u0438\u0431\u0435\u0440\u0448\u043E\u0442"
-  idInHand: ScifiHandGun_Baked_Maps
-  price: 500
-  Icon: {fileID: 21300000, guid: 69c78e37cfb98364794090d6878e4903, type: 3}
-  weaponPrefab: {fileID: 919132149155446097, guid: 28ebbcd7f4773384e867c255af2c669b, type: 3}
+  skinName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
+  idInHand: Pistol
+  bulletSpeed: 10
+  forceMultiplier: 10
+  rareId: common
+  price: 0
+  Icon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
+  weaponPrefab: {fileID: 100002, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
   isPurchased: 1
-  isEquipped: 0
+  isEquipped: 1

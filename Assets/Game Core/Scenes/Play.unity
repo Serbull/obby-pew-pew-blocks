@@ -5837,13 +5837,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6af928952811bbc4ebd0a91049069826, type: 2}
   - {fileID: 11400000, guid: 1bfb07b2f19a2e34d8798b78e85aaeae, type: 2}
   - {fileID: 11400000, guid: 60b2ea596ac835f438d98e3b357c2057, type: 2}
-  - {fileID: 11400000, guid: c311b16f1cc0aa34182f3679a209ab35, type: 2}
   - {fileID: 11400000, guid: 3f3a803977f41f84394972e858cdb567, type: 2}
+  - {fileID: 11400000, guid: c311b16f1cc0aa34182f3679a209ab35, type: 2}
   - {fileID: 11400000, guid: a8c14df7176dcc04aae1d0f1913d6acf, type: 2}
-  - {fileID: 11400000, guid: dfe56a2fda264594293d4257f5c5166a, type: 2}
+  - {fileID: 11400000, guid: e661b8afc16ea5544ac5a6c7d1a0d5d7, type: 2}
   - {fileID: 11400000, guid: e5d7f53389fee1244b67210a510bb554, type: 2}
   - {fileID: 11400000, guid: 3c2a9906875afdf4c8fbaa3257b35493, type: 2}
-  - {fileID: 11400000, guid: e661b8afc16ea5544ac5a6c7d1a0d5d7, type: 2}
+  - {fileID: 11400000, guid: dfe56a2fda264594293d4257f5c5166a, type: 2}
   mainCoinsText: {fileID: 1173426895}
   buttonPrefab: {fileID: 8458989507603260100, guid: ccd91384e8f9c2e498d68ce78fb46780, type: 3}
   shopGridContainer: {fileID: 1478915492}
@@ -15093,10 +15093,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlocksSpawner
   blockPrefab: {fileID: 7400902482814989678, guid: e5fd74371b062da4d8811946a8c33e30, type: 3}
   arenaZone: {fileID: 608307240}
-  towerHeight: 17
+  towerHeight: 16
   blocksPerRow: 3
   blockSize: {x: 4.5, y: 1.5, z: 1.5}
-  gap: 0.02
+  gap: 0.01
   floorColors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
@@ -25338,7 +25338,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 25}
+  m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1045649339
 MonoBehaviour:

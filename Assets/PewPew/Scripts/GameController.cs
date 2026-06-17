@@ -154,7 +154,7 @@ public class GameController : MonoBehaviour
 
         if (isFirstRound)
         {
-            currentMatchPlayersCount = Random.Range(4, 9);
+            currentMatchPlayersCount = Mathf.Clamp(4 + Mathf.FloorToInt(Mathf.Pow(Random.value, 1.5f) * 5f), 4, 8);
             spawner.SpawnTowers(currentMatchPlayersCount);
         }
 
@@ -169,7 +169,7 @@ public class GameController : MonoBehaviour
         if (victoryPanelUI != null) victoryPanelUI.SetActive(false);
         if (defeatPanelUI != null) defeatPanelUI.SetActive(false);
         ClearBotsAndTowers();
-        currentMatchPlayersCount = Random.Range(4, 9);
+        currentMatchPlayersCount = Mathf.Clamp(4 + Mathf.FloorToInt(Mathf.Pow(Random.value, 1.5f) * 5f), 4, 8);
         spawner.SpawnTowers(currentMatchPlayersCount);
     }
 

@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
-  m_Name: Gun_Pistol
+  m_Name: 1_Gun_Rifle
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
-  idInHand: Pistol
-  price: 0
-  Icon: {fileID: 21300000, guid: 47f284a84651f5f47aca17a710a6298c, type: 3}
-  weaponPrefab: {fileID: 100002, guid: ccac3f45f8b36dc4196bc991b941ea8e, type: 3}
-  isPurchased: 1
+  skinName: "\u0420\u0430\u043A\u0435\u0442\u043D\u0438\u0446\u0430"
+  idInHand: flaregun
+  bulletSpeed: 10
+  forceMultiplier: 10
+  rareId: common
+  price: 350
+  Icon: {fileID: 21300000, guid: d9ef0b2c3891b6048ad4433eba8abf7f, type: 3}
+  weaponPrefab: {fileID: 100004, guid: 1d204df1bf723d645a3ce8946a952fed, type: 3}
+  isPurchased: 0
   isEquipped: 0

@@ -1,12 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Serbull.GameAssets;
+using Serbull.GameAssets.Rare;
 
 public class SkinButton : MonoBehaviour
 {
+    // Кэшируем конфиг редкостей, чтобы не грузить его из Resources для каждой кнопки
+    private static RareConfig _rareConfig;
+    private static RareConfig RareConfig =>
+        _rareConfig != null ? _rareConfig : (_rareConfig = Resources.Load<RareConfig>("RareConfig"));
+
     [Header("UI Elements")]
+    public Image background;
     public TMPro.TextMeshProUGUI titleText;
     public TMPro.TextMeshProUGUI priceText;
+    public TMPro.TextMeshProUGUI speedText;  // Скорость пули
+    public TMPro.TextMeshProUGUI forceText;  // Множитель силы толчка
     public Image iconImage;
     public Image statusBackground;
     public GameObject selectedCheckmark; // Переменная для нашей галочки!
@@ -33,6 +42,16 @@ public class SkinButton : MonoBehaviour
         }
 
         if (iconImage != null) iconImage.sprite = skin.Icon;
+
+        // Красим фон кнопки в цвет редкости пушки из RareConfig
+        if (background != null && RareConfig != null && !string.IsNullOrEmpty(skin.rareId))
+        {
+            background.color = RareConfig.GetRareData(skin.rareId).Color;
+        }
+
+        // Отображаем характеристики пушки: скорость пули и множитель силы толчка
+        if (speedText != null) speedText.text = skin.bulletSpeed.ToString("0.#");
+        if (forceText != null) forceText.text = skin.forceMultiplier.ToString("0.#");
 
         // Настраиваем отображение текста, цветов и галочки с учетом локализации
         if (skin.isEquipped)

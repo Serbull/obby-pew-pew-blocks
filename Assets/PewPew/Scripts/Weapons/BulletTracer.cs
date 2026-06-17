@@ -6,6 +6,7 @@ public class BulletTracer : MonoBehaviour
 	public int damage = 1;
 	public float lifeTime = 7.5f;
 
+	private float forceMultiplier = 1f; // Множитель силы толчка блока (берётся из скина пушки)
 	private Vector3 direction;
 	private bool isHit = false; // Защита от двойного просчета попадания
 
@@ -31,6 +32,14 @@ public class BulletTracer : MonoBehaviour
 		Destroy(gameObject, lifeTime);
 	}
 
+	// Перегрузка с параметрами из скина пушки: скорость пули и множитель силы толчка блока
+	public void Init(Vector3 dir, float bulletSpeed, float force)
+	{
+		speed = bulletSpeed;
+		forceMultiplier = force;
+		Init(dir);
+	}
+
 	void Update()
 	{
 		// Если пуля уже попала, мы её больше не двигаем
@@ -51,7 +60,7 @@ public class BulletTracer : MonoBehaviour
 			Vector3 hitPoint = other.ClosestPoint(transform.position);
 
 			// Передаем все данные
-			dmg.TakeDamage(damage, direction, hitPoint);
+			dmg.TakeDamage(damage, direction, hitPoint, forceMultiplier);
 		}
 
 		// Вместо резкого Destroy запускаем красивое исчезновение хвоста

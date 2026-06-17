@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 586ab1d8aa0370044a54fdaa6d94c3ed, type: 3}
-  m_Name: Lp4
+  m_Name: 6_Neon
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
-  skinName: "\u0427\u0443\u043F\u0430\u0447\u0443\u043F\u0441"
-  idInHand: Lp4
-  price: 1800
-  Icon: {fileID: 21300000, guid: 1954c3c4129a96542a9670d539ea14b1, type: 3}
-  weaponPrefab: {fileID: 919132149155446097, guid: 81dfde5f6a2390045a8d3c6642df6253, type: 3}
+  skinName: Neon
+  idInHand: Neon
+  bulletSpeed: 10
+  forceMultiplier: 10
+  rareId: epic
+  price: 2000
+  Icon: {fileID: 21300000, guid: 47209cf97765a744ab5a3311c2eef1bd, type: 3}
+  weaponPrefab: {fileID: 919132149155446097, guid: d52a163a463274344a3203401b439ef8, type: 3}
   isPurchased: 0
   isEquipped: 0
