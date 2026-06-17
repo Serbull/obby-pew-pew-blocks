@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Serbull.GameAssets;
+using YG;
 
 public class GameController : MonoBehaviour
 {
@@ -272,6 +273,7 @@ public class GameController : MonoBehaviour
         }
         AddCoinsToShop(100);
         StartCoroutine(WaitAndRespawn(3.0f));
+        YG2.InterstitialAdvShow();
     }
 
     private void EvaluateGameResult()
@@ -285,6 +287,7 @@ public class GameController : MonoBehaviour
             AddCoinsToShop(20);
         }
         StartCoroutine(WaitAndRespawn(3.0f));
+        YG2.InterstitialAdvShow();
     }
 
     private System.Collections.IEnumerator HidePanelAfterDelay(GameObject panel, float delay)
