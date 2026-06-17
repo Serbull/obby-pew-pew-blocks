@@ -315,3 +315,9 @@ MonoBehaviour:
   - Id: selected
     En: Equipped
     Ru: "\u0412\u044B\u0431\u0440\u0430\u043D\u043E"
+  - Id: lb_playtime
+    En: Play time
+    Ru: "\u0412\u0440\u0435\u043C\u044F \u0438\u0433\u0440\u044B"
+  - Id: lb_wins
+    En: Game wins
+    Ru: "\u0412\u044B\u0438\u0433\u0440\u0430\u043D\u043E \u0438\u0433\u0440"

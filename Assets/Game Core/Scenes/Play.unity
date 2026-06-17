@@ -19649,6 +19649,10 @@ PrefabInstance:
       propertyPath: timeTypeConvert
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2917475483941676768, guid: 6a3b24c793b4b4d0bad44b5f78cb0d02, type: 3}
+      propertyPath: _id
+      value: lb_playtime
+      objectReference: {fileID: 0}
     - target: {fileID: 3008983235653349551, guid: 6a3b24c793b4b4d0bad44b5f78cb0d02, type: 3}
       propertyPath: nameLB
       value: playtime
@@ -27986,6 +27990,10 @@ PrefabInstance:
     - target: {fileID: 1841578383958166926, guid: 6a3b24c793b4b4d0bad44b5f78cb0d02, type: 3}
       propertyPath: nameLB
       value: wins
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917475483941676768, guid: 6a3b24c793b4b4d0bad44b5f78cb0d02, type: 3}
+      propertyPath: _id
+      value: lb_wins
       objectReference: {fileID: 0}
     - target: {fileID: 3008983235653349551, guid: 6a3b24c793b4b4d0bad44b5f78cb0d02, type: 3}
       propertyPath: nameLB
