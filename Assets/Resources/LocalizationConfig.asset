@@ -278,7 +278,7 @@ MonoBehaviour:
     Ru: "\u041A\u043E\u0432\u0431\u043E\u0439"
   - Id: Forgotten
     En: RedLine
-    Ru: RedLine
+    Ru: "\u0420\u0435\u0434\u041B\u0430\u0439\u043D"
   - Id: Pistol
     En: Pistol
     Ru: "\u041F\u0438\u0441\u0442\u043E\u043B\u0435\u0442"
@@ -293,10 +293,10 @@ MonoBehaviour:
     Ru: "\u041E\u0431\u043B\u0430\u043A\u043E"
   - Id: Lp4
     En: Lollipop
-    Ru: "\u0427\u0443\u043F\u0430\u0447\u0443\u043F\u0441"
+    Ru: "\u0427\u0443\u043F\u0430-\u0427\u0443\u043F\u0441"
   - Id: Neon
     En: Neon
-    Ru: Neon
+    Ru: "\u041D\u0435\u043E\u043D"
   - Id: afk_on
     En: 'AFK: on'
     Ru: "\u0410\u0424\u041A: \u0432\u043A\u043B"
