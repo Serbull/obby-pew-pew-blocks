@@ -17,7 +17,7 @@ MonoBehaviour:
   bulletSpeed: 18
   forceMultiplier: 180
   rareId: legendary
-  price: 2300
+  price: 6000
   Icon: {fileID: 21300000, guid: 1954c3c4129a96542a9670d539ea14b1, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: 81dfde5f6a2390045a8d3c6642df6253, type: 3}
   isPurchased: 0
