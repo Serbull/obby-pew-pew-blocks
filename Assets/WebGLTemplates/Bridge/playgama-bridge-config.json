@@ -1,0 +1,31 @@
+{
+    "$schema": "https://bridge.playgama.com/v1/stable/schema.json",
+    "advertisement": {
+        "interstitial": {
+            "preloadOnStart": true
+        },
+        "rewarded": {
+            "preloadOnStart": true
+        },
+        "useBuiltInErrorPopup": true,
+        "backfillId": ""
+    },
+    "payments": [
+        {
+            "id": "test",
+            "playgama": {
+                "amount": 1
+            },
+            "playdeck": {
+                "amount": 1,
+                "description": "TEST"
+            }
+        }
+    ],
+    "leaderboards": [
+        {
+            "id": "test"
+        }
+    ],
+    "sendAnalyticsEvents": true
+}

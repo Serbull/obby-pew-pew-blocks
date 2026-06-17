@@ -16,5 +16,8 @@ namespace YG
 
         public List<bool> skinsPurchased = new();
         public List<bool> skinsEquipped = new();
+
+        public int playtime;
+        public int wins;
     }
 }

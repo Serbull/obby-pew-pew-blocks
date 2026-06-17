@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: Neon
   idInHand: Neon
-  bulletSpeed: 12
+  bulletSpeed: 14
   forceMultiplier: 160
   rareId: epic
   price: 1700

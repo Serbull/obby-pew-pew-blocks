@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u0427\u0443\u043F\u0430\u0447\u0443\u043F\u0441"
   idInHand: Lp4
-  bulletSpeed: 14
+  bulletSpeed: 18
   forceMultiplier: 180
   rareId: legendary
   price: 2300

@@ -273,6 +273,8 @@ public class GameController : MonoBehaviour
         }
         AddCoinsToShop(100);
         StartCoroutine(WaitAndRespawn(3.0f));
+        SaveManager.Data.wins++;
+        Leaderboards.Send("wins", SaveManager.Data.wins);
         YG2.InterstitialAdvShow();
     }
 

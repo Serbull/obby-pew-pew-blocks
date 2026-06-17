@@ -68,6 +68,8 @@ namespace YG
 #if !UNITY_ANDROID
             if (infoYG.InterstitialAdv.showFirstAdv)
                 InterstitialAdvShow();
+            else
+                YGInsides.SetTimerInterAdv();
 #endif
 #endif
 #endif

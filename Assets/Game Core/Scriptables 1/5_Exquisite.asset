@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u041A\u043E\u0432\u0431\u043E\u0439"
   idInHand: Exquisite
-  bulletSpeed: 11
+  bulletSpeed: 12
   forceMultiplier: 150
   rareId: epic
   price: 1500

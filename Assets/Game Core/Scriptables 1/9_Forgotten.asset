@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: RedLine
   idInHand: Forgotten
-  bulletSpeed: 15
+  bulletSpeed: 20
   forceMultiplier: 200
   rareId: mystical
   price: 3000
   Icon: {fileID: 21300000, guid: cc491a07ae6ac0b4c98436f98c455127, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: ce96c5c888fb8e948bad7f5395c3fe6a, type: 3}
   isPurchased: 1
-  isEquipped: 1
+  isEquipped: 0

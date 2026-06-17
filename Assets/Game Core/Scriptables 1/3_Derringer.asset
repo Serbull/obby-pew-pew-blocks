@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSkin
   skinName: "\u041F\u0443\u0441\u0442\u044B\u043D\u044F"
   idInHand: Derringer
-  bulletSpeed: 12
+  bulletSpeed: 14
   forceMultiplier: 110
   rareId: rare
   price: 900
