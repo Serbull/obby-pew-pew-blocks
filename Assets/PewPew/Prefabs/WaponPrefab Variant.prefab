@@ -12,10 +12,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4152465195289273737, guid: 38d4b2570e109c5418cc1de8afbc3603, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4152465195289273739, guid: 38d4b2570e109c5418cc1de8afbc3603, type: 3}
       propertyPath: m_Name
       value: WaponPrefab Variant

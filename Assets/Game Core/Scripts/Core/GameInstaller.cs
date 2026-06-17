@@ -6,7 +6,7 @@ public class GameInstaller : MonoBehaviour
 {
     public SGAInstaller sgaInstaller;
 
-    private void Start()
+    private void Awake()
     {
         sgaInstaller.Init(null, null, YG2.envir.device == YG2.Device.Mobile, YG2.lang);
     }

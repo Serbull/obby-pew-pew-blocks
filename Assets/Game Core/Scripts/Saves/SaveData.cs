@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Serbull.GameAssets.Pets;
 using Serbull.GameAssets.Roulette;
 
 namespace YG
@@ -10,8 +9,6 @@ namespace YG
 
         public int level;
         public int luckySpin = 1;
-
-        public List<PetData> Pets = new();
         public RouletteData Roulette = new();
 
         public List<bool> skinsPurchased = new();

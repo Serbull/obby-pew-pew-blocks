@@ -18,15 +18,36 @@
         false,
         false
     ],
-    "coins": 0,
+    "coins": 991030,
     "level": 0,
     "luckySpin": 1,
-    "Pets": [],
     "Roulette": {
         "SpinCount": 0
     },
-    "skinsPurchased": [],
-    "skinsEquipped": [],
+    "skinsPurchased": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+    ],
+    "skinsEquipped": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+    ],
     "playtime": 0,
     "wins": 0,
     "SoundVolume": 1.0,
@@ -42,5 +63,5 @@
         false,
         false
     ],
-    "idSave": 14
+    "idSave": 72
 }
