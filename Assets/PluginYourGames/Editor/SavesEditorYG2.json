@@ -1,22 +1,39 @@
 {
+    "lastLoginDate": "2026-06-17",
+    "dailyReward": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
+    "dailyRewardClimed": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ],
     "coins": 0,
     "level": 0,
-    "luckySpin": 0,
-    "Pets": [
-        {
-            "Id": "cute_dragon1",
-            "IsEquipped": false,
-            "IsGold": false
-        }
-    ],
+    "luckySpin": 1,
+    "Pets": [],
     "Roulette": {
         "SpinCount": 0
     },
+    "skinsPurchased": [],
+    "skinsEquipped": [],
+    "playtime": 0,
+    "wins": 0,
     "SoundVolume": 1.0,
     "MusicVolume": 1.0,
-    "CameraSensitivity": 0.7438234686851502,
+    "CameraSensitivity": 0.5,
     "SkinId": 0,
-    "IsFirstSkinSelected": true,
+    "IsFirstSkinSelected": false,
     "intExample": 5,
     "strExample": "Hello!",
     "boolExample": [
@@ -25,5 +42,5 @@
         false,
         false
     ],
-    "idSave": 4319
+    "idSave": 14
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShopManager : MonoBehaviour
+public class ShopManager : Singleton<ShopManager>
 {
     [Header("Shop Settings")]
     public int coins = 1000;
@@ -220,5 +220,11 @@ public class ShopManager : MonoBehaviour
         if (Application.isPlaying) SpawnWeaponButtons();
         RefreshWeaponPositions();
         Debug.Log("[Админ] Сохранения сброшены!");
+    }
+
+    public void AddCoins(int count)
+    {
+        coins += count;
+        UpdateCoinsUI();
     }
 }
