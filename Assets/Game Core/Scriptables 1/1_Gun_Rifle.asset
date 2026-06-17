@@ -16,7 +16,7 @@ MonoBehaviour:
   idInHand: flaregun
   bulletSpeed: 11
   forceMultiplier: 100
-  rareId: common
+  rareId: uncommon
   price: 350
   Icon: {fileID: 21300000, guid: d9ef0b2c3891b6048ad4433eba8abf7f, type: 3}
   weaponPrefab: {fileID: 100004, guid: 1d204df1bf723d645a3ce8946a952fed, type: 3}

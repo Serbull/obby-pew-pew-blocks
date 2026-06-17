@@ -16,7 +16,7 @@ MonoBehaviour:
   idInHand: Exquisite
   bulletSpeed: 11
   forceMultiplier: 150
-  rareId: rare
+  rareId: epic
   price: 1200
   Icon: {fileID: 21300000, guid: 458531364eab4444680c411c1152e755, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: b977ef729b6ec394b999cb9c31bd40c2, type: 3}

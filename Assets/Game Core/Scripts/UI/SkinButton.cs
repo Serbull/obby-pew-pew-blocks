@@ -13,28 +13,22 @@ public class SkinButton : MonoBehaviour
     [Header("UI Elements")]
     public Image background;
     public TMPro.TextMeshProUGUI titleText;
-    public TMPro.TextMeshProUGUI priceText;
-    public TMPro.TextMeshProUGUI speedText;  // Скорость пули
-    public TMPro.TextMeshProUGUI forceText;  // Множитель силы толчка
     public Image iconImage;
-    public Image statusBackground;
-    public GameObject selectedCheckmark; // Переменная для нашей галочки!
-
-    [Header("Colors")]
-    public Color equippedColor = Color.green;
-    public Color purchasedColor = Color.blue;
-    public Color shopColor = Color.gray;
+    public GameObject lockIcon;          // Иконка замка — показывается, если пушка не куплена
+    public GameObject selectedHighlight; // Подсветка выбранной кнопки (необязательно)
 
     private WeaponSkin currentSkin;
     private ShopManager shopManager;
+
+    public WeaponSkin Skin => currentSkin;
 
     public void Setup(WeaponSkin skin, ShopManager manager)
     {
         currentSkin = skin;
         shopManager = manager;
 
-        // ПЕРЕВОД НАЗВАНИЯ: Используем idInHand пушки как ключ локализации.
-        // Если перевода нет (например, забыл добавить в конфиг), можно подстраховаться и оставить дефолтный skinName.
+        // ПЕРЕВОД НАЗВАНИЯ: используем idInHand пушки как ключ локализации,
+        // подстраховываемся дефолтным skinName, если перевода нет.
         if (titleText != null && skin != null)
         {
             string translatedName = Services.Localization.GetText(skin.idInHand);
@@ -49,42 +43,25 @@ public class SkinButton : MonoBehaviour
             background.color = RareConfig.GetRareData(skin.rareId).Color;
         }
 
-        // Отображаем характеристики пушки: скорость пули и множитель силы толчка
-        if (speedText != null) speedText.text = skin.bulletSpeed.ToString("0.#");
-        if (forceText != null) forceText.text = skin.forceMultiplier.ToString("0.#");
+        // Замок виден только у некупленной пушки
+        if (lockIcon != null) lockIcon.SetActive(!skin.isPurchased);
 
-        // Настраиваем отображение текста, цветов и галочки с учетом локализации
-        if (skin.isEquipped)
-        {
-            // ПЕРЕВОД: "АКТИВНО"
-            if (priceText != null) priceText.text = Services.Localization.GetText("ui_skin_active");
-            if (statusBackground != null) statusBackground.color = equippedColor;
-
-            if (selectedCheckmark != null) selectedCheckmark.SetActive(true);
-        }
-        else if (skin.isPurchased)
-        {
-            // ПЕРЕВОД: "ВЫБРАТЬ"
-            if (priceText != null) priceText.text = Services.Localization.GetText("ui_skin_select");
-            if (statusBackground != null) statusBackground.color = purchasedColor;
-
-            if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
-        }
-        else
-        {
-            // Здесь просто цена, локализация значка валюты по желанию (оставил как у тебя)
-            if (priceText != null) priceText.text = skin.price.ToString() + " $";
-            if (statusBackground != null) statusBackground.color = shopColor;
-
-            if (selectedCheckmark != null) selectedCheckmark.SetActive(false);
-        }
+        // Подсветка — только у реально выбранной (экипированной) пушки
+        SetSelected(skin.isEquipped);
     }
 
+    // Подсветка реально выбранной (экипированной) пушки
+    public void SetSelected(bool selected)
+    {
+        if (selectedHighlight != null) selectedHighlight.SetActive(selected);
+    }
+
+    // Клик по кнопке только обновляет инфо в боковой панели (без покупки/выбора)
     public void OnClick()
     {
         if (shopManager != null && currentSkin != null)
         {
-            shopManager.OnClickSkin(currentSkin);
+            shopManager.SelectSkin(currentSkin);
         }
     }
 }

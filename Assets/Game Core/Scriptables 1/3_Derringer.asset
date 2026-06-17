@@ -16,7 +16,7 @@ MonoBehaviour:
   idInHand: Derringer
   bulletSpeed: 12
   forceMultiplier: 110
-  rareId: uncommon
+  rareId: rare
   price: 900
   Icon: {fileID: 21300000, guid: 94985e6b44868524a830432ffedf33e7, type: 3}
   weaponPrefab: {fileID: 919132149155446097, guid: 846a915e5f417414388462a1562643d5, type: 3}
