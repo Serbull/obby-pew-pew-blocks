@@ -171,6 +171,11 @@ public class BlocksSpawner : MonoBehaviour
                 if (isLastFloor) block.name = blockPrefix + index;
                 else block.name = $"Block_{y}_{i}";
 
+                if (block.TryGetComponent<BlockHealth>(out var health))
+                {
+                    health.destoyInWater = y > 1;
+                }
+
                 bool isCenterBlock = (i == blocksPerRow / 2);
                 bool darken = darkenCenter ? isCenterBlock : !isCenterBlock;
                 Color blockColor = darken ? DarkenColor(floorColor, darkenAmount) : floorColor;
