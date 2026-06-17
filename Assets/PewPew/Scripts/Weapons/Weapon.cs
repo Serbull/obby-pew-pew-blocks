@@ -30,7 +30,15 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        Ray camRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+        // На ПК целимся курсором мыши, на телефоне — точкой касания экрана.
+        // Input.mousePosition на мобильных не следует за пальцем, поэтому берём позицию тача.
+        Vector3 aimScreenPos = Input.mousePosition;
+        if (Input.touchCount > 0)
+        {
+            aimScreenPos = Input.GetTouch(Input.touchCount - 1).position;
+        }
+
+        Ray camRay = playerCamera.ScreenPointToRay(aimScreenPos);
         RaycastHit camHit;
         Vector3 targetPoint;
 

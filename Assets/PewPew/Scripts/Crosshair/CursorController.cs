@@ -8,15 +8,9 @@ public class CursorController : MonoBehaviour
     public RectTransform crosshair;
     public Animator playerAnimator;
 
-    // Список названий UI-элементов, сквозь которые МОЖНО стрелять/целиться
-    private readonly List<string> ignoredUiNames = new List<string>
-    {
-        "VictoryPanel",
-        "DefeatPanel",
-        "TopPanel",
-        "CenterPanel",
-        "Crosshair"
-    };
+    // Список названий UI-элементов, сквозь которые МОЖНО стрелять/целиться.
+    // Единый источник — UiPassThrough, чтобы прицел и стрельба не расходились.
+    private readonly List<string> ignoredUiNames = UiPassThrough.IgnoredUiNames;
 
     void Update()
     {
@@ -62,15 +56,12 @@ public class CursorController : MonoBehaviour
         // 2. Считываем состояние прицеливания из аниматора
         bool isAiming = playerAnimator.GetBool("IsAiming");
 
-        // 3. Управляем активностью крестика прицела
-        crosshair.gameObject.SetActive(isAiming && !isOverUI);
+        // 3. Управляем активностью крестика прицела.
+        // На мобильном целимся точкой касания, поэтому крестик не показываем вовсе.
+        crosshair.gameObject.SetActive(!isMobile && isAiming && !isOverUI);
 
-        // 4. Позиционируем прицел
-        if (isMobile)
-        {
-            crosshair.position = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
-        }
-        else
+        // 4. Позиционируем прицел (только на ПК — на мобильном крестик скрыт)
+        if (!isMobile)
         {
             if (isAiming && !isOverUI)
             {

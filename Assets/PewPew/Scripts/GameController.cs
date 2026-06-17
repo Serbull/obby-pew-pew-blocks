@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     [Header("Ссылка на Экономику")]
     public ShopManager shopManager;
 
+    public ParticleSystem[] winEffects;
+
     private List<GameObject> activeBots = new List<GameObject>();
     private float stateTimer;
     private bool isPlayerDead = false;
@@ -274,6 +276,15 @@ public class GameController : MonoBehaviour
             victoryPanelUI.SetActive(true);
             StartCoroutine(HidePanelAfterDelay(victoryPanelUI, 3.0f));
         }
+
+        if (winEffects != null && winEffects.Length != 0)
+        {
+            for (int i = 0; i < winEffects.Length; i++)
+            {
+                winEffects[i].Play();
+            }
+        }
+
         AddCoinsToShop(100);
         StartCoroutine(WaitAndRespawn(3.0f));
         SaveManager.Data.wins++;
@@ -305,6 +316,7 @@ public class GameController : MonoBehaviour
         ClearBotsAndTowers();
         TeleportPlayerToSpawn();
         StartCountdownPhase();
+
     }
 
     // [ContextMenu("Stop Game")]

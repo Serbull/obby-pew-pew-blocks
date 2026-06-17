@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // ОБЯЗАТЕЛЬНО: для проверки кликов по UI
 
 public class PlayerShooter : MonoBehaviour
 {
@@ -26,8 +25,12 @@ public class PlayerShooter : MonoBehaviour
 
         bool isEquipped = (weapon.transform.parent == weaponEquip.handPoint);
 
-        // 1. Проверяем, находится ли курсор мыши над интерфейсом (кнопки, магазин)
-        bool isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        // 1. Проверяем, над "блокирующим" ли UI палец/курсор (кнопки, магазин).
+        // Панель камеры и зона прицеливания считаются сквозными — сквозь них стрелять можно.
+        Vector2 pointerPos = Input.touchCount > 0
+            ? Input.GetTouch(Input.touchCount - 1).position
+            : (Vector2)Input.mousePosition;
+        bool isOverUI = UiPassThrough.IsOverBlockingUI(pointerPos);
 
         if (isEquipped)
         {

@@ -38,7 +38,7 @@ public class FP_Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPo
 	{
 		pressed = true;
 		_returnHandle = false;
-		joystick.anchoredPosition = eventData.position;
+		joystick.position = eventData.position;
 		stickOffset = GetJoystickOffset(eventData);
 		stick.anchoredPosition = stickOffset;
 		OnStartJoystickMovement?.Invoke(this, Coordinates);
