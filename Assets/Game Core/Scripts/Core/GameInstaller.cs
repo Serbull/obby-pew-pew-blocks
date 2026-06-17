@@ -9,5 +9,7 @@ public class GameInstaller : MonoBehaviour
     private void Awake()
     {
         sgaInstaller.Init(null, null, YG2.envir.device == YG2.Device.Mobile, YG2.lang);
+
+        Leaderboards.Send("wins", SaveManager.Data.wins);
     }
 }
