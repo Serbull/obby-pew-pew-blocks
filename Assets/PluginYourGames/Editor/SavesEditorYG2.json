@@ -1,8 +1,8 @@
 {
-    "lastLoginDate": "2026-06-17",
+    "lastLoginDate": "2026-06-18",
     "dailyReward": [
         true,
-        false,
+        true,
         false,
         false,
         false,
@@ -18,7 +18,7 @@
         false,
         false
     ],
-    "coins": 991030,
+    "coins": 991150,
     "level": 0,
     "luckySpin": 1,
     "Roulette": {
@@ -48,8 +48,8 @@
         false,
         true
     ],
-    "playtime": 0,
-    "wins": 0,
+    "playtime": 551766,
+    "wins": 1,
     "SoundVolume": 1.0,
     "MusicVolume": 1.0,
     "CameraSensitivity": 0.5,
@@ -63,5 +63,5 @@
         false,
         false
     ],
-    "idSave": 72
+    "idSave": 175
 }

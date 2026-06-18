@@ -1,12 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
 public class PlayerShooter : MonoBehaviour
 {
+    [Header("Тап против свайпа (мобайл)")]
+    [Tooltip("Макс. смещение пальца (в долях высоты экрана), при котором касание ещё считается тапом, а не свайпом камеры.")]
+    public float maxTapMoveFraction = 0.03f;
+
     private Weapon weapon;
     private PlayerWeaponEquip weaponEquip;
     private Animator anim;
     private bool isMobile;
+
+    // Отслеживаем каждое касание, чтобы отличить тап (выстрел) от свайпа (вращение камеры).
+    private struct TouchInfo
+    {
+        public Vector2 startPos;
+        public bool isSwipe;
+    }
+
+    private readonly Dictionary<int, TouchInfo> trackedTouches = new();
 
     void Start()
     {
@@ -42,28 +56,83 @@ public class PlayerShooter : MonoBehaviour
             : (Vector2)Input.mousePosition;
         bool isOverUI = UiPassThrough.IsOverBlockingUI(pointerPos);
 
-        if (isEquipped)
+        if (isEquipped && !isOverUI)
         {
-            // 2. ИСПРАВЛЕНИЕ: Включаем прицеливание ТОЛЬКО если мышка НЕ над интерфейсом
-            if (!isOverUI)
-            {
-                anim.SetBool("IsAiming", true);
+            anim.SetBool("IsAiming", true);
 
-                // Стреляем, только если зажали ЛКМ и НЕ кликаем по UI кнопкам
-                if ((Input.GetMouseButton(0) || Input.touchCount > 0) && anim.GetFloat("Move") < 1)
-                {
-                    weapon.Shoot();
-                }
-            }
-            else
+            // На ПК — автоогонь зажатой ЛКМ. На мобильном — выстрел по тапу (не по свайпу).
+            if (isMobile)
             {
-                // Если пушка в руках, но мышка наведена на UI (например, на кнопку "Стоп") — опускаем пушку!
-                anim.SetBool("IsAiming", false);
+                HandleTapShooting(isEquipped);
+            }
+            else if (Input.GetMouseButton(0) && anim.GetFloat("Move") < 1)
+            {
+                weapon.Shoot();
             }
         }
         else
         {
+            // Если пушка в руках, но палец/мышка над UI (например, на кнопке "Стоп") — опускаем пушку!
             anim.SetBool("IsAiming", false);
+
+            // Всё равно отслеживаем касания, чтобы тап, начавшийся над UI, не выстрелил.
+            if (isMobile) HandleTapShooting(isEquipped);
+        }
+    }
+
+    // Стреляем только если касание оказалось тапом: палец почти не сместился.
+    // Свайп (вращение камеры) выстрел не вызывает.
+    private void HandleTapShooting(bool isEquipped)
+    {
+        float moveThreshold = Screen.height * maxTapMoveFraction;
+
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch t = Input.GetTouch(i);
+
+            switch (t.phase)
+            {
+                case TouchPhase.Began:
+                    trackedTouches[t.fingerId] = new TouchInfo
+                    {
+                        startPos = t.position,
+                        isSwipe = false
+                    };
+                    break;
+
+                case TouchPhase.Moved:
+                case TouchPhase.Stationary:
+                    if (trackedTouches.TryGetValue(t.fingerId, out var moving))
+                    {
+                        if (!moving.isSwipe && (t.position - moving.startPos).magnitude > moveThreshold)
+                        {
+                            moving.isSwipe = true;
+                            trackedTouches[t.fingerId] = moving;
+                        }
+                    }
+                    break;
+
+                case TouchPhase.Ended:
+                    if (trackedTouches.TryGetValue(t.fingerId, out var ended))
+                    {
+                        bool movedTooFar = (t.position - ended.startPos).magnitude > moveThreshold;
+                        bool isTap = !ended.isSwipe && !movedTooFar;
+
+                        if (isTap && isEquipped
+                            && anim.GetFloat("Move") < 1
+                            && !UiPassThrough.IsOverBlockingUI(t.position))
+                        {
+                            weapon.Shoot();
+                        }
+
+                        trackedTouches.Remove(t.fingerId);
+                    }
+                    break;
+
+                case TouchPhase.Canceled:
+                    trackedTouches.Remove(t.fingerId);
+                    break;
+            }
         }
     }
 }
