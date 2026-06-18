@@ -11,6 +11,11 @@ public class CharacterCore : MonoBehaviour
         public float maxGroundedUpVelocity = 0.5f;
         public float speed = 2.3f;
         public float jumpForce = 7;
+
+        [Header("Step Up")]
+        public float stepHeight = 0.4f;
+        public float stepCheckDistance = 0.4f;
+        public float stepSmooth = 0.08f;
     }
 
     public LayerMask groundLayers;
@@ -76,7 +81,9 @@ public class CharacterCore : MonoBehaviour
 
     private void PlayerMovement()
     {
-        if (!SomethingInFront())
+        bool steppingUp = _isGrounded && TryStepUp();
+
+        if (!SomethingInFront() || steppingUp)
         {
             var moveSpeed = moveAxis.normalized * playerSettings.speed;
             rb.linearVelocity = new Vector3(moveSpeed.x, rb.linearVelocity.y, moveSpeed.z);
@@ -92,6 +99,30 @@ public class CharacterCore : MonoBehaviour
             _animator.SetFloat("Move", 1);
             _animator.SetFloat("RunSpeed", playerSettings.speed / 4f);
         }
+    }
+
+    private bool TryStepUp()
+    {
+        if (moveAxis == Vector3.zero)
+            return false;
+
+        Vector3 moveDir = moveAxis.normalized;
+
+        // Нижний луч на уровне ног: есть ли впереди невысокое препятствие (ступенька)
+        Vector3 lowerOrigin = transform.position + transform.up * 0.05f;
+        if (Physics.Raycast(lowerOrigin, moveDir, playerSettings.stepCheckDistance, frontLayers))
+        {
+            // Верхний луч на высоте ступеньки: путь свободен -> препятствие можно перешагнуть
+            Vector3 upperOrigin = transform.position + transform.up * playerSettings.stepHeight;
+            if (!Physics.Raycast(upperOrigin, moveDir, playerSettings.stepCheckDistance + 0.1f, frontLayers))
+            {
+                // Плавно поднимаем персонажа вверх
+                rb.position += transform.up * playerSettings.stepSmooth;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void GroundCheck()

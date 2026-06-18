@@ -103,13 +103,16 @@ MonoBehaviour:
     m_Bits: 1
   frontLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   playerSettings:
     baseGravity: -9.81
     groundSnapForce: 20
     maxGroundedUpVelocity: 0.5
     speed: 5
     jumpForce: 7
+    stepHeight: 0.4
+    stepCheckDistance: 0.4
+    stepSmooth: 0.05
   rb: {fileID: 0}
   moveAxis: {x: 0, y: 0, z: 0}
   rotationAux: {x: 0, y: 0, z: 0, w: 0}
