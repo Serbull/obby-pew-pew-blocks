@@ -1,4 +1,5 @@
 using UnityEngine;
+using YG;
 
 public class PlayerAimRotation : MonoBehaviour
 {
@@ -27,7 +28,13 @@ public class PlayerAimRotation : MonoBehaviour
 
 	void RotatePlayer()
 	{
-		Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+		// На ПК целимся курсором мыши, на телефоне — всегда из центра экрана,
+		// чтобы персонаж смотрел в центр, а не вращался за пальцем.
+		Vector3 aimScreenPos = YG2.envir.isDesktop
+			? Input.mousePosition
+			: new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+
+		Ray ray = playerCamera.ScreenPointToRay(aimScreenPos);
 		RaycastHit hit;
 
 		Vector3 targetPoint;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using YG;
 
 public class Weapon : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class Weapon : MonoBehaviour
 
     private float nextFireTime;
     private WeaponController weaponController;
+
+    // Идёт ли сейчас перезарядка (откат между выстрелами) и сколько осталось секунд.
+    public bool IsReloading => Time.time < nextFireTime;
+    public float ReloadTimeLeft => Mathf.Max(0f, nextFireTime - Time.time);
+    public float ReloadValue => Mathf.Clamp01(1 - (nextFireTime - Time.time) / fireRate);
 
     void Start()
     {
@@ -30,12 +36,16 @@ public class Weapon : MonoBehaviour
             return;
         }
 
-        // На ПК целимся курсором мыши, на телефоне — точкой касания экрана.
-        // Input.mousePosition на мобильных не следует за пальцем, поэтому берём позицию тача.
-        Vector3 aimScreenPos = Input.mousePosition;
-        if (Input.touchCount > 0)
+        // На ПК целимся курсором мыши, на телефоне — всегда из центра экрана
+        // (камера в режиме прицеливания, прицел зафиксирован по центру).
+        Vector3 aimScreenPos;
+        if (!YG2.envir.isDesktop)
         {
-            aimScreenPos = Input.GetTouch(Input.touchCount - 1).position;
+            aimScreenPos = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+        }
+        else
+        {
+            aimScreenPos = Input.mousePosition;
         }
 
         Ray camRay = playerCamera.ScreenPointToRay(aimScreenPos);

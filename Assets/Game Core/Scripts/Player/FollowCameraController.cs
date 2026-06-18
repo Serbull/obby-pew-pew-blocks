@@ -5,6 +5,8 @@ public class FollowCameraController : Singleton<FollowCameraController>
 {
     [SerializeField] private Transform _target;
     [SerializeField] private float _cameraOffsetY = 1.5f;
+    [SerializeField] private float _aimCameraOffsetY = 2.5f;
+    [SerializeField] private float _aimHeightLerpSpeed = 10f;
     [SerializeField] private float _cameraOffsetZMin = 4f;
     [SerializeField] private float _cameraOffsetZMax = 6f;
     [SerializeField] private float _zoomSensitivity = 1f;
@@ -20,6 +22,8 @@ public class FollowCameraController : Singleton<FollowCameraController>
 
     private float _cameraOffsetZ;
     private float _offsetScale = 1;
+    private float _currentOffsetY;
+    private float _targetOffsetY;
     private float _collisionOffsetDistance;
     private Vector3 _targetPrevPosition;
     private float _fov;
@@ -32,6 +36,8 @@ public class FollowCameraController : Singleton<FollowCameraController>
     private void Start()
     {
         _cameraTarget = new GameObject("CameraTarget").transform;
+        _currentOffsetY = _cameraOffsetY;
+        _targetOffsetY = _cameraOffsetY;
         SetTarget(_target);
         _cameraOffsetZ = _cameraOffsetZMin + (_cameraOffsetZMax - _cameraOffsetZMin) * 0.2f;
         _targetPrevPosition = _cameraTarget.position ;
@@ -46,6 +52,8 @@ public class FollowCameraController : Singleton<FollowCameraController>
 
     private void FixedUpdate()
     {
+        UpdateAimHeight();
+
         CheckCollision();
 
         _cameraOffset = Quaternion.Euler(_cameraEuler) * new Vector3(_cameraOffsetZ - _collisionOffsetDistance, 0, 0);
@@ -79,6 +87,19 @@ public class FollowCameraController : Singleton<FollowCameraController>
         _targetPrevPosition = _cameraTarget.position;
     }
 
+    // Поднимаем CameraTarget на высоту прицеливания (2.5), когда игрок входит
+    // в режим стрельбы (дуэль/игра с пушкой в руках), и опускаем обратно при выходе.
+    public void SetAimMode(bool isAiming)
+    {
+        _targetOffsetY = isAiming ? _aimCameraOffsetY : _cameraOffsetY;
+    }
+
+    private void UpdateAimHeight()
+    {
+        _currentOffsetY = Mathf.Lerp(_currentOffsetY, _targetOffsetY, _aimHeightLerpSpeed * Time.fixedDeltaTime);
+        _cameraTarget.localPosition = Vector3.up * _currentOffsetY;
+    }
+
     public void Rotate(float x, float y)
     {
         _cameraEuler.y += x;
@@ -94,7 +115,7 @@ public class FollowCameraController : Singleton<FollowCameraController>
     {
         _target = transform;
         _cameraTarget.SetParent(_target);
-        _cameraTarget.localPosition = Vector3.up * _cameraOffsetY;
+        _cameraTarget.localPosition = Vector3.up * _currentOffsetY;
     }
 
     public void SetOffsetScale(float scale)

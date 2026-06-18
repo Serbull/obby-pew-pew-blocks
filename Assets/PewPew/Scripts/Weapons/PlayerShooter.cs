@@ -1,16 +1,19 @@
 using UnityEngine;
+using YG;
 
 public class PlayerShooter : MonoBehaviour
 {
     private Weapon weapon;
     private PlayerWeaponEquip weaponEquip;
     private Animator anim;
+    private bool isMobile;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         if (anim == null) anim = GetComponentInChildren<Animator>();
         weaponEquip = GetComponent<PlayerWeaponEquip>();
+        isMobile = !YG2.envir.isDesktop;
     }
 
     void Update()
@@ -24,6 +27,13 @@ public class PlayerShooter : MonoBehaviour
         }
 
         bool isEquipped = (weapon.transform.parent == weaponEquip.handPoint);
+
+        // На мобильном поднимаем камеру в режим прицеливания, пока пушка в руках
+        // (игрок вошёл в режим игры/дуэли и может стрелять).
+        if (isMobile && FollowCameraController.Instance != null)
+        {
+            FollowCameraController.Instance.SetAimMode(isEquipped);
+        }
 
         // 1. Проверяем, над "блокирующим" ли UI палец/курсор (кнопки, магазин).
         // Панель камеры и зона прицеливания считаются сквозными — сквозь них стрелять можно.

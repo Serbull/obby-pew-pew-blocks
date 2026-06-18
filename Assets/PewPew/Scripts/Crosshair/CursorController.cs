@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using YG;
@@ -7,6 +8,10 @@ public class CursorController : MonoBehaviour
 {
     public RectTransform crosshair;
     public Animator playerAnimator;
+
+    [Header("Индикатор перезарядки")]
+    public Image fillImage;
+    public PlayerWeaponEquip weaponEquip;
 
     // Список названий UI-элементов, сквозь которые МОЖНО стрелять/целиться.
     // Единый источник — UiPassThrough, чтобы прицел и стрельба не расходились.
@@ -57,11 +62,15 @@ public class CursorController : MonoBehaviour
         bool isAiming = playerAnimator.GetBool("IsAiming");
 
         // 3. Управляем активностью крестика прицела.
-        // На мобильном целимся точкой касания, поэтому крестик не показываем вовсе.
-        crosshair.gameObject.SetActive(!isMobile && isAiming && !isOverUI);
+        crosshair.gameObject.SetActive(isAiming && !isOverUI);
 
-        // 4. Позиционируем прицел (только на ПК — на мобильном крестик скрыт)
-        if (!isMobile)
+        // 4. Позиционируем прицел.
+        if (isMobile)
+        {
+            // На мобильном стреляем из центра экрана — прицел всегда по центру.
+            crosshair.position = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
+        }
+        else
         {
             if (isAiming && !isOverUI)
             {
@@ -75,6 +84,27 @@ public class CursorController : MonoBehaviour
 
         // 5. Настраиваем системный курсор
         ApplyCursor(isAiming, isOverUI, isMobile);
+
+        // 6. Текст таймера перезарядки под прицелом
+        if (crosshair.gameObject.activeSelf)
+        {
+            UpdateReloadText(isAiming, isOverUI);
+        }
+    }
+
+    // Показывает под прицелом текст "Reloading 0.5.." / "Перезарядка 0.5.."
+    // пока экипированное оружие в откате между выстрелами.
+    void UpdateReloadText(bool isAiming, bool isOverUI)
+    {
+        Weapon weapon = weaponEquip != null ? weaponEquip.GetWeapon() : null;
+        bool show = weapon != null && isAiming && !isOverUI && weapon.IsReloading;
+
+        //reloadText.gameObject.SetActive(show);
+        fillImage.fillAmount = weapon.ReloadValue;
+        if (!show) return;
+
+        //reloadText.text = weapon.ReloadTimeLeft.ToString("0.0");
+
     }
 
     void ApplyCursor(bool isAiming, bool isOverUI, bool isMobile)
